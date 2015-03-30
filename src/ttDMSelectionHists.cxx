@@ -63,7 +63,8 @@ ttDMSelectionHists::ttDMSelectionHists(Context & ctx, const std::string & dirnam
   //htlep__pt = book<TH1F>("htlep__pt", ";H_{T}^{lep} [GeV]", 180, 0, 1800);
   mtlep__pt = book<TH1F>("mtlep__pt", ";M_{T}^{lep} [GeV]", 180, 0, 1800);
   met_VS_dphi_lep1 = book<TH2F>("met_VS_dphi_lep1", ";MET [GeV];#Delta#phi(MET, l1)", 180, 0, 1800, 60, 0, 3.6);
-  met_VS_dphi_jet1 = book<TH2F>("met_VS_dphi_jet1", ";MET [GeV];#Delta#phi(MET, l1)", 180, 0, 1800, 60, 0, 3.6);
+  met_VS_dphi_jet1 = book<TH2F>("met_VS_dphi_jet1", ";MET [GeV];#Delta#phi(MET, j1)", 180, 0, 1800, 60, 0, 3.6);
+  met_VS_dphi_jet2 = book<TH2F>("met_VS_dphi_jet2", ";MET [GeV];#Delta#phi(MET, j2)", 180, 0, 1800, 60, 0, 3.6);
 }
 
 void ttDMSelectionHists::fill(const Event & event){
@@ -195,6 +196,7 @@ void ttDMSelectionHists::fill(const Event & event){
   /* triangular cuts vars */
   if(lep1) met_VS_dphi_lep1->Fill(event.met->pt(), fabs(deltaPhi(*event.met, *lep1)), weight);
   if(event.jets->size()) met_VS_dphi_jet1->Fill(event.met->pt(), fabs(deltaPhi(*event.met, event.jets->at(0))), weight);
+  if(event.jets->size()>1) met_VS_dphi_jet2->Fill(event.met->pt(), fabs(deltaPhi(*event.met, event.jets->at(1))), weight);
 
   return;
 }

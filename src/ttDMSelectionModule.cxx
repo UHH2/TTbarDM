@@ -24,7 +24,7 @@
 #include "UHH2/ttDMSemiLeptonic/include/ttDMSemiLeptonicUtils.h"
 #include "UHH2/ttDMSemiLeptonic/include/ttDMSelectionHists.h"
 
-/** \brief module to produce "Selection" ntuples for the Z'->ttbar semileptonic analysis
+/** \brief module to produce "Selection" ntuples for the ttDM Analysis
  *
  *  -- GOALS:
  *   * complete object reconstruction (pt/eta cuts, IDs, jet-lepton cleaning, JER smearing)
@@ -34,9 +34,10 @@
  *     * >=3 AK4 jets w/ pt> 50 |eta|<2.4
  *     * >=1 AK4 jets w/ pt>200 |eta|<2.4
  *     * MET > 160 GeV
- *     * Transverse Mass > 160
- *     * lepton-2D-cut [DR>0.4 || pTrel>25 GeV] (wrt AK4 jets w/ pt>25 GeV)
- *     * (electron-only) triangular cuts
+ *     * Transverse Mass > 160 (Final cut will be 320)
+ *     * lepton-2D-cut [DR>0.4 || pTrel>25 GeV] (wrt AK4 jets w/ pt>25 GeV) (May remove for ttDM analysis)
+ *     * (electron-only) triangular cuts (May remove for ttDM analysis)
+ *     * Need to add MT2W Razor cut
  *   * perform ttbar kinematical reconstruction (hyps stored in output ntuple)
  *
  * -- ITEMS TO BE IMPLEMENTED:
