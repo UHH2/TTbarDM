@@ -82,6 +82,18 @@ namespace uhh2 {
   };
   /////
 
+  class LeptonicTopPtCut: public Selection {
+   public:
+    explicit LeptonicTopPtCut(Context&, float, float, const std::string& hyps="TTbarReconstruction", const std::string& disc="Chi2");
+    virtual bool passes(const Event&) override;
+
+   private:
+    float tlep_pt_min_, tlep_pt_max_;
+    Event::Handle<std::vector<ReconstructionHypothesis>> h_hyps_;
+    std::string disc_name_;
+  };
+  /////
+
   class HypothesisDiscriminatorCut: public Selection {
    public:
     explicit HypothesisDiscriminatorCut(Context& ctx, float min_discr, float max_discr, const std::string& discr_name="Chi2", const std::string& hyps_name="HighMassReconstruction");

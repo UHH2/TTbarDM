@@ -177,6 +177,21 @@ bool TopTagEventSelection::passes(const Event & event){
 }
 ////////////////////////////////////////////////////////
 
+uhh2::LeptonicTopPtCut::LeptonicTopPtCut(uhh2::Context& ctx, float pt_min, float pt_max, const std::string& hyps_name, const std::string& disc_name):
+  tlep_pt_min_(pt_min), tlep_pt_max_(pt_max), h_hyps_(ctx.get_handle<std::vector<ReconstructionHypothesis>>(hyps_name)), disc_name_(disc_name) {}
+
+bool uhh2::LeptonicTopPtCut::passes(const uhh2::Event& event){
+
+  std::vector<ReconstructionHypothesis> hyps = event.get(h_hyps_);
+  const ReconstructionHypothesis* hyp = get_best_hypothesis(hyps, disc_name_);
+  if(!hyp) std::runtime_error("LeptonicTopPtCut -- best hypothesis not found (discriminator="+disc_name_+")");
+
+  float tlep_pt = hyp->toplep_v4().Pt();
+
+  return (tlep_pt > tlep_pt_min_) && (tlep_pt < tlep_pt_max_);
+}
+////////////////////////////////////////////////////////
+
 HypothesisDiscriminatorCut::HypothesisDiscriminatorCut(uhh2::Context& ctx, float min_discr, float max_discr, const std::string& discr_name, const std::string& hyps_name):
   m_min_discr_(min_discr), m_max_discr_(max_discr), m_discriminator_name(discr_name), h_hyps(ctx.get_handle<std::vector<ReconstructionHypothesis>>(hyps_name)) {}
 
