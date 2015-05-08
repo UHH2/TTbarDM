@@ -20,9 +20,9 @@
 #include "UHH2/common/include/HypothesisHists.h"
 #include "UHH2/common/include/TriggerSelection.h"
 
-#include "UHH2/ttDMSemiLeptonic/include/ttDMSemiLeptonicSelections.h"
-#include "UHH2/ttDMSemiLeptonic/include/ttDMSemiLeptonicUtils.h"
-#include "UHH2/ttDMSemiLeptonic/include/ttDMSelectionHists.h"
+#include "UHH2/TTbarDM/include/ttDMSemiLeptonicSelections.h"
+#include "UHH2/TTbarDM/include/ttDMSemiLeptonicUtils.h"
+#include "UHH2/TTbarDM/include/ttDMSelectionHists.h"
 
 /** \brief module to produce "Selection" ntuples for the ttDM Analysis
  *

@@ -1,4 +1,4 @@
-#include "UHH2/ttDMSemiLeptonic/include/ttDMSelectionHists.h"
+#include "UHH2/TTbarDM/include/ttDMSelectionHists.h"
 #include "UHH2/core/include/Event.h"
 #include "UHH2/core/include/Utils.h"
 #include "UHH2/common/include/Utils.h"
