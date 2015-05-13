@@ -65,6 +65,8 @@ class ttDMSelectionHists: public uhh2::Hists {
   //TH1F* htlep__pt;
   TH1F* mtlep__pt;
   TH2F* met_VS_dphi_lep1;
+  TH1F* met_dphi_jet1;
+  TH1F* met_dphi_jet2;
   TH2F* met_VS_dphi_jet1;
   TH2F* met_VS_dphi_jet2;
 };

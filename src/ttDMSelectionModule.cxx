@@ -33,10 +33,8 @@
  *     * ==1 lepton (w/ pt+eta+ID cuts)
  *     * >=3 AK4 jets w/ pt> 50 |eta|<2.4
  *     * >=1 AK4 jets w/ pt>200 |eta|<2.4
- *     * MET > 160 GeV
- *     * Transverse Mass > 160 (Final cut will be 320)
- *     * lepton-2D-cut [DR>0.4 || pTrel>25 GeV] (wrt AK4 jets w/ pt>25 GeV) (May remove for ttDM analysis)
- *     * (electron-only) triangular cuts (May remove for ttDM analysis)
+ *     * MET > 160 GeV (Final cut will be 320)
+ *     * LEP Transverse Mass > 160
  *     * Need to add MT2W Razor cut
  *   * perform ttbar kinematical reconstruction (hyps stored in output ntuple)
  *
@@ -60,13 +58,13 @@ class ttDMSelectionModule: public AnalysisModule {
   std::unique_ptr<MuonCleaner> muo_cleaner;
   std::unique_ptr<ElectronCleaner> ele_cleaner;
   std::unique_ptr<JetCorrector> jet_corrector;
-  std::unique_ptr<JetLeptonCleaner> jetlepton_cleaner;
   std::unique_ptr<JetResolutionSmearer> jetER_smearer;
+  std::unique_ptr<JetLeptonCleaner> jetlepton_cleaner;
   std::unique_ptr<JetCleaner> jet_cleaner1;
   std::unique_ptr<JetCleaner> jet_cleaner2;
   std::unique_ptr<TopJetCorrector> topjet_corrector;
-  std::unique_ptr<TopJetLeptonDeltaRCleaner> topjetlepton_cleaner;
 //  std::unique_ptr<TopJetResolutionSmearer> topjetER_smearer;
+  std::unique_ptr<TopJetLeptonDeltaRCleaner> topjetlepton_cleaner;
   std::unique_ptr<TopJetCleaner> topjet_cleaner;
 
   // selections
@@ -77,16 +75,16 @@ class ttDMSelectionModule: public AnalysisModule {
   std::unique_ptr<Selection> met_sel;
   //std::unique_ptr<Selection> htlep_sel;
   std::unique_ptr<Selection> mtlep_sel;
-  std::unique_ptr<Selection> twodcut_sel;
-  std::unique_ptr<Selection> triangc_sel;
+  //std::unique_ptr<Selection> twodcut_sel;
+  //std::unique_ptr<Selection> triangc_sel;
   std::unique_ptr<Selection> toptagevent_sel;
 
   // ttbar reconstruction
   std::unique_ptr<AnalysisModule> ttgenprod;
   std::unique_ptr<AnalysisModule> reco_primlep;
   std::unique_ptr<AnalysisModule> ttbar_reco_toptag0, ttbar_reco_toptag1;
-  std::unique_ptr<AnalysisModule> ttbar_chi2min;
-  Event::Handle<std::vector<ReconstructionHypothesis>> h_ttbar_hyps;
+  //std::unique_ptr<AnalysisModule> ttbar_chi2min;
+  //Event::Handle<std::vector<ReconstructionHypothesis>> h_ttbar_hyps;
 
   // hists
   std::unique_ptr<Hists> input_h;
@@ -97,11 +95,11 @@ class ttDMSelectionModule: public AnalysisModule {
   std::unique_ptr<Hists> met_h;
   //std::unique_ptr<Hists> htlep_h;
   std::unique_ptr<Hists> mtlep_h;
-  std::unique_ptr<Hists> twodcut_h;
-  std::unique_ptr<Hists> triangc_h;
+  //std::unique_ptr<Hists> twodcut_h;
+  //std::unique_ptr<Hists> triangc_h;
   std::unique_ptr<Hists> toptagevent_h;
-  std::unique_ptr<Hists> chi2min_toptag0_h;
-  std::unique_ptr<Hists> chi2min_toptag1_h;
+  //std::unique_ptr<Hists> chi2min_toptag0_h;
+  //std::unique_ptr<Hists> chi2min_toptag1_h;
 };
 
 ttDMSelectionModule::ttDMSelectionModule(Context & ctx){
@@ -110,14 +108,14 @@ ttDMSelectionModule::ttDMSelectionModule(Context & ctx){
   muo_cleaner.reset(new MuonCleaner(AndId<Muon>(MuonIDTight(), PtEtaCut(45., 2.1))));
   ele_cleaner.reset(new ElectronCleaner(AndId<Electron>(ElectronID_PHYS14_25ns_tight_noIso, PtEtaCut(50., 2.5))));
   jet_corrector.reset(new JetCorrector(JERFiles::PHYS14_L123_MC));
+  jetER_smearer.reset(new JetResolutionSmearer(ctx));
   jetlepton_cleaner.reset(new JetLeptonCleaner(JERFiles::PHYS14_L123_MC));
   jetlepton_cleaner->set_drmax(.4);
-  jetER_smearer.reset(new JetResolutionSmearer(ctx));
   jet_cleaner1.reset(new JetCleaner(25., std::numeric_limits<double>::infinity()));
   jet_cleaner2.reset(new JetCleaner(30., 2.4));
   topjet_corrector.reset(new TopJetCorrector(JERFiles::PHYS14_L123_MC));
-  topjetlepton_cleaner.reset(new TopJetLeptonDeltaRCleaner(.8));
 //  topjetER_smearer.reset(new TopJetResolutionSmearer(ctx));
+  topjetlepton_cleaner.reset(new TopJetLeptonDeltaRCleaner(.8));
   topjet_cleaner.reset(new TopJetCleaner(TopJetId(PtEtaCut(400., 2.4))));
   ////
 
@@ -150,10 +148,10 @@ ttDMSelectionModule::ttDMSelectionModule(Context & ctx){
   met_sel.reset(new METCut(160., std::numeric_limits<double>::infinity()));
   //htlep_sel.reset(new HTlepCut(150., std::numeric_limits<double>::infinity()));
   mtlep_sel.reset(new MTlepCut(160., std::numeric_limits<double>::infinity()));
-  twodcut_sel.reset(new TwoDCut(.4, 25.));
+  //twodcut_sel.reset(new TwoDCut(.4, 25.));
 
-  if(elec) triangc_sel.reset(new TriangularCuts(1.5, 75.));
-  else if(muon) triangc_sel.reset(new AndSelection(ctx)); // always true (no triangular cuts for muon channel)
+  // if(elec) triangc_sel.reset(new TriangularCuts(1.5, 75.));
+  // else if(muon) triangc_sel.reset(new AndSelection(ctx)); // always true (no triangular cuts for muon channel)
 
   const TopJetId topjetID = AndId<TopJet>(CMSTopTag(), Tau32());
   const float minDR_topjet_jet(1.2);
@@ -167,11 +165,11 @@ ttDMSelectionModule::ttDMSelectionModule(Context & ctx){
 
   reco_primlep.reset(new PrimaryLepton(ctx));
 
-  std::string ttbar_hyps_label("TTbarReconstruction");
-  ttbar_reco_toptag0.reset(new HighMassTTbarReconstruction(ctx, NeutrinoReconstruction, ttbar_hyps_label));
-  ttbar_reco_toptag1.reset(new TopTagReconstruction(ctx, NeutrinoReconstruction, ttbar_hyps_label, topjetID, minDR_topjet_jet));
-  ttbar_chi2min.reset(new Chi2Discriminator(ctx, ttbar_hyps_label));
-  h_ttbar_hyps = ctx.get_handle<std::vector<ReconstructionHypothesis>>(ttbar_hyps_label);
+  //std::string ttbar_hyps_label("TTbarReconstruction");
+  //ttbar_reco_toptag0.reset(new HighMassTTbarReconstruction(ctx, NeutrinoReconstruction, ttbar_hyps_label));
+  //ttbar_reco_toptag1.reset(new TopTagReconstruction(ctx, NeutrinoReconstruction, ttbar_hyps_label, topjetID, minDR_topjet_jet));
+  //ttbar_chi2min.reset(new Chi2Discriminator(ctx, ttbar_hyps_label));
+  //h_ttbar_hyps = ctx.get_handle<std::vector<ReconstructionHypothesis>>(ttbar_hyps_label);
   ////
 
   //// HISTS
@@ -183,11 +181,11 @@ ttDMSelectionModule::ttDMSelectionModule(Context & ctx){
   met_h.reset(new ttDMSelectionHists(ctx, "met"));
   //htlep_h.reset(new ttDMSelectionHists(ctx, "htlep"));
   mtlep_h.reset(new ttDMSelectionHists(ctx, "mtlep"));
-  twodcut_h.reset(new ttDMSelectionHists(ctx, "twodcut"));
-  triangc_h.reset(new ttDMSelectionHists(ctx, "triangc"));
+  //twodcut_h.reset(new ttDMSelectionHists(ctx, "twodcut"));
+  //triangc_h.reset(new ttDMSelectionHists(ctx, "triangc"));
   toptagevent_h.reset(new ttDMSelectionHists(ctx, "toptagevent"));
-  chi2min_toptag0_h.reset(new HypothesisHists(ctx, "chi2min_toptag0__HypHists", ttbar_hyps_label, "Chi2"));
-  chi2min_toptag1_h.reset(new HypothesisHists(ctx, "chi2min_toptag1__HypHists", ttbar_hyps_label, "Chi2"));
+  //chi2min_toptag0_h.reset(new HypothesisHists(ctx, "chi2min_toptag0__HypHists", ttbar_hyps_label, "Chi2"));
+  //chi2min_toptag1_h.reset(new HypothesisHists(ctx, "chi2min_toptag1__HypHists", ttbar_hyps_label, "Chi2"));
   ////
 }
 
@@ -215,19 +213,19 @@ bool ttDMSelectionModule::process(Event & event){
 
   //// JET selection
   jet_corrector->process(event);
-  jetlepton_cleaner->process(event);
   jetER_smearer->process(event);
+  jetlepton_cleaner->process(event);
 
   /* lepton-2Dcut boolean */
   jet_cleaner1->process(event); // jets w/ pt>25 GeV for lepton-2Dcut
-  bool pass_twodcut = twodcut_sel->passes(event);
+  //bool pass_twodcut = twodcut_sel->passes(event);
 
   jet_cleaner2->process(event);
   sort_by_pt<Jet>(*event.jets);
 
   topjet_corrector->process(event);
-  topjetlepton_cleaner->process(event);
 //  topjetER_smearer->process(event);
+  topjetlepton_cleaner->process(event);
   topjet_cleaner->process(event);
   sort_by_pt<TopJet>(*event.topjets);
 
@@ -260,14 +258,14 @@ bool ttDMSelectionModule::process(Event & event){
   ////
 
   //// LEPTON-2Dcut selection
-  if(!pass_twodcut) return false;
-  twodcut_h->fill(event);
+  //if(!pass_twodcut) return false;
+  //twodcut_h->fill(event);
   ////
 
   //// TRIANGULAR-CUTS selection (electron-only)
-  bool pass_triangc = triangc_sel->passes(event);
-  if(!pass_triangc) return false;
-  triangc_h->fill(event);
+  // bool pass_triangc = triangc_sel->passes(event);
+  // if(!pass_triangc) return false;
+  // triangc_h->fill(event);
   ////
 
   //// TOPTAG-EVENT selection
@@ -283,16 +281,16 @@ bool ttDMSelectionModule::process(Event & event){
 
   reco_primlep->process(event);
 
-  if(pass_toptagevent){
-    ttbar_reco_toptag1->process(event);
-    ttbar_chi2min->process(event);
-    chi2min_toptag1_h->fill(event);
-  }
-  else{
-    ttbar_reco_toptag0->process(event);
-    ttbar_chi2min->process(event);
-    chi2min_toptag0_h->fill(event);
-  }
+  // if(pass_toptagevent){
+  //   ttbar_reco_toptag1->process(event);
+  //   ttbar_chi2min->process(event);
+  //   chi2min_toptag1_h->fill(event);
+  // }
+  // else{
+  //   ttbar_reco_toptag0->process(event);
+  //   ttbar_chi2min->process(event);
+  //   chi2min_toptag0_h->fill(event);
+  // }
   ////
 
   return true;

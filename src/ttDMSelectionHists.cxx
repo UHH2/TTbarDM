@@ -1,14 +1,8 @@
 #include "UHH2/TTbarDM/include/ttDMSelectionHists.h"
-#include "UHH2/core/include/Event.h"
 #include "UHH2/core/include/Utils.h"
 #include "UHH2/common/include/Utils.h"
 
-#include <iostream>
-#include <TH1F.h>
-
-using namespace uhh2;
-
-ttDMSelectionHists::ttDMSelectionHists(Context & ctx, const std::string & dirname): Hists(ctx, dirname){
+ttDMSelectionHists::ttDMSelectionHists(uhh2::Context & ctx, const std::string & dirname): Hists(ctx, dirname){
 
   wgt = book<TH1F>("weight", ";event weight", 120, 0, 12);
 
@@ -65,9 +59,11 @@ ttDMSelectionHists::ttDMSelectionHists(Context & ctx, const std::string & dirnam
   met_VS_dphi_lep1 = book<TH2F>("met_VS_dphi_lep1", ";MET [GeV];#Delta#phi(MET, l1)", 180, 0, 1800, 60, 0, 3.6);
   met_VS_dphi_jet1 = book<TH2F>("met_VS_dphi_jet1", ";MET [GeV];#Delta#phi(MET, j1)", 180, 0, 1800, 60, 0, 3.6);
   met_VS_dphi_jet2 = book<TH2F>("met_VS_dphi_jet2", ";MET [GeV];#Delta#phi(MET, j2)", 180, 0, 1800, 60, 0, 3.6);
+  met_dphi_jet1 = book<TH1F>("met__dphi_jet1", ";#Delta#phi(MET, j1)", 36, 0, 3.6);
+  met_dphi_jet2 = book<TH1F>("met__dphi_jet2", ";#Delta#phi(MET, j2)", 36, 0, 3.6);
 }
 
-void ttDMSelectionHists::fill(const Event & event){
+void ttDMSelectionHists::fill(const uhh2::Event & event){
 
   assert(event.pvs && event.muons && event.electrons);
   assert(event.jets && event.topjets && event.met);
@@ -88,9 +84,9 @@ void ttDMSelectionHists::fill(const Event & event){
     float minDR_jet(-1.), pTrel_jet(-1.);
     std::tie(minDR_jet, pTrel_jet) = drmin_pTrel(p, *event.jets);
 
-    float minDR_topjet(infinity);
+    float minDR_topjet(uhh2::infinity);
     for(const auto& tj: *event.topjets)
-      if(deltaR(p, tj) < minDR_topjet) minDR_topjet = deltaR(p, tj);
+      if(uhh2::deltaR(p, tj) < minDR_topjet) minDR_topjet = uhh2::deltaR(p, tj);
 
     if(i == 0){
       muo1__pt->Fill(p.pt(), weight);
@@ -118,9 +114,9 @@ void ttDMSelectionHists::fill(const Event & event){
     float minDR_jet(-1.), pTrel_jet(-1.);
     std::tie(minDR_jet, pTrel_jet) = drmin_pTrel(p, *event.jets);
 
-    float minDR_topjet(infinity);
+    float minDR_topjet(uhh2::infinity);
     for(const auto& tj: *event.topjets)
-      if(deltaR(p, tj) < minDR_topjet) minDR_topjet = deltaR(p, tj);
+      if(uhh2::deltaR(p, tj) < minDR_topjet) minDR_topjet = uhh2::deltaR(p, tj);
 
     if(i == 0){
       ele1__pt->Fill(p.pt(), weight);
@@ -186,17 +182,17 @@ void ttDMSelectionHists::fill(const Event & event){
   for(const auto& l : *event.electrons) if(l.pt() > max_lep_pt){ lep1 = &l; max_lep_pt = l.pt(); }
   //if(lep1) htlep__pt->Fill(event.met->pt()+lep1->pt(), weight);
   if(lep1) {
-    double deltaphi = fabs(event.met->phi() - lep1->phi());
-    double pi = 3.14159265359;
-    if(deltaphi > pi) deltaphi = 2*pi - deltaphi;
+    double deltaphi = uhh2::deltaPhi(*event.met, *lep1);
     double mtlep = sqrt(2*event.met->pt()*lep1->pt()*(1-cos(deltaphi)));
     mtlep__pt->Fill(mtlep, weight);
   }
 
-  /* triangular cuts vars */
-  if(lep1) met_VS_dphi_lep1->Fill(event.met->pt(), fabs(deltaPhi(*event.met, *lep1)), weight);
-  if(event.jets->size()) met_VS_dphi_jet1->Fill(event.met->pt(), fabs(deltaPhi(*event.met, event.jets->at(0))), weight);
-  if(event.jets->size()>1) met_VS_dphi_jet2->Fill(event.met->pt(), fabs(deltaPhi(*event.met, event.jets->at(1))), weight);
+  /* MET Variables */
+  if(lep1) met_VS_dphi_lep1->Fill(event.met->pt(), fabs(uhh2::deltaPhi(*event.met, *lep1)), weight);
+  if(event.jets->size()) met_dphi_jet1->Fill(uhh2::deltaPhi(*event.met, event.jets->at(0)), weight);
+  if(event.jets->size()>1) met_dphi_jet2->Fill(uhh2::deltaPhi(*event.met, event.jets->at(1)), weight);
+  if(event.jets->size()) met_VS_dphi_jet1->Fill(event.met->pt(), fabs(uhh2::deltaPhi(*event.met, event.jets->at(0))), weight);
+  if(event.jets->size()>1) met_VS_dphi_jet2->Fill(event.met->pt(), fabs(uhh2::deltaPhi(*event.met, event.jets->at(1))), weight);
 
   return;
 }

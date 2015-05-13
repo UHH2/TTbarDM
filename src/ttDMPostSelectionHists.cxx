@@ -46,7 +46,10 @@ ttDMPostSelectionHists::ttDMPostSelectionHists(uhh2::Context& ctx, const std::st
   met__phi = book<TH1F>("met__phi", ";MET #phi", 72, -3.6, 3.6);
   htlep__pt = book<TH1F>("htlep__pt", ";H_{T}^{lep} [GeV]", 180, 0, 1800);
   met_VS_dphi_lep1 = book<TH2F>("met_VS_dphi_lep1", ";MET [GeV];#Delta#phi(MET, l1)", 180, 0, 1800, 60, 0, 3.6);
-  met_VS_dphi_jet1 = book<TH2F>("met_VS_dphi_jet1", ";MET [GeV];#Delta#phi(MET, l1)", 180, 0, 1800, 60, 0, 3.6);
+  met_VS_dphi_jet1 = book<TH2F>("met_VS_dphi_jet1", ";MET [GeV];#Delta#phi(MET, j1)", 180, 0, 1800, 60, 0, 3.6);
+  met_VS_dphi_jet2 = book<TH2F>("met_VS_dphi_jet2", ";MET [GeV];#Delta#phi(MET, j2)", 180, 0, 1800, 60, 0, 3.6);
+  met_dphi_jet1 = book<TH1F>("met__dphi_jet1", ";#Delta#phi(MET, j1)", 36, 0, 3.6);
+  met_dphi_jet2 = book<TH1F>("met__dphi_jet2", ";#Delta#phi(MET, j2)", 36, 0, 3.6);
 }
 
 void ttDMPostSelectionHists::fill(const uhh2::Event& event){
@@ -150,9 +153,12 @@ void ttDMPostSelectionHists::fill(const uhh2::Event& event){
   for(const auto& l : *event.electrons) if(l.pt() > max_lep_pt){ lep1 = &l; max_lep_pt = l.pt(); }
   if(lep1) htlep__pt->Fill(event.met->pt()+lep1->pt(), weight);
 
-  /* triangular cuts vars */
+  /**/
   if(lep1) met_VS_dphi_lep1->Fill(event.met->pt(), fabs(uhh2::deltaPhi(*event.met, *lep1)), weight);
+  if(event.jets->size()) met_dphi_jet1->Fill(uhh2::deltaPhi(*event.met, event.jets->at(0)), weight);
+  if(event.jets->size()>1) met_dphi_jet2->Fill(uhh2::deltaPhi(*event.met, event.jets->at(1)), weight);
   if(event.jets->size()) met_VS_dphi_jet1->Fill(event.met->pt(), fabs(uhh2::deltaPhi(*event.met, event.jets->at(0))), weight);
+  if(event.jets->size()>1) met_VS_dphi_jet2->Fill(event.met->pt(), fabs(uhh2::deltaPhi(*event.met, event.jets->at(1))), weight);
 
   return;
 }
