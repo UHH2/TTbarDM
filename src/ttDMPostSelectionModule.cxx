@@ -38,6 +38,7 @@ class ttDMPostSelectionModule: public AnalysisModule {
   std::unique_ptr<Selection> met_sel;
   std::unique_ptr<Selection> dphijet1_sel;
   std::unique_ptr<Selection> dphijet2_sel;
+  std::unique_ptr<Selection> mt2w_sel;
 
   // hists
   std::unique_ptr<Hists> hi_input;
@@ -49,6 +50,7 @@ class ttDMPostSelectionModule: public AnalysisModule {
   std::unique_ptr<Hists> met_h;
   std::unique_ptr<Hists> dphijet1_h;
   std::unique_ptr<Hists> dphijet2_h;
+  std::unique_ptr<Hists> mt2w_h;
   std::unique_ptr<Hists> hi_t0b0;
   //std::unique_ptr<Hists> hi_t0b0__hyp;
   std::unique_ptr<Hists> hi_t0b1;
@@ -90,6 +92,7 @@ ttDMPostSelectionModule::ttDMPostSelectionModule(Context& ctx){
   met_sel.reset(new METCut(320., std::numeric_limits<double>::infinity()));
   dphijet1_sel.reset(new METJetDPhiCut(1.2, 0));
   dphijet2_sel.reset(new METJetDPhiCut(1.2, 1));
+  mt2w_sel.reset(new MT2WCut(200));
 
   // HISTS
   hi_input.reset(new ttDMPostSelectionHists(ctx, "input"));
@@ -104,6 +107,7 @@ ttDMPostSelectionModule::ttDMPostSelectionModule(Context& ctx){
   met_h.reset(new ttDMPostSelectionHists(ctx, "met"));
   dphijet1_h.reset(new ttDMPostSelectionHists(ctx, "dphijet1"));
   dphijet2_h.reset(new ttDMPostSelectionHists(ctx, "dphijet2"));
+  mt2w_h.reset(new ttDMPostSelectionHists(ctx, "mt2w"));
 
   hi_t0b0.reset(new ttDMPostSelectionHists(ctx, "t0b0"));
   //hi_t0b0__hyp.reset(new HypothesisHists(ctx, "t0b0__hyp_chi2min", "TTbarReconstruction", "Chi2"));
@@ -148,6 +152,11 @@ bool ttDMPostSelectionModule::process(Event& event) {
   bool pass_dphijet2 = dphijet2_sel->passes(event);
   if(!pass_dphijet2) return false;
   dphijet2_h->fill(event);
+
+  //// MT2W Selection
+  bool pass_mt2w = mt2w_sel->passes(event);
+  if(!pass_mt2w) return false;
+  mt2w_h->fill(event);
 
   bool btag(btagAK4_sel->passes(event));
   bool toptag(event.get(h_flag_toptagevent));

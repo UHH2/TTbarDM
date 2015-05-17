@@ -24,6 +24,8 @@
 #include "UHH2/TTbarDM/include/ttDMSemiLeptonicUtils.h"
 #include "UHH2/TTbarDM/include/ttDMSelectionHists.h"
 
+#include "UHH2/TTbarDM/include/Mt2Com_bisect.h"
+
 /** \brief module to produce "Selection" ntuples for the ttDM Analysis
  *
  *  -- GOALS:

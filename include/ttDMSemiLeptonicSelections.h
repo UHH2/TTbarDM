@@ -65,6 +65,16 @@ namespace uhh2 {
   };
   /////
 
+  class MT2WCut : public Selection {
+   public:
+    explicit MT2WCut(float);
+    virtual bool passes(const Event&) override;
+
+   private:
+    float min_mt2w_;
+  };
+  /////
+
   class TwoDCut : public Selection {
    public:
     explicit TwoDCut(float min_deltaR, float min_pTrel): min_deltaR_(min_deltaR), min_pTrel_(min_pTrel) {}

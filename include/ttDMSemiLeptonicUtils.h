@@ -11,3 +11,5 @@ class TopJetLeptonDeltaRCleaner : public uhh2::AnalysisModule {
  private:
   float minDR_;
 };
+
+double CalculateMT2W(const uhh2::Event &);

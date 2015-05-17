@@ -1,4 +1,5 @@
 #include "UHH2/TTbarDM/include/ttDMPostSelectionHists.h"
+#include "UHH2/TTbarDM/include/ttDMSemiLeptonicUtils.h"
 #include "UHH2/core/include/Utils.h"
 #include "UHH2/common/include/Utils.h"
 
@@ -50,6 +51,9 @@ ttDMPostSelectionHists::ttDMPostSelectionHists(uhh2::Context& ctx, const std::st
   met_VS_dphi_jet2 = book<TH2F>("met_VS_dphi_jet2", ";MET [GeV];#Delta#phi(MET, j2)", 180, 0, 1800, 60, 0, 3.6);
   met_dphi_jet1 = book<TH1F>("met__dphi_jet1", ";#Delta#phi(MET, j1)", 36, 0, 3.6);
   met_dphi_jet2 = book<TH1F>("met__dphi_jet2", ";#Delta#phi(MET, j2)", 36, 0, 3.6);
+
+  // MT2W
+  mt2w = book<TH1F>("mt2w", ";M^{W}_{T2}", 50, 0, 500);
 }
 
 void ttDMPostSelectionHists::fill(const uhh2::Event& event){
@@ -159,6 +163,9 @@ void ttDMPostSelectionHists::fill(const uhh2::Event& event){
   if(event.jets->size()>1) met_dphi_jet2->Fill(uhh2::deltaPhi(*event.met, event.jets->at(1)), weight);
   if(event.jets->size()) met_VS_dphi_jet1->Fill(event.met->pt(), fabs(uhh2::deltaPhi(*event.met, event.jets->at(0))), weight);
   if(event.jets->size()>1) met_VS_dphi_jet2->Fill(event.met->pt(), fabs(uhh2::deltaPhi(*event.met, event.jets->at(1))), weight);
+
+  //MT2W
+  if (lep1 && event.jets->size()>1) mt2w->Fill(CalculateMT2W(event), weight);
 
   return;
 }

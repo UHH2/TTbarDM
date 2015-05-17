@@ -1,4 +1,5 @@
 #include "UHH2/TTbarDM/include/ttDMSemiLeptonicSelections.h"
+#include "UHH2/TTbarDM/include/ttDMSemiLeptonicUtils.h"
 
 #include <iostream>
 #include <memory>
@@ -100,7 +101,21 @@ bool uhh2::METJetDPhiCut::passes(const uhh2::Event & event){
 
   double deltaphi = uhh2::deltaPhi(*event.met, event.jets->at(jetindex_));
 
-  return (deltaphi < min_dphi_);
+  return (deltaphi > min_dphi_);
+}
+////////////////////////////////////////////////////////
+
+uhh2::MT2WCut::MT2WCut(float min_mt2w):
+  min_mt2w_(min_mt2w) {}
+
+bool uhh2::MT2WCut::passes(const uhh2::Event & event){
+
+  assert(event.met);
+  assert(event.jets->size() > 1);
+
+  double mt2w = CalculateMT2W(event);
+
+  return (mt2w > min_mt2w_);
 }
 ////////////////////////////////////////////////////////
 
