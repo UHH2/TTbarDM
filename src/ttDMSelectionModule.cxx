@@ -76,7 +76,7 @@ class ttDMSelectionModule: public AnalysisModule {
   std::unique_ptr<Selection> jet1_sel;
   std::unique_ptr<Selection> met_sel;
   //std::unique_ptr<Selection> htlep_sel;
-  std::unique_ptr<Selection> mtlep_sel;
+  //std::unique_ptr<Selection> mtlep_sel;
   //std::unique_ptr<Selection> twodcut_sel;
   //std::unique_ptr<Selection> triangc_sel;
   std::unique_ptr<Selection> toptagevent_sel;
@@ -96,7 +96,7 @@ class ttDMSelectionModule: public AnalysisModule {
   std::unique_ptr<Hists> jet1_h;
   std::unique_ptr<Hists> met_h;
   //std::unique_ptr<Hists> htlep_h;
-  std::unique_ptr<Hists> mtlep_h;
+  //std::unique_ptr<Hists> mtlep_h;
   //std::unique_ptr<Hists> twodcut_h;
   //std::unique_ptr<Hists> triangc_h;
   std::unique_ptr<Hists> toptagevent_h;
@@ -149,7 +149,7 @@ ttDMSelectionModule::ttDMSelectionModule(Context & ctx){
   jet1_sel.reset(new NJetSelection(1, -1, JetId(PtEtaCut(200., 2.4))));
   met_sel.reset(new METCut(160., std::numeric_limits<double>::infinity()));
   //htlep_sel.reset(new HTlepCut(150., std::numeric_limits<double>::infinity()));
-  mtlep_sel.reset(new MTlepCut(160., std::numeric_limits<double>::infinity()));
+  //mtlep_sel.reset(new MTlepCut(160., std::numeric_limits<double>::infinity()));
   //twodcut_sel.reset(new TwoDCut(.4, 25.));
 
   // if(elec) triangc_sel.reset(new TriangularCuts(1.5, 75.));
@@ -182,7 +182,7 @@ ttDMSelectionModule::ttDMSelectionModule(Context & ctx){
   jet1_h.reset(new ttDMSelectionHists(ctx, "jet1"));
   met_h.reset(new ttDMSelectionHists(ctx, "met"));
   //htlep_h.reset(new ttDMSelectionHists(ctx, "htlep"));
-  mtlep_h.reset(new ttDMSelectionHists(ctx, "mtlep"));
+  //mtlep_h.reset(new ttDMSelectionHists(ctx, "mtlep"));
   //twodcut_h.reset(new ttDMSelectionHists(ctx, "twodcut"));
   //triangc_h.reset(new ttDMSelectionHists(ctx, "triangc"));
   toptagevent_h.reset(new ttDMSelectionHists(ctx, "toptagevent"));
@@ -254,9 +254,9 @@ bool ttDMSelectionModule::process(Event & event){
   ////
 
   /* MT_lep selection */
-  bool pass_mtlep = mtlep_sel->passes(event);
-  if(!pass_mtlep) return false;
-  mtlep_h->fill(event);
+  // bool pass_mtlep = mtlep_sel->passes(event);
+  // if(!pass_mtlep) return false;
+  // mtlep_h->fill(event);
   ////
 
   //// LEPTON-2Dcut selection

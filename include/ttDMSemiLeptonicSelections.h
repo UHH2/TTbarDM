@@ -61,7 +61,7 @@ namespace uhh2 {
     virtual bool passes(const Event&) override;
 
    private:
-    float min_dphi_, jetindex_;
+    float min_dphi_, maxjetindex_;
   };
   /////
 

@@ -36,8 +36,8 @@ class ttDMPostSelectionModule: public AnalysisModule {
   std::unique_ptr<Selection> leptoppt_sel;
   //std::unique_ptr<Selection> chi2_sel;
   std::unique_ptr<Selection> met_sel;
-  std::unique_ptr<Selection> dphijet1_sel;
-  std::unique_ptr<Selection> dphijet2_sel;
+  std::unique_ptr<Selection> mtlep_sel;
+  std::unique_ptr<Selection> jetmetdphi_sel;
   std::unique_ptr<Selection> mt2w_sel;
 
   // hists
@@ -48,8 +48,8 @@ class ttDMPostSelectionModule: public AnalysisModule {
   //std::unique_ptr<Hists> hi_chi2;
   //std::unique_ptr<Hists> hi_chi2__hyp;
   std::unique_ptr<Hists> met_h;
-  std::unique_ptr<Hists> dphijet1_h;
-  std::unique_ptr<Hists> dphijet2_h;
+  std::unique_ptr<Hists> mtlep_h;
+  std::unique_ptr<Hists> jetmetdphi_h;
   std::unique_ptr<Hists> mt2w_h;
   std::unique_ptr<Hists> hi_t0b0;
   //std::unique_ptr<Hists> hi_t0b0__hyp;
@@ -90,8 +90,8 @@ ttDMPostSelectionModule::ttDMPostSelectionModule(Context& ctx){
 
   //ttDM SELECTION
   met_sel.reset(new METCut(320., std::numeric_limits<double>::infinity()));
-  dphijet1_sel.reset(new METJetDPhiCut(1.2, 0));
-  dphijet2_sel.reset(new METJetDPhiCut(1.2, 1));
+  mtlep_sel.reset(new MTlepCut(160., std::numeric_limits<double>::infinity()));
+  jetmetdphi_sel.reset(new METJetDPhiCut(1.2, 1));
   mt2w_sel.reset(new MT2WCut(200));
 
   // HISTS
@@ -105,8 +105,8 @@ ttDMPostSelectionModule::ttDMPostSelectionModule(Context& ctx){
   //hi_chi2__hyp.reset(new HypothesisHists(ctx, "chi2__hyp_chi2min", "TTbarReconstruction", "Chi2"));
 
   met_h.reset(new ttDMPostSelectionHists(ctx, "met"));
-  dphijet1_h.reset(new ttDMPostSelectionHists(ctx, "dphijet1"));
-  dphijet2_h.reset(new ttDMPostSelectionHists(ctx, "dphijet2"));
+  mtlep_h.reset(new ttDMPostSelectionHists(ctx, "mtlep"));
+  jetmetdphi_h.reset(new ttDMPostSelectionHists(ctx, "jetmetdphi"));
   mt2w_h.reset(new ttDMPostSelectionHists(ctx, "mt2w"));
 
   hi_t0b0.reset(new ttDMPostSelectionHists(ctx, "t0b0"));
@@ -143,15 +143,16 @@ bool ttDMPostSelectionModule::process(Event& event) {
   if(!pass_met) return false;
   met_h->fill(event);
 
-  //// DeltaPhi Lead Jet Selection
-  bool pass_dphijet1 = dphijet1_sel->passes(event);
-  if(!pass_dphijet1) return false;
-  dphijet1_h->fill(event);
+  /* MT_lep selection */
+  bool pass_mtlep = mtlep_sel->passes(event);
+  if(!pass_mtlep) return false;
+  mtlep_h->fill(event);
+  ////
 
-  //// DeltaPhi Sub-Lead Jet Selection
-  bool pass_dphijet2 = dphijet2_sel->passes(event);
-  if(!pass_dphijet2) return false;
-  dphijet2_h->fill(event);
+  //// DeltaPhi Jet MET Selection
+  bool pass_jetmetdphi = jetmetdphi_sel->passes(event);
+  if(!pass_jetmetdphi) return false;
+  jetmetdphi_h->fill(event);
 
   //// MT2W Selection
   bool pass_mt2w = mt2w_sel->passes(event);

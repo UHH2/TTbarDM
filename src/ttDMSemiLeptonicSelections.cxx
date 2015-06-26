@@ -91,17 +91,20 @@ bool uhh2::NJetCut::passes(const uhh2::Event & event){
 }
 ////////////////////////////////////////////////////////
 
-uhh2::METJetDPhiCut::METJetDPhiCut(float min_dphi, int jetindex):
-  min_dphi_(min_dphi), jetindex_(jetindex) {}
+uhh2::METJetDPhiCut::METJetDPhiCut(float min_dphi, int maxjetindex):
+  min_dphi_(min_dphi), maxjetindex_(maxjetindex) {}
 
 bool uhh2::METJetDPhiCut::passes(const uhh2::Event & event){
 
   assert(event.met);
-  assert(event.jets->size() >= jetindex_);
+  assert(event.jets->size() >= maxjetindex_);
 
-  double deltaphi = uhh2::deltaPhi(*event.met, event.jets->at(jetindex_));
-
-  return (deltaphi > min_dphi_);
+  double mindeltaphi = 9999;
+  for(size_t i=0; i<=maxjetindex_; i++){
+    double deltaphi = uhh2::deltaPhi(*event.met, event.jets->at(maxjetindex_));
+    if (deltaphi < mindeltaphi) mindeltaphi=deltaphi;
+  }
+  return (mindeltaphi > min_dphi_);
 }
 ////////////////////////////////////////////////////////
 

@@ -53,18 +53,20 @@ ttDMSelectionHists::ttDMSelectionHists(uhh2::Context & ctx, const std::string & 
   topjet2__eta = book<TH1F>("topjet2__eta", ";topjet #eta", 60, -3, 3);
 
   // MET
+  met = book<TH1F>("met", ";MET [GeV]", 8, 160, 480);
   met__pt = book<TH1F>("met__pt", ";MET [GeV]", 180, 0, 1800);
   met__phi = book<TH1F>("met__phi", ";MET #phi", 72, -3.6, 3.6);
   //htlep__pt = book<TH1F>("htlep__pt", ";H_{T}^{lep} [GeV]", 180, 0, 1800);
-  mtlep__pt = book<TH1F>("mtlep__pt", ";M_{T}^{lep} [GeV]", 180, 0, 1800);
   met_VS_dphi_lep1 = book<TH2F>("met_VS_dphi_lep1", ";MET [GeV];#Delta#phi(MET, l1)", 180, 0, 1800, 60, 0, 3.6);
   met_VS_dphi_jet1 = book<TH2F>("met_VS_dphi_jet1", ";MET [GeV];#Delta#phi(MET, j1)", 180, 0, 1800, 60, 0, 3.6);
   met_VS_dphi_jet2 = book<TH2F>("met_VS_dphi_jet2", ";MET [GeV];#Delta#phi(MET, j2)", 180, 0, 1800, 60, 0, 3.6);
   met_dphi_jet1 = book<TH1F>("met__dphi_jet1", ";#Delta#phi(MET, j1)", 36, 0, 3.6);
   met_dphi_jet2 = book<TH1F>("met__dphi_jet2", ";#Delta#phi(MET, j2)", 36, 0, 3.6);
 
-  // MT2W
-  mt2w = book<TH1F>("mt2w", ";M^{W}_{T2}", 50, 0, 500);
+  // TTDM
+  mtlep = book<TH1F>("mtlep", ";M_{T}", 10, 0, 500);
+  mt2w = book<TH1F>("mt2w", ";M^{W}_{T2}", 7, 95, 410);
+  jetmetdphi = book<TH1F>("jetmetdphi", ";#Delta#phi(j_{1,2},E_{T}^{miss})", 8, 0, 3.2);
 }
 
 void ttDMSelectionHists::fill(const uhh2::Event & event){
@@ -177,6 +179,7 @@ void ttDMSelectionHists::fill(const uhh2::Event & event){
   }
 
   // MET
+  met->Fill(event.met->pt(), weight);
   met__pt->Fill(event.met->pt(), weight);
   met__phi->Fill(event.met->phi(), weight);
 
@@ -185,11 +188,6 @@ void ttDMSelectionHists::fill(const uhh2::Event & event){
   for(const auto& l : *event.muons)     if(l.pt() > max_lep_pt){ lep1 = &l; max_lep_pt = l.pt(); }
   for(const auto& l : *event.electrons) if(l.pt() > max_lep_pt){ lep1 = &l; max_lep_pt = l.pt(); }
   //if(lep1) htlep__pt->Fill(event.met->pt()+lep1->pt(), weight);
-  if(lep1) {
-    double deltaphi = uhh2::deltaPhi(*event.met, *lep1);
-    double mtlep = sqrt(2*event.met->pt()*lep1->pt()*(1-cos(deltaphi)));
-    mtlep__pt->Fill(mtlep, weight);
-  }
 
   /* MET Variables */
   if(lep1) met_VS_dphi_lep1->Fill(event.met->pt(), fabs(uhh2::deltaPhi(*event.met, *lep1)), weight);
@@ -197,9 +195,11 @@ void ttDMSelectionHists::fill(const uhh2::Event & event){
   if(event.jets->size()>1) met_dphi_jet2->Fill(uhh2::deltaPhi(*event.met, event.jets->at(1)), weight);
   if(event.jets->size()) met_VS_dphi_jet1->Fill(event.met->pt(), fabs(uhh2::deltaPhi(*event.met, event.jets->at(0))), weight);
   if(event.jets->size()>1) met_VS_dphi_jet2->Fill(event.met->pt(), fabs(uhh2::deltaPhi(*event.met, event.jets->at(1))), weight);
+  if(event.jets->size()>1) jetmetdphi->Fill(std::min(uhh2::deltaPhi(*event.met, event.jets->at(0)),uhh2::deltaPhi(*event.met, event.jets->at(1))),weight);
 
-  //MT2W
+  // TTDM
   if (lep1 && event.jets->size()>1) mt2w->Fill(CalculateMT2W(event), weight);
+  mtlep->Fill(sqrt(2*event.met->pt()*lep1->pt()*(1-cos(uhh2::deltaPhi(*event.met, *lep1)))));
 
   return;
 }

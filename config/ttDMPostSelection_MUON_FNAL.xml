@@ -6,125 +6,101 @@
   <Library Name="libSUHH2ttDMSemiLeptonic"/>
   <Package Name="SUHH2ttDMSemiLeptonic.par" />
   <Cycle Name="uhh2::AnalysisModuleRunner" OutputDirectory="./" PostFix="" TargetLumi="1" >
-    <InputData Lumi="1" NEventsMax="-1" Type="MC" Version="DYJetsToLL100to200" Cacheable="False">
-      <In FileName="/eos/uscms/store/user/drberry/ttDMSelectionCycle/uhh2.AnalysisModuleRunner.MC.DYJetsToLL100to200.1.root" Lumi="0.0"/>
-      <InputTree Name="AnalysisTree" />
-      <OutputTree Name="AnalysisTree" />
-    </InputData>
+    <!-- <InputData Lumi="1" NEventsMax="-1" Type="MC" Version="DYJetsToLL100to200" Cacheable="False"> -->
+    <!--   <In FileName="/eos/uscms/store/user/drberry/ttDMSelectionCycleMuon/PHYS14/uhh2.AnalysisModuleRunner.MC.DYJetsToLL100to200.1.root" Lumi="0.0"/> -->
+      <!-- <InputTree Name="AnalysisTree" /> -->
+    <!-- </InputData> -->
     <InputData Lumi="1" NEventsMax="-1" Type="MC" Version="DYJetsToLL200to400" Cacheable="False">
-      <In FileName="/eos/uscms/store/user/drberry/ttDMSelectionCycle/uhh2.AnalysisModuleRunner.MC.DYJetsToLL200to400.2.root" Lumi="0.0"/>
+      <In FileName="/eos/uscms/store/user/drberry/ttDMSelectionCycleMuon/PHYS14/uhh2.AnalysisModuleRunner.MC.DYJetsToLL200to400.2.root" Lumi="0.0"/>
       <InputTree Name="AnalysisTree" />
-      <OutputTree Name="AnalysisTree" />
     </InputData>
     <InputData Lumi="1" NEventsMax="-1" Type="MC" Version="DYJetsToLL400to600" Cacheable="False">
-      <In FileName="/eos/uscms/store/user/drberry/ttDMSelectionCycle/uhh2.AnalysisModuleRunner.MC.DYJetsToLL400to600.3.root" Lumi="0.0"/>
+      <In FileName="/eos/uscms/store/user/drberry/ttDMSelectionCycleMuon/PHYS14/uhh2.AnalysisModuleRunner.MC.DYJetsToLL400to600.3.root" Lumi="0.0"/>
       <InputTree Name="AnalysisTree" />
-      <OutputTree Name="AnalysisTree" />
     </InputData>
     <InputData Lumi="1" NEventsMax="-1" Type="MC" Version="DYJetsToLL600toInf" Cacheable="False">
-      <In FileName="/eos/uscms/store/user/drberry/ttDMSelectionCycle/uhh2.AnalysisModuleRunner.MC.DYJetsToLL600toInf.4.root" Lumi="0.0"/>
+      <In FileName="/eos/uscms/store/user/drberry/ttDMSelectionCycleMuon/PHYS14/uhh2.AnalysisModuleRunner.MC.DYJetsToLL600toInf.4.root" Lumi="0.0"/>
       <InputTree Name="AnalysisTree" />
-      <OutputTree Name="AnalysisTree" />
     </InputData>
     <InputData Lumi="1" NEventsMax="-1" Type="MC" Version="TBarToLeptonss" Cacheable="False">
-      <In FileName="/eos/uscms/store/user/drberry/ttDMSelectionCycle/uhh2.AnalysisModuleRunner.MC.TBarToLeptonss.5.root" Lumi="0.0"/>
+      <In FileName="/eos/uscms/store/user/drberry/ttDMSelectionCycleMuon/PHYS14/uhh2.AnalysisModuleRunner.MC.TBarToLeptonss.5.root" Lumi="0.0"/>
       <InputTree Name="AnalysisTree" />
-      <OutputTree Name="AnalysisTree" />
     </InputData>
     <InputData Lumi="1" NEventsMax="-1" Type="MC" Version="TBarToLeptonst" Cacheable="False">
-      <In FileName="/eos/uscms/store/user/drberry/ttDMSelectionCycle/uhh2.AnalysisModuleRunner.MC.TBarToLeptonst.6.root" Lumi="0.0"/>
+      <In FileName="/eos/uscms/store/user/drberry/ttDMSelectionCycleMuon/PHYS14/uhh2.AnalysisModuleRunner.MC.TBarToLeptonst.6.root" Lumi="0.0"/>
       <InputTree Name="AnalysisTree" />
-      <OutputTree Name="AnalysisTree" />
     </InputData>
     <InputData Lumi="1" NEventsMax="-1" Type="MC" Version="TTDMDMJetsM1" Cacheable="False">
-      <In FileName="/eos/uscms/store/user/drberry/ttDMSelectionCycle/uhh2.AnalysisModuleRunner.MC.TTDMDMJetsM1.7.root" Lumi="0.0"/>
+      <In FileName="/eos/uscms/store/user/drberry/ttDMSelectionCycleMuon/PHYS14/uhh2.AnalysisModuleRunner.MC.TTDMDMJetsM1.7.root" Lumi="0.0"/>
       <InputTree Name="AnalysisTree" />
-      <OutputTree Name="AnalysisTree" />
     </InputData>
     <InputData Lumi="1" NEventsMax="-1" Type="MC" Version="TTDMDMJetsM10" Cacheable="False">
-      <In FileName="/eos/uscms/store/user/drberry/ttDMSelectionCycle/uhh2.AnalysisModuleRunner.MC.TTDMDMJetsM10.8.root" Lumi="0.0"/>
+      <In FileName="/eos/uscms/store/user/drberry/ttDMSelectionCycleMuon/PHYS14/uhh2.AnalysisModuleRunner.MC.TTDMDMJetsM10.8.root" Lumi="0.0"/>
       <InputTree Name="AnalysisTree" />
-      <OutputTree Name="AnalysisTree" />
     </InputData>
     <InputData Lumi="1" NEventsMax="-1" Type="MC" Version="TTDMDMJetsM100" Cacheable="False">
-      <In FileName="/eos/uscms/store/user/drberry/ttDMSelectionCycle/uhh2.AnalysisModuleRunner.MC.TTDMDMJetsM100.9.root" Lumi="0.0"/>
+      <In FileName="/eos/uscms/store/user/drberry/ttDMSelectionCycleMuon/PHYS14/uhh2.AnalysisModuleRunner.MC.TTDMDMJetsM100.9.root" Lumi="0.0"/>
       <InputTree Name="AnalysisTree" />
-      <OutputTree Name="AnalysisTree" />
     </InputData>
     <InputData Lumi="1" NEventsMax="-1" Type="MC" Version="TTDMDMJetsM1000" Cacheable="False">
-      <In FileName="/eos/uscms/store/user/drberry/ttDMSelectionCycle/uhh2.AnalysisModuleRunner.MC.TTDMDMJetsM1000.10.root" Lumi="0.0"/>
+      <In FileName="/eos/uscms/store/user/drberry/ttDMSelectionCycleMuon/PHYS14/uhh2.AnalysisModuleRunner.MC.TTDMDMJetsM1000.10.root" Lumi="0.0"/>
       <InputTree Name="AnalysisTree" />
-      <OutputTree Name="AnalysisTree" />
     </InputData>
     <InputData Lumi="1" NEventsMax="-1" Type="MC" Version="TTDMDMJetsM200" Cacheable="False">
-      <In FileName="/eos/uscms/store/user/drberry/ttDMSelectionCycle/uhh2.AnalysisModuleRunner.MC.TTDMDMJetsM200.11.root" Lumi="0.0"/>
+      <In FileName="/eos/uscms/store/user/drberry/ttDMSelectionCycleMuon/PHYS14/uhh2.AnalysisModuleRunner.MC.TTDMDMJetsM200.11.root" Lumi="0.0"/>
       <InputTree Name="AnalysisTree" />
-      <OutputTree Name="AnalysisTree" />
     </InputData>
     <InputData Lumi="1" NEventsMax="-1" Type="MC" Version="TTDMDMJetsM50" Cacheable="False">
-      <In FileName="/eos/uscms/store/user/drberry/ttDMSelectionCycle/uhh2.AnalysisModuleRunner.MC.TTDMDMJetsM50.12.root" Lumi="0.0"/>
+      <In FileName="/eos/uscms/store/user/drberry/ttDMSelectionCycleMuon/PHYS14/uhh2.AnalysisModuleRunner.MC.TTDMDMJetsM50.12.root" Lumi="0.0"/>
       <InputTree Name="AnalysisTree" />
-      <OutputTree Name="AnalysisTree" />
     </InputData>
     <InputData Lumi="1" NEventsMax="-1" Type="MC" Version="TTDMDMJetsM600" Cacheable="False">
-      <In FileName="/eos/uscms/store/user/drberry/ttDMSelectionCycle/uhh2.AnalysisModuleRunner.MC.TTDMDMJetsM600.13.root" Lumi="0.0"/>
+      <In FileName="/eos/uscms/store/user/drberry/ttDMSelectionCycleMuon/PHYS14/uhh2.AnalysisModuleRunner.MC.TTDMDMJetsM600.13.root" Lumi="0.0"/>
       <InputTree Name="AnalysisTree" />
-      <OutputTree Name="AnalysisTree" />
     </InputData>
     <InputData Lumi="1" NEventsMax="-1" Type="MC" Version="TTJets" Cacheable="False">
-      <In FileName="/eos/uscms/store/user/drberry/ttDMSelectionCycle/uhh2.AnalysisModuleRunner.MC.TTJets.14.root" Lumi="0.0"/>
+      <In FileName="/eos/uscms/store/user/drberry/ttDMSelectionCycleMuon/PHYS14/uhh2.AnalysisModuleRunner.MC.TTJets.14.root" Lumi="0.0"/>
       <InputTree Name="AnalysisTree" />
-      <OutputTree Name="AnalysisTree" />
     </InputData>
     <InputData Lumi="1" NEventsMax="-1" Type="MC" Version="TTWJets" Cacheable="False">
-      <In FileName="/eos/uscms/store/user/drberry/ttDMSelectionCycle/uhh2.AnalysisModuleRunner.MC.TTWJets.15.root" Lumi="0.0"/>
+      <In FileName="/eos/uscms/store/user/drberry/ttDMSelectionCycleMuon/PHYS14/uhh2.AnalysisModuleRunner.MC.TTWJets.15.root" Lumi="0.0"/>
       <InputTree Name="AnalysisTree" />
-      <OutputTree Name="AnalysisTree" />
     </InputData>
     <InputData Lumi="1" NEventsMax="-1" Type="MC" Version="TTZJets" Cacheable="False">
-      <In FileName="/eos/uscms/store/user/drberry/ttDMSelectionCycle/uhh2.AnalysisModuleRunner.MC.TTZJets.16.root" Lumi="0.0"/>
+      <In FileName="/eos/uscms/store/user/drberry/ttDMSelectionCycleMuon/PHYS14/uhh2.AnalysisModuleRunner.MC.TTZJets.16.root" Lumi="0.0"/>
       <InputTree Name="AnalysisTree" />
-      <OutputTree Name="AnalysisTree" />
     </InputData>
     <InputData Lumi="1" NEventsMax="-1" Type="MC" Version="TToLeptonss" Cacheable="False">
-      <In FileName="/eos/uscms/store/user/drberry/ttDMSelectionCycle/uhh2.AnalysisModuleRunner.MC.TToLeptonss.17.root" Lumi="0.0"/>
+      <In FileName="/eos/uscms/store/user/drberry/ttDMSelectionCycleMuon/PHYS14/uhh2.AnalysisModuleRunner.MC.TToLeptonss.17.root" Lumi="0.0"/>
       <InputTree Name="AnalysisTree" />
-      <OutputTree Name="AnalysisTree" />
     </InputData>
     <InputData Lumi="1" NEventsMax="-1" Type="MC" Version="TToLeptonst" Cacheable="False">
-      <In FileName="/eos/uscms/store/user/drberry/ttDMSelectionCycle/uhh2.AnalysisModuleRunner.MC.TToLeptonst.18.root" Lumi="0.0"/>
+      <In FileName="/eos/uscms/store/user/drberry/ttDMSelectionCycleMuon/PHYS14/uhh2.AnalysisModuleRunner.MC.TToLeptonst.18.root" Lumi="0.0"/>
       <InputTree Name="AnalysisTree" />
-      <OutputTree Name="AnalysisTree" />
     </InputData>
     <InputData Lumi="1" NEventsMax="-1" Type="MC" Version="TbartW" Cacheable="False">
-      <In FileName="/eos/uscms/store/user/drberry/ttDMSelectionCycle/uhh2.AnalysisModuleRunner.MC.TbartW.19.root" Lumi="0.0"/>
+      <In FileName="/eos/uscms/store/user/drberry/ttDMSelectionCycleMuon/PHYS14/uhh2.AnalysisModuleRunner.MC.TbartW.19.root" Lumi="0.0"/>
       <InputTree Name="AnalysisTree" />
-      <OutputTree Name="AnalysisTree" />
     </InputData>
     <InputData Lumi="1" NEventsMax="-1" Type="MC" Version="TtW" Cacheable="False">
-      <In FileName="/eos/uscms/store/user/drberry/ttDMSelectionCycle/uhh2.AnalysisModuleRunner.MC.TtW.20.root" Lumi="0.0"/>
+      <In FileName="/eos/uscms/store/user/drberry/ttDMSelectionCycleMuon/PHYS14/uhh2.AnalysisModuleRunner.MC.TtW.20.root" Lumi="0.0"/>
       <InputTree Name="AnalysisTree" />
-      <OutputTree Name="AnalysisTree" />
     </InputData>
-    <InputData Lumi="1" NEventsMax="-1" Type="MC" Version="WJetsToLNu100to200" Cacheable="False">
-      <In FileName="/eos/uscms/store/user/drberry/ttDMSelectionCycle/uhh2.AnalysisModuleRunner.MC.WJetsToLNu100to200.21.root" Lumi="0.0"/>
-      <InputTree Name="AnalysisTree" />
-      <OutputTree Name="AnalysisTree" />
-    </InputData>
+    <!-- <InputData Lumi="1" NEventsMax="-1" Type="MC" Version="WJetsToLNu100to200" Cacheable="False"> -->
+    <!--   <In FileName="/eos/uscms/store/user/drberry/ttDMSelectionCycleMuon/PHYS14/uhh2.AnalysisModuleRunner.MC.WJetsToLNu100to200.21.root" Lumi="0.0"/> -->
+      <!-- <InputTree Name="AnalysisTree" /> -->
+    <!-- </InputData> -->
     <InputData Lumi="1" NEventsMax="-1" Type="MC" Version="WJetsToLNu200to400" Cacheable="False">
-      <In FileName="/eos/uscms/store/user/drberry/ttDMSelectionCycle/uhh2.AnalysisModuleRunner.MC.WJetsToLNu200to400.22.root" Lumi="0.0"/>
+      <In FileName="/eos/uscms/store/user/drberry/ttDMSelectionCycleMuon/PHYS14/uhh2.AnalysisModuleRunner.MC.WJetsToLNu200to400.22.root" Lumi="0.0"/>
       <InputTree Name="AnalysisTree" />
-      <OutputTree Name="AnalysisTree" />
     </InputData>
     <InputData Lumi="1" NEventsMax="-1" Type="MC" Version="WJetsToLNu400to600" Cacheable="False">
-      <In FileName="/eos/uscms/store/user/drberry/ttDMSelectionCycle/uhh2.AnalysisModuleRunner.MC.WJetsToLNu400to600.23.root" Lumi="0.0"/>
+      <In FileName="/eos/uscms/store/user/drberry/ttDMSelectionCycleMuon/PHYS14/uhh2.AnalysisModuleRunner.MC.WJetsToLNu400to600.23.root" Lumi="0.0"/>
       <InputTree Name="AnalysisTree" />
-      <OutputTree Name="AnalysisTree" />
     </InputData>
     <InputData Lumi="1" NEventsMax="-1" Type="MC" Version="WJetsToLNu600toInf" Cacheable="False">
-      <In FileName="/eos/uscms/store/user/drberry/ttDMSelectionCycle/uhh2.AnalysisModuleRunner.MC.WJetsToLNu600toInf.24.root" Lumi="0.0"/>
+      <In FileName="/eos/uscms/store/user/drberry/ttDMSelectionCycleMuon/PHYS14/uhh2.AnalysisModuleRunner.MC.WJetsToLNu600toInf.24.root" Lumi="0.0"/>
       <InputTree Name="AnalysisTree" />
-      <OutputTree Name="AnalysisTree" />
     </InputData>
     <UserConfig>
       <Item Name="PrimaryVertexCollection" Value="offlineSlimmedPrimaryVertices" />

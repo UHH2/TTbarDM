@@ -51,16 +51,19 @@ class ttDMPostSelectionHists : public uhh2::Hists {
   TH1F* topjet2__eta;
 
   // MET
+  TH1F* met;
   TH1F* met__pt;
   TH1F* met__phi;
-  TH1F* htlep__pt;
+  //TH1F* htlep__pt;
   TH1F* met_dphi_jet1;
   TH1F* met_dphi_jet2;
   TH2F* met_VS_dphi_lep1;
   TH2F* met_VS_dphi_jet1;
   TH2F* met_VS_dphi_jet2;
 
-  //MT2W
+  // TTDM
+  TH1F* mtlep;
   TH1F* mt2w;
+  TH1F* jetmetdphi;
 
 };
