@@ -44,7 +44,7 @@ ttDMPostSelectionHists::ttDMPostSelectionHists(uhh2::Context& ctx, const std::st
 
   // MET
   met = book<TH1F>("met", ";MET [GeV]", 8, 160, 480);
-  met__pt = book<TH1F>("met__pt", ";MET [GeV]", 10, 100, 500);
+  met__pt = book<TH1F>("met__pt", ";MET [GeV]", 180, 0, 1800);
   met__phi = book<TH1F>("met__phi", ";MET #phi", 72, -3.6, 3.6);
   //htlep__pt = book<TH1F>("htlep__pt", ";H_{T}^{lep} [GeV]", 180, 0, 1800);
   met_VS_dphi_lep1 = book<TH2F>("met_VS_dphi_lep1", ";MET [GeV];#Delta#phi(MET, l1)", 180, 0, 1800, 60, 0, 3.6);
@@ -171,7 +171,7 @@ void ttDMPostSelectionHists::fill(const uhh2::Event& event){
 
   // TTDM
   if (lep1 && event.jets->size()>1) mt2w->Fill(CalculateMT2W(event), weight);
-  mtlep->Fill(sqrt(2*event.met->pt()*lep1->pt()*(1-cos(uhh2::deltaPhi(*event.met, *lep1)))));
+  mtlep->Fill(sqrt(2*event.met->pt()*lep1->pt()*(1-cos(uhh2::deltaPhi(*event.met, *lep1)))),weight);
 
   return;
 }
