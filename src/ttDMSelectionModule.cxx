@@ -131,14 +131,8 @@ ttDMSelectionModule::ttDMSelectionModule(Context & ctx){
   PrimaryVertexId pvid = StandardPrimaryVertexId();
   if(is_mc){
     if(mcpileupreweight) pu_reweight.reset(new MCPileupReweight(ctx));
-    jet_corrector.reset(new JetCorrector(JERFiles::Summer15_50ns_L123_MC));
-    jetlepton_cleaner.reset(new JetLeptonCleaner(JERFiles::Summer15_50ns_L123_MC));
-    topjet_corrector.reset(new TopJetCorrector(JERFiles::Summer15_50ns_L123_MC));
   } else{
     if(lumisel) lumi_selection.reset(new LumiSelection(ctx));
-    jet_corrector.reset(new JetCorrector(JERFiles::PHYS14_L123_DATA));
-    jetlepton_cleaner.reset(new JetLeptonCleaner(JERFiles::PHYS14_L123_DATA));
-    topjet_corrector.reset(new TopJetCorrector(JERFiles::PHYS14_L123_DATA));
     if(metfilters){
       metfilters_selection.reset(new AndSelection(ctx, "metfilters"));
       metfilters_selection->add<TriggerSelection>("CSCTightHalo", "Flag_CSCTightHaloFilter");
@@ -152,8 +146,11 @@ ttDMSelectionModule::ttDMSelectionModule(Context & ctx){
   //// OBJ CLEANING
   muo_cleaner.reset(new MuonCleaner(AndId<Muon>(MuonIDTight(), PtEtaCut(45., 2.1))));
   ele_cleaner.reset(new ElectronCleaner(AndId<Electron>(ElectronID_PHYS14_25ns_tight_noIso, PtEtaCut(50., 2.5))));
+  jet_corrector.reset(new JetCorrector(JERFiles::Summer15_25nsV2_MC));
+  jetlepton_cleaner.reset(new JetLeptonCleaner(JERFiles::Summer15_25nsV2_MC));
   jetER_smearer.reset(new JetResolutionSmearer(ctx));
   jetlepton_cleaner->set_drmax(.4);
+  topjet_corrector.reset(new TopJetCorrector(JERFiles::Summer15_25nsV2_MC));
   jet_cleaner1.reset(new JetCleaner(25., std::numeric_limits<double>::infinity()));
   jet_cleaner2.reset(new JetCleaner(30., 2.4));
   topjetlepton_cleaner.reset(new TopJetLeptonDeltaRCleaner(.8));
