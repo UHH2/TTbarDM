@@ -12,12 +12,15 @@
 #include "UHH2/common/include/JetIds.h"
 #include "UHH2/common/include/TopJetIds.h"
 #include "UHH2/common/include/JetCorrections.h"
+#include "UHH2/common/include/MCWeight.h"
 #include "UHH2/common/include/ObjectIdUtils.h"
 #include "UHH2/common/include/Utils.h"
 #include "UHH2/common/include/TTbarGen.h"
 #include "UHH2/common/include/TTbarReconstruction.h"
 #include "UHH2/common/include/ReconstructionHypothesisDiscriminators.h"
 #include "UHH2/common/include/HypothesisHists.h"
+#include "UHH2/common/include/EventVariables.h"
+#include "UHH2/common/include/LumiSelection.h"
 #include "UHH2/common/include/TriggerSelection.h"
 
 #include "UHH2/TTbarDM/include/ttDMSemiLeptonicSelections.h"
@@ -56,6 +59,18 @@ class ttDMSelectionModule: public AnalysisModule {
  private:
   Event::Handle<int> h_flag_toptagevent;
 
+  bool is_mc;
+  bool lumisel;
+  bool mcpileupreweight;
+  bool metfilters;
+  bool pvfilter;
+
+  std::unique_ptr<AnalysisModule> ht_calculator;
+  std::unique_ptr<Selection> lumi_selection;
+  std::unique_ptr<AndSelection> metfilters_selection;
+  std::unique_ptr<AnalysisModule> primaryvertex_filter;
+  std::unique_ptr<AnalysisModule> pu_reweight;
+  
   // cleaners
   std::unique_ptr<MuonCleaner> muo_cleaner;
   std::unique_ptr<ElectronCleaner> ele_cleaner;
@@ -90,6 +105,7 @@ class ttDMSelectionModule: public AnalysisModule {
 
   // hists
   std::unique_ptr<Hists> input_h;
+  std::unique_ptr<Hists> filter_h;
   std::unique_ptr<Hists> trigger_h;
   std::unique_ptr<Hists> lep1_h;
   std::unique_ptr<Hists> jet2_h;
@@ -106,17 +122,40 @@ class ttDMSelectionModule: public AnalysisModule {
 
 ttDMSelectionModule::ttDMSelectionModule(Context & ctx){
 
+  is_mc = ctx.get("dataset_type") == "MC";
+  lumisel = ctx.get("lumi_file") != "";
+  mcpileupreweight = ctx.get("pileup_directory_50ns") != "";
+  metfilters = string2bool(ctx.get("dometfilters","true"));
+  pvfilter = string2bool(ctx.get("dopvfilter","true"));
+
+  PrimaryVertexId pvid = StandardPrimaryVertexId();
+  if(is_mc){
+    if(mcpileupreweight) pu_reweight.reset(new MCPileupReweight(ctx));
+    jet_corrector.reset(new JetCorrector(JERFiles::Summer15_50ns_L123_MC));
+    jetlepton_cleaner.reset(new JetLeptonCleaner(JERFiles::Summer15_50ns_L123_MC));
+    topjet_corrector.reset(new TopJetCorrector(JERFiles::Summer15_50ns_L123_MC));
+  } else{
+    if(lumisel) lumi_selection.reset(new LumiSelection(ctx));
+    jet_corrector.reset(new JetCorrector(JERFiles::PHYS14_L123_DATA));
+    jetlepton_cleaner.reset(new JetLeptonCleaner(JERFiles::PHYS14_L123_DATA));
+    topjet_corrector.reset(new TopJetCorrector(JERFiles::PHYS14_L123_DATA));
+    if(metfilters){
+      metfilters_selection.reset(new AndSelection(ctx, "metfilters"));
+      metfilters_selection->add<TriggerSelection>("CSCTightHalo", "Flag_CSCTightHaloFilter");
+      metfilters_selection->add<TriggerSelection>("eeBadSc", "Flag_eeBadScFilter");
+      if(pvfilter) metfilters_selection->add<NPVSelection>("1 good PV",1,-1,pvid);
+    }
+    if(pvfilter) primaryvertex_filter.reset(new PrimaryVertexCleaner(pvid));
+  }
+  ht_calculator.reset(new HTCalculator(ctx));
+
   //// OBJ CLEANING
   muo_cleaner.reset(new MuonCleaner(AndId<Muon>(MuonIDTight(), PtEtaCut(45., 2.1))));
   ele_cleaner.reset(new ElectronCleaner(AndId<Electron>(ElectronID_PHYS14_25ns_tight_noIso, PtEtaCut(50., 2.5))));
-  jet_corrector.reset(new JetCorrector(JERFiles::PHYS14_L123_MC));
   jetER_smearer.reset(new JetResolutionSmearer(ctx));
-  jetlepton_cleaner.reset(new JetLeptonCleaner(JERFiles::PHYS14_L123_MC));
   jetlepton_cleaner->set_drmax(.4);
   jet_cleaner1.reset(new JetCleaner(25., std::numeric_limits<double>::infinity()));
   jet_cleaner2.reset(new JetCleaner(30., 2.4));
-  topjet_corrector.reset(new TopJetCorrector(JERFiles::PHYS14_L123_MC));
-//  topjetER_smearer.reset(new TopJetResolutionSmearer(ctx));
   topjetlepton_cleaner.reset(new TopJetLeptonDeltaRCleaner(.8));
   topjet_cleaner.reset(new TopJetCleaner(TopJetId(PtEtaCut(400., 2.4))));
   ////
@@ -142,7 +181,10 @@ ttDMSelectionModule::ttDMSelectionModule(Context & ctx){
     lep1_sel->add<NElectronSelection>("eleN == 1", 1, 1);
 
     if(triggername != "NotSet") trigger_sel = make_unique<TriggerSelection>(triggername);
-    else trigger_sel = make_unique<TriggerSelection>("HLT_Ele45_CaloIdVT_GsfTrkIdT_PFJet200_PFJet50_v*");
+    else {
+      if (!is_mc) trigger_sel = make_unique<TriggerSelection>("HLT_Ele15_IsoVVVL_PFHT350_PFMET70_v*");
+      else trigger_sel = make_unique<TriggerSelection>("HLT_Ele15_IsoVVVL_PFHT400_PFMET70_v*");
+    }
   }
 
   jet2_sel.reset(new NJetSelection(3, -1, JetId(PtEtaCut( 50., 2.4))));
@@ -176,6 +218,7 @@ ttDMSelectionModule::ttDMSelectionModule(Context & ctx){
 
   //// HISTS
   input_h.reset(new ttDMSelectionHists(ctx, "input"));
+  filter_h.reset(new ttDMSelectionHists(ctx, "filter"));
   trigger_h.reset(new ttDMSelectionHists(ctx, "trigger"));
   lep1_h.reset(new ttDMSelectionHists(ctx, "lep1"));
   jet2_h.reset(new ttDMSelectionHists(ctx, "jet2"));
@@ -195,6 +238,14 @@ bool ttDMSelectionModule::process(Event & event){
 
   input_h->fill(event);
 
+  if(lumisel && !is_mc) if(!lumi_selection->passes(event)) return false;
+  if(metfilters && !is_mc) if(!metfilters_selection->passes(event)) return false;
+  if(mcpileupreweight && is_mc) pu_reweight->process(event);
+  if(pvfilter && !is_mc) primaryvertex_filter->process(event);
+  ht_calculator->process(event);
+
+  filter_h->fill(event);
+  
   //// HLT selection
   bool pass_trigger = trigger_sel->passes(event);
   if(!pass_trigger) return false;
@@ -215,7 +266,7 @@ bool ttDMSelectionModule::process(Event & event){
 
   //// JET selection
   jet_corrector->process(event);
-  jetER_smearer->process(event);
+  if (is_mc) jetER_smearer->process(event);
   jetlepton_cleaner->process(event);
 
   /* lepton-2Dcut boolean */
