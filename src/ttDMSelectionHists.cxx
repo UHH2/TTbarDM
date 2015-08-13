@@ -199,7 +199,7 @@ void ttDMSelectionHists::fill(const uhh2::Event & event){
 
   // TTDM
   if (lep1 && event.jets->size()>1) mt2w->Fill(CalculateMT2W(event), weight);
-  mtlep->Fill(sqrt(2*event.met->pt()*lep1->pt()*(1-cos(uhh2::deltaPhi(*event.met, *lep1)))));
+  mtlep->Fill(sqrt(2*event.met->pt()*lep1->pt()*(1-cos(uhh2::deltaPhi(*event.met, *lep1)))), weight);
 
   return;
 }
