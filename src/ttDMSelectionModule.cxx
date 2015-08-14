@@ -146,11 +146,17 @@ ttDMSelectionModule::ttDMSelectionModule(Context & ctx){
   //// OBJ CLEANING
   muo_cleaner.reset(new MuonCleaner(AndId<Muon>(MuonIDTight(), PtEtaCut(45., 2.1))));
   ele_cleaner.reset(new ElectronCleaner(AndId<Electron>(ElectronID_PHYS14_25ns_tight_noIso, PtEtaCut(50., 2.5))));
-  jet_corrector.reset(new JetCorrector(JERFiles::Summer15_25nsV2_MC));
-  jetlepton_cleaner.reset(new JetLeptonCleaner(JERFiles::Summer15_25nsV2_MC));
+  if (is_mc) {
+    jet_corrector.reset(new JetCorrector(JERFiles::Summer15_50ns_L123_AK4PFchs_MC));
+    jetlepton_cleaner.reset(new JetLeptonCleaner(JERFiles::Summer15_50ns_L123_AK4PFchs_MC));
+    topjet_corrector.reset(new TopJetCorrector(JERFiles::Summer15_50ns_L123_AK8PFchs_MC));
+  } else {
+    jet_corrector.reset(new JetCorrector(JERFiles::Summer15_50ns_L123_AK4PFchs_DATA));
+    jetlepton_cleaner.reset(new JetLeptonCleaner(JERFiles::Summer15_50ns_L123_AK4PFchs_DATA));
+    topjet_corrector.reset(new TopJetCorrector(JERFiles::Summer15_50ns_L123_AK8PFchs_DATA));
+  }
   jetER_smearer.reset(new JetResolutionSmearer(ctx));
   jetlepton_cleaner->set_drmax(.4);
-  topjet_corrector.reset(new TopJetCorrector(JERFiles::Summer15_25nsV2_MC));
   jet_cleaner1.reset(new JetCleaner(25., std::numeric_limits<double>::infinity()));
   jet_cleaner2.reset(new JetCleaner(30., 2.4));
   topjetlepton_cleaner.reset(new TopJetLeptonDeltaRCleaner(.8));
