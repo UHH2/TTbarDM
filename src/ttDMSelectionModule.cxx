@@ -333,7 +333,7 @@ bool ttDMSelectionModule::process(Event & event){
   ////
 
   //// TTBAR KIN RECO
-  ttgenprod->process(event);
+  if (is_mc) ttgenprod->process(event);
 
   reco_primlep->process(event);
 
