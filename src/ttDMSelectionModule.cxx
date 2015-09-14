@@ -36,7 +36,7 @@
  *   * apply (most of) the kinematic cuts for the lepton+jets SR. current cutflow:
  *     * HLT
  *     * ==1 lepton (w/ pt+eta+ID cuts)
- *     * >=3 AK4 jets w/ pt> 50 |eta|<2.4
+ *     * >=2 AK4 jets w/ pt> 50 |eta|<2.4
  *     * >=1 AK4 jets w/ pt>200 |eta|<2.4
  *     * MET > 160 GeV (Final cut will be 320)
  *     * LEP Transverse Mass > 160
@@ -58,6 +58,7 @@ class ttDMSelectionModule: public AnalysisModule {
 
  private:
   Event::Handle<int> h_flag_toptagevent;
+  Event::Handle<int> h_flag_heptoptagevent;
 
   bool is_mc;
   bool lumisel;
@@ -95,6 +96,7 @@ class ttDMSelectionModule: public AnalysisModule {
   //std::unique_ptr<Selection> twodcut_sel;
   //std::unique_ptr<Selection> triangc_sel;
   std::unique_ptr<Selection> toptagevent_sel;
+  std::unique_ptr<Selection> heptoptagevent_sel;
 
   // ttbar reconstruction
   std::unique_ptr<AnalysisModule> ttgenprod;
@@ -116,6 +118,7 @@ class ttDMSelectionModule: public AnalysisModule {
   //std::unique_ptr<Hists> twodcut_h;
   //std::unique_ptr<Hists> triangc_h;
   std::unique_ptr<Hists> toptagevent_h;
+  std::unique_ptr<Hists> heptoptagevent_h;
   //std::unique_ptr<Hists> chi2min_toptag0_h;
   //std::unique_ptr<Hists> chi2min_toptag1_h;
 };
@@ -185,12 +188,13 @@ ttDMSelectionModule::ttDMSelectionModule(Context & ctx){
 
     if(triggername != "NotSet") trigger_sel = make_unique<TriggerSelection>(triggername);
     else {
-      if (!is_mc) trigger_sel = make_unique<TriggerSelection>("HLT_Ele15_IsoVVVL_PFHT350_PFMET70_v*");
-      else trigger_sel = make_unique<TriggerSelection>("HLT_Ele15_IsoVVVL_PFHT400_PFMET70_v*");
+      // if (!is_mc) trigger_sel = make_unique<TriggerSelection>("HLT_Ele15_IsoVVVL_PFHT350_PFMET70_v*");
+      // else trigger_sel = make_unique<TriggerSelection>("HLT_Ele15_IsoVVVL_PFHT400_PFMET70_v*");
+      trigger_sel = make_unique<TriggerSelection>("HLT_Ele45_CaloIdVT_GsfTrkIdT_PFJet200_PFJet50_v1");
     }
   }
 
-  jet2_sel.reset(new NJetSelection(3, -1, JetId(PtEtaCut( 50., 2.4))));
+  jet2_sel.reset(new NJetSelection(2, -1, JetId(PtEtaCut( 50., 2.4))));
   jet1_sel.reset(new NJetSelection(1, -1, JetId(PtEtaCut(200., 2.4))));
   met_sel.reset(new METCut(160., std::numeric_limits<double>::infinity()));
   //htlep_sel.reset(new HTlepCut(150., std::numeric_limits<double>::infinity()));
@@ -202,9 +206,14 @@ ttDMSelectionModule::ttDMSelectionModule(Context & ctx){
 
   const TopJetId topjetID = AndId<TopJet>(CMSTopTag(), Tau32());
   const float minDR_topjet_jet(1.2);
+  const TopJetId heptopjetID = AndId<TopJet>(HEPTopTag(), Tau21());
 
   toptagevent_sel.reset(new TopTagEventSelection(topjetID, minDR_topjet_jet));
   h_flag_toptagevent = ctx.declare_event_output<int>("flag_toptagevent");
+  ////
+
+  heptoptagevent_sel.reset(new TopTagEventSelection(heptopjetID, minDR_topjet_jet));
+  h_flag_heptoptagevent = ctx.declare_event_output<int>("flag_heptoptagevent");
   ////
 
   //// TTBAR KINEMATICAL RECO
@@ -232,6 +241,7 @@ ttDMSelectionModule::ttDMSelectionModule(Context & ctx){
   //twodcut_h.reset(new ttDMSelectionHists(ctx, "twodcut"));
   //triangc_h.reset(new ttDMSelectionHists(ctx, "triangc"));
   toptagevent_h.reset(new ttDMSelectionHists(ctx, "toptagevent"));
+  heptoptagevent_h.reset(new ttDMSelectionHists(ctx, "heptoptagevent"));
   //chi2min_toptag0_h.reset(new HypothesisHists(ctx, "chi2min_toptag0__HypHists", ttbar_hyps_label, "Chi2"));
   //chi2min_toptag1_h.reset(new HypothesisHists(ctx, "chi2min_toptag1__HypHists", ttbar_hyps_label, "Chi2"));
   ////
@@ -328,8 +338,13 @@ bool ttDMSelectionModule::process(Event & event){
   bool pass_toptagevent = toptagevent_sel->passes(event);
   if(pass_toptagevent) toptagevent_h->fill(event);
 
+  //// HEPTOPTAG-EVENT selection
+  bool pass_heptoptagevent = heptoptagevent_sel->passes(event);
+  if(pass_heptoptagevent) heptoptagevent_h->fill(event);
+
   /* add flag_toptagevent to output ntuple */
   event.set(h_flag_toptagevent, int(pass_toptagevent));
+  event.set(h_flag_heptoptagevent, int(pass_heptoptagevent));
   ////
 
   //// TTBAR KIN RECO

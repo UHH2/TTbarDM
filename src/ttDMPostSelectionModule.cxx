@@ -30,6 +30,7 @@ class ttDMPostSelectionModule: public AnalysisModule {
 
   JetId btagAK4_wp;
   Event::Handle<int> h_flag_toptagevent;
+  Event::Handle<int> h_flag_heptoptagevent;
 
   // selections
   std::unique_ptr<Selection> btagAK4_sel;
@@ -57,6 +58,9 @@ class ttDMPostSelectionModule: public AnalysisModule {
   //std::unique_ptr<Hists> hi_t0b1__hyp;
   std::unique_ptr<Hists> hi_t1;
   //std::unique_ptr<Hists> hi_t1__hyp;
+  std::unique_ptr<Hists> hi_cmstag;
+  std::unique_ptr<Hists> hi_heptag;
+  std::unique_ptr<Hists> hi_bothtag;
 };
 
 ttDMPostSelectionModule::ttDMPostSelectionModule(Context& ctx){
@@ -80,6 +84,7 @@ ttDMPostSelectionModule::ttDMPostSelectionModule(Context& ctx){
 
   // top-tagging flag (from ttDMSelection ntuple)
   h_flag_toptagevent = ctx.declare_event_input<int>("flag_toptagevent");
+  h_flag_heptoptagevent = ctx.declare_event_input<int>("flag_heptoptagevent");
 
   // SELECTION
   // if(elec) leptoppt_sel.reset(new LeptonicTopPtCut(ctx, 140., infinity, "TTbarReconstruction", "Chi2"));
@@ -117,6 +122,9 @@ ttDMPostSelectionModule::ttDMPostSelectionModule(Context& ctx){
 
   hi_t1.reset(new ttDMPostSelectionHists(ctx, "t1"));
   //hi_t1__hyp.reset(new HypothesisHists(ctx, "t1__hyp_chi2min", "TTbarReconstruction", "Chi2"));
+  hi_cmstag.reset(new ttDMPostSelectionHists(ctx, "cmstag"));
+  hi_heptag.reset(new ttDMPostSelectionHists(ctx, "heptag"));
+  hi_bothtag.reset(new ttDMPostSelectionHists(ctx, "bothtag"));
 }
 
 bool ttDMPostSelectionModule::process(Event& event) {
@@ -160,7 +168,9 @@ bool ttDMPostSelectionModule::process(Event& event) {
   mt2w_h->fill(event);
 
   bool btag(btagAK4_sel->passes(event));
-  bool toptag(event.get(h_flag_toptagevent));
+  bool cmstoptag(event.get(h_flag_toptagevent));
+  bool heptoptag(event.get(h_flag_heptoptagevent));
+  bool toptag = cmstoptag || heptoptag;
 
   if(!toptag){
 
@@ -178,6 +188,9 @@ bool ttDMPostSelectionModule::process(Event& event) {
   else {
 
     hi_t1->fill(event);
+    if (cmstoptag) hi_cmstag->fill(event);
+    if (heptoptag) hi_heptag->fill(event);
+    if (cmstoptag && heptoptag) hi_bothtag->fill(event);
     //hi_t1__hyp->fill(event);
   }
 
