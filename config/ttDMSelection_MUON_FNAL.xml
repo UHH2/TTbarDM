@@ -1,163 +1,327 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE JobConfiguration PUBLIC "" "JobConfig.dtd" [
 ]>
+
 <JobConfiguration JobName="ttDMSelectionJob" OutputLevel="INFO">
   <Library Name="libSUHH2ttDMSemiLeptonic"/>
   <Package Name="SUHH2ttDMSemiLeptonic.par" />
-
   <Cycle Name="uhh2::AnalysisModuleRunner" OutputDirectory="./" PostFix="" TargetLumi="1" >
-    <InputData Lumi="20865.5" NEventsMax="-1" Type="MC" Version="DYJetsToLL100to200" Cacheable="False">
-      <In FileName="/eos/uscms/store/user/drberry/ZprimePreSelectionCycle/PHYS14_old/uhh2.AnalysisModuleRunner.MC.DYJetsToLL100to200.8.root" Lumi="0.0"/>
+    <InputData Lumi="49360680.4" NEventsMax="1000" Type="MC" Version="MC_DYJetsToLL_M-10to50" Cacheable="False">
+      <In FileName="/eos/uscms/store/user/drberry/ZprimePreSelectionCycle/13TeV/RunII_25ns_v1/uhh2.AnalysisModuleRunner.MC.MC_DYJetsToLL_M-10to50.1.root" Lumi="0.0"/>
       <InputTree Name="AnalysisTree" />
       <OutputTree Name="AnalysisTree" />
     </InputData>
-    <InputData Lumi="89328.0" NEventsMax="-1" Type="MC" Version="DYJetsToLL200to400" Cacheable="False">
-      <In FileName="/eos/uscms/store/user/drberry/ZprimePreSelectionCycle/PHYS14_old/uhh2.AnalysisModuleRunner.MC.DYJetsToLL200to400.9.root" Lumi="0.0"/>
+    <InputData Lumi="74961297.1" NEventsMax="1000" Type="MC" Version="MC_DYJetsToLL_M-50" Cacheable="False">
+      <In FileName="/eos/uscms/store/user/drberry/ZprimePreSelectionCycle/13TeV/RunII_25ns_v1/uhh2.AnalysisModuleRunner.MC.MC_DYJetsToLL_M-50.2.root" Lumi="0.0"/>
       <InputTree Name="AnalysisTree" />
       <OutputTree Name="AnalysisTree" />
     </InputData>
-    <InputData Lumi="753341.3" NEventsMax="-1" Type="MC" Version="DYJetsToLL400to600" Cacheable="False">
-      <In FileName="/eos/uscms/store/user/drberry/ZprimePreSelectionCycle/PHYS14_old/uhh2.AnalysisModuleRunner.MC.DYJetsToLL400to600.10.root" Lumi="0.0"/>
+    <InputData Lumi="291457.1" NEventsMax="1000" Type="MC" Version="MC_ST_s-channel_4f_leptonDecays" Cacheable="False">
+      <In FileName="/eos/uscms/store/user/drberry/ZprimePreSelectionCycle/13TeV/RunII_25ns_v1/uhh2.AnalysisModuleRunner.MC.MC_ST_s-channel_4f_leptonDecays.29.root" Lumi="0.0"/>
       <InputTree Name="AnalysisTree" />
       <OutputTree Name="AnalysisTree" />
     </InputData>
-    <InputData Lumi="2062218.4" NEventsMax="-1" Type="MC" Version="DYJetsToLL600toInf" Cacheable="False">
-      <In FileName="/eos/uscms/store/user/drberry/ZprimePreSelectionCycle/PHYS14_old/uhh2.AnalysisModuleRunner.MC.DYJetsToLL600toInf.11.root" Lumi="0.0"/>
+    <InputData Lumi="6146790.4" NEventsMax="1000" Type="MC" Version="MC_ST_t-channel_4f_leptonDecays" Cacheable="False">
+      <In FileName="/eos/uscms/store/user/drberry/ZprimePreSelectionCycle/13TeV/RunII_25ns_v1/uhh2.AnalysisModuleRunner.MC.MC_ST_t-channel_4f_leptonDecays.30.root" Lumi="0.0"/>
       <InputTree Name="AnalysisTree" />
       <OutputTree Name="AnalysisTree" />
     </InputData>
-    <InputData Lumi="25000.0" NEventsMax="-1" Type="MC" Version="TBarToLeptonss" Cacheable="False">
-      <In FileName="/eos/uscms/store/user/drberry/ZprimePreSelectionCycle/PHYS14_old/uhh2.AnalysisModuleRunner.MC.TBarToLeptonss.17.root" Lumi="0.0"/>
+    <InputData Lumi="27831.2" NEventsMax="1000" Type="MC" Version="MC_ST_tW_antitop_5f_inclusiveDecays" Cacheable="False">
+      <In FileName="/eos/uscms/store/user/drberry/ZprimePreSelectionCycle/13TeV/RunII_25ns_v1/uhh2.AnalysisModuleRunner.MC.MC_ST_tW_antitop_5f_inclusiveDecays.31.root" Lumi="0.0"/>
       <InputTree Name="AnalysisTree" />
       <OutputTree Name="AnalysisTree" />
     </InputData>
-    <InputData Lumi="24704.1" NEventsMax="-1" Type="MC" Version="TBarToLeptonst" Cacheable="False">
-      <In FileName="/eos/uscms/store/user/drberry/ZprimePreSelectionCycle/PHYS14_old/uhh2.AnalysisModuleRunner.MC.TBarToLeptonst.18.root" Lumi="0.0"/>
+    <InputData Lumi="27709.4" NEventsMax="1000" Type="MC" Version="MC_ST_tW_top_5f_inclusiveDecays" Cacheable="False">
+      <In FileName="/eos/uscms/store/user/drberry/ZprimePreSelectionCycle/13TeV/RunII_25ns_v1/uhh2.AnalysisModuleRunner.MC.MC_ST_tW_top_5f_inclusiveDecays.32.root" Lumi="0.0"/>
       <InputTree Name="AnalysisTree" />
       <OutputTree Name="AnalysisTree" />
     </InputData>
-    <InputData Lumi="121558.3" NEventsMax="-1" Type="MC" Version="TTDMDMJetsM1" Cacheable="False">
-      <In FileName="/eos/uscms/store/user/drberry/ZprimePreSelectionCycle/PHYS14_old/uhh2.AnalysisModuleRunner.MC.TTDMDMJetsM1.1.root" Lumi="0.0"/>
+    <InputData Lumi="113811.0" NEventsMax="1000" Type="MC" Version="MC_TTbar" Cacheable="False">
+      <In FileName="/eos/uscms/store/user/drberry/ZprimePreSelectionCycle/13TeV/RunII_25ns_v1/uhh2.AnalysisModuleRunner.MC.MC_TTbar.35.root" Lumi="0.0"/>
       <InputTree Name="AnalysisTree" />
       <OutputTree Name="AnalysisTree" />
     </InputData>
-    <InputData Lumi="150352.5" NEventsMax="-1" Type="MC" Version="TTDMDMJetsM10" Cacheable="False">
-      <In FileName="/eos/uscms/store/user/drberry/ZprimePreSelectionCycle/PHYS14_old/uhh2.AnalysisModuleRunner.MC.TTDMDMJetsM10.2.root" Lumi="0.0"/>
+    <InputData Lumi="0.616" NEventsMax="1000" Type="MC" Version="MC_QCD_Pt-15to20_MuEnrichedPt5" Cacheable="False">
+      <In FileName="/eos/uscms/store/user/drberry/ZprimePreSelectionCycle/13TeV/RunII_25ns_v1/uhh2.AnalysisModuleRunner.MC.MC_QCD_Pt-15to20_MuEnrichedPt5.7.root" Lumi="0.0"/>
       <InputTree Name="AnalysisTree" />
       <OutputTree Name="AnalysisTree" />
     </InputData>
-    <InputData Lumi="151768.0" NEventsMax="-1" Type="MC" Version="TTDMDMJetsM100" Cacheable="False">
-      <In FileName="/eos/uscms/store/user/drberry/ZprimePreSelectionCycle/PHYS14_old/uhh2.AnalysisModuleRunner.MC.TTDMDMJetsM100.4.root" Lumi="0.0"/>
+    <InputData Lumi="1.768" NEventsMax="1000" Type="MC" Version="MC_QCD_Pt-20to30_MuEnrichedPt5" Cacheable="False">
+      <In FileName="/eos/uscms/store/user/drberry/ZprimePreSelectionCycle/13TeV/RunII_25ns_v1/uhh2.AnalysisModuleRunner.MC.MC_QCD_Pt-20to30_MuEnrichedPt5.11.root" Lumi="0.0"/>
       <InputTree Name="AnalysisTree" />
       <OutputTree Name="AnalysisTree" />
     </InputData>
-    <InputData Lumi="7685615.1" NEventsMax="-1" Type="MC" Version="TTDMDMJetsM1000" Cacheable="False">
-      <In FileName="/eos/uscms/store/user/drberry/ZprimePreSelectionCycle/PHYS14_old/uhh2.AnalysisModuleRunner.MC.TTDMDMJetsM1000.7.root" Lumi="0.0"/>
+    <InputData Lumi="2.984" NEventsMax="1000" Type="MC" Version="MC_QCD_Pt-30to50_MuEnrichedPt5" Cacheable="False">
+      <In FileName="/eos/uscms/store/user/drberry/ZprimePreSelectionCycle/13TeV/RunII_25ns_v1/uhh2.AnalysisModuleRunner.MC.MC_QCD_Pt-30to50_MuEnrichedPt5.15.root" Lumi="0.0"/>
       <InputTree Name="AnalysisTree" />
       <OutputTree Name="AnalysisTree" />
     </InputData>
-    <InputData Lumi="230068.2" NEventsMax="-1" Type="MC" Version="TTDMDMJetsM200" Cacheable="False">
-      <In FileName="/eos/uscms/store/user/drberry/ZprimePreSelectionCycle/PHYS14_old/uhh2.AnalysisModuleRunner.MC.TTDMDMJetsM200.5.root" Lumi="0.0"/>
+    <InputData Lumi="11.52" NEventsMax="1000" Type="MC" Version="MC_QCD_Pt-50to80_MuEnrichedPt5" Cacheable="False">
+      <In FileName="/eos/uscms/store/user/drberry/ZprimePreSelectionCycle/13TeV/RunII_25ns_v1/uhh2.AnalysisModuleRunner.MC.MC_QCD_Pt-50to80_MuEnrichedPt5.18.root" Lumi="0.0"/>
       <InputTree Name="AnalysisTree" />
       <OutputTree Name="AnalysisTree" />
     </InputData>
-    <InputData Lumi="128207.2" NEventsMax="-1" Type="MC" Version="TTDMDMJetsM50" Cacheable="False">
-      <In FileName="/eos/uscms/store/user/drberry/ZprimePreSelectionCycle/PHYS14_old/uhh2.AnalysisModuleRunner.MC.TTDMDMJetsM50.3.root" Lumi="0.0"/>
+    <InputData Lumi="36.52" NEventsMax="1000" Type="MC" Version="MC_QCD_Pt-80to120_MuEnrichedPt5" Cacheable="False">
+      <In FileName="/eos/uscms/store/user/drberry/ZprimePreSelectionCycle/13TeV/RunII_25ns_v1/uhh2.AnalysisModuleRunner.MC.MC_QCD_Pt-80to120_MuEnrichedPt5.22.root" Lumi="0.0"/>
       <InputTree Name="AnalysisTree" />
       <OutputTree Name="AnalysisTree" />
     </InputData>
-    <InputData Lumi="1219142.6" NEventsMax="-1" Type="MC" Version="TTDMDMJetsM600" Cacheable="False">
-      <In FileName="/eos/uscms/store/user/drberry/ZprimePreSelectionCycle/PHYS14_old/uhh2.AnalysisModuleRunner.MC.TTDMDMJetsM600.6.root" Lumi="0.0"/>
+    <InputData Lumi="159.5" NEventsMax="1000" Type="MC" Version="MC_QCD_Pt-120to170_MuEnrichedPt5" Cacheable="False">
+      <In FileName="/eos/uscms/store/user/drberry/ZprimePreSelectionCycle/13TeV/RunII_25ns_v1/uhh2.AnalysisModuleRunner.MC.MC_QCD_Pt-120to170_MuEnrichedPt5.5.root" Lumi="0.0"/>
       <InputTree Name="AnalysisTree" />
       <OutputTree Name="AnalysisTree" />
     </InputData>
-    <InputData Lumi="30593.9" NEventsMax="-1" Type="MC" Version="TTJets" Cacheable="False">
-      <In FileName="/eos/uscms/store/user/drberry/ZprimePreSelectionCycle/PHYS14_old/uhh2.AnalysisModuleRunner.MC.TTJets.12.root" Lumi="0.0"/>
+    <InputData Lumi="454.5" NEventsMax="1000" Type="MC" Version="MC_QCD_Pt-170to300_MuEnrichedPt5" Cacheable="False">
+      <In FileName="/eos/uscms/store/user/drberry/ZprimePreSelectionCycle/13TeV/RunII_25ns_v1/uhh2.AnalysisModuleRunner.MC.MC_QCD_Pt-170to300_MuEnrichedPt5.9.root" Lumi="0.0"/>
       <InputTree Name="AnalysisTree" />
       <OutputTree Name="AnalysisTree" />
     </InputData>
-    <InputData Lumi="213993.9" NEventsMax="-1" Type="MC" Version="TTWJets" Cacheable="False">
-      <In FileName="/eos/uscms/store/user/drberry/ZprimePreSelectionCycle/PHYS14_old/uhh2.AnalysisModuleRunner.MC.TTWJets.13.root" Lumi="0.0"/>
+    <InputData Lumi="4893.1" NEventsMax="1000" Type="MC" Version="MC_QCD_Pt-300to470_MuEnrichedPt5" Cacheable="False">
+      <In FileName="/eos/uscms/store/user/drberry/ZprimePreSelectionCycle/13TeV/RunII_25ns_v1/uhh2.AnalysisModuleRunner.MC.MC_QCD_Pt-300to470_MuEnrichedPt5.12.root" Lumi="0.0"/>
       <InputTree Name="AnalysisTree" />
       <OutputTree Name="AnalysisTree" />
     </InputData>
-    <InputData Lumi="111682.3" NEventsMax="-1" Type="MC" Version="TTZJets" Cacheable="False">
-      <In FileName="/eos/uscms/store/user/drberry/ZprimePreSelectionCycle/PHYS14_old/uhh2.AnalysisModuleRunner.MC.TTZJets.14.root" Lumi="0.0"/>
+    <InputData Lumi="24346.6" NEventsMax="1000" Type="MC" Version="MC_QCD_Pt-470to600_MuEnrichedPt5" Cacheable="False">
+      <In FileName="/eos/uscms/store/user/drberry/ZprimePreSelectionCycle/13TeV/RunII_25ns_v1/uhh2.AnalysisModuleRunner.MC.MC_QCD_Pt-470to600_MuEnrichedPt5.16.root" Lumi="0.0"/>
       <InputTree Name="AnalysisTree" />
       <OutputTree Name="AnalysisTree" />
     </InputData>
-    <InputData Lumi="25000.0" NEventsMax="-1" Type="MC" Version="TToLeptonss" Cacheable="False">
-      <In FileName="/eos/uscms/store/user/drberry/ZprimePreSelectionCycle/PHYS14_old/uhh2.AnalysisModuleRunner.MC.TToLeptonss.15.root" Lumi="0.0"/>
+    <InputData Lumi="78855.4" NEventsMax="1000" Type="MC" Version="MC_QCD_Pt-600to800_MuEnrichedPt5" Cacheable="False">
+      <In FileName="/eos/uscms/store/user/drberry/ZprimePreSelectionCycle/13TeV/RunII_25ns_v1/uhh2.AnalysisModuleRunner.MC.MC_QCD_Pt-600to800_MuEnrichedPt5.19.root" Lumi="0.0"/>
       <InputTree Name="AnalysisTree" />
       <OutputTree Name="AnalysisTree" />
     </InputData>
-    <InputData Lumi="38597.7" NEventsMax="-1" Type="MC" Version="TToLeptonst" Cacheable="False">
-      <In FileName="/eos/uscms/store/user/drberry/ZprimePreSelectionCycle/PHYS14_old/uhh2.AnalysisModuleRunner.MC.TToLeptonst.16.root" Lumi="0.0"/>
+    <InputData Lumi="420118.0" NEventsMax="1000" Type="MC" Version="MC_QCD_Pt-800to1000_MuEnrichedPt5" Cacheable="False">
+      <In FileName="/eos/uscms/store/user/drberry/ZprimePreSelectionCycle/13TeV/RunII_25ns_v1/uhh2.AnalysisModuleRunner.MC.MC_QCD_Pt-800to1000_MuEnrichedPt5.20.root" Lumi="0.0"/>
       <InputTree Name="AnalysisTree" />
       <OutputTree Name="AnalysisTree" />
     </InputData>
-    <InputData Lumi="27297.8" NEventsMax="-1" Type="MC" Version="TbartW" Cacheable="False">
-      <In FileName="/eos/uscms/store/user/drberry/ZprimePreSelectionCycle/PHYS14_old/uhh2.AnalysisModuleRunner.MC.TbartW.20.root" Lumi="0.0"/>
+    <InputData Lumi="1219588.2" NEventsMax="1000" Type="MC" Version="MC_QCD_Pt-1000toInf_MuEnrichedPt5" Cacheable="False">
+      <In FileName="/eos/uscms/store/user/drberry/ZprimePreSelectionCycle/13TeV/RunII_25ns_v1/uhh2.AnalysisModuleRunner.MC.MC_QCD_Pt-1000toInf_MuEnrichedPt5.3.root" Lumi="0.0"/>
       <InputTree Name="AnalysisTree" />
       <OutputTree Name="AnalysisTree" />
     </InputData>
-    <InputData Lumi="27699.4" NEventsMax="-1" Type="MC" Version="TtW" Cacheable="False">
-      <In FileName="/eos/uscms/store/user/drberry/ZprimePreSelectionCycle/PHYS14_old/uhh2.AnalysisModuleRunner.MC.TtW.19.root" Lumi="0.0"/>
+    <InputData Lumi="0.919" NEventsMax="1000" Type="MC" Version="MC_QCD_Pt-15to20_EMEnriched" Cacheable="False">
+      <In FileName="/eos/uscms/store/user/drberry/ZprimePreSelectionCycle/13TeV/RunII_25ns_v1/uhh2.AnalysisModuleRunner.MC.MC_QCD_Pt-15to20_EMEnriched.6.root" Lumi="0.0"/>
       <InputTree Name="AnalysisTree" />
       <OutputTree Name="AnalysisTree" />
     </InputData>
-    <InputData Lumi="2896.1" NEventsMax="-1" Type="MC" Version="WJetsToLNu100to200" Cacheable="False">
-      <In FileName="/eos/uscms/store/user/drberry/ZprimePreSelectionCycle/PHYS14_old/uhh2.AnalysisModuleRunner.MC.WJetsToLNu100to200.21.root" Lumi="0.0"/>
+    <InputData Lumi="1.710" NEventsMax="1000" Type="MC" Version="MC_QCD_Pt-20to30_EMEnriched" Cacheable="False">
+      <In FileName="/eos/uscms/store/user/drberry/ZprimePreSelectionCycle/13TeV/RunII_25ns_v1/uhh2.AnalysisModuleRunner.MC.MC_QCD_Pt-20to30_EMEnriched.10.root" Lumi="0.0"/>
       <InputTree Name="AnalysisTree" />
       <OutputTree Name="AnalysisTree" />
     </InputData>
-    <InputData Lumi="10466.7" NEventsMax="-1" Type="MC" Version="WJetsToLNu200to400" Cacheable="False">
-      <In FileName="/eos/uscms/store/user/drberry/ZprimePreSelectionCycle/PHYS14_old/uhh2.AnalysisModuleRunner.MC.WJetsToLNu200to400.22.root" Lumi="0.0"/>
+    <InputData Lumi="0.472" NEventsMax="1000" Type="MC" Version="MC_QCD_Pt-30to50_EMEnriched" Cacheable="False">
+      <In FileName="/eos/uscms/store/user/drberry/ZprimePreSelectionCycle/13TeV/RunII_25ns_v1/uhh2.AnalysisModuleRunner.MC.MC_QCD_Pt-30to50_EMEnriched.14.root" Lumi="0.0"/>
       <InputTree Name="AnalysisTree" />
       <OutputTree Name="AnalysisTree" />
     </InputData>
-    <InputData Lumi="83448.9" NEventsMax="-1" Type="MC" Version="WJetsToLNu400to600" Cacheable="False">
-      <In FileName="/eos/uscms/store/user/drberry/ZprimePreSelectionCycle/PHYS14_old/uhh2.AnalysisModuleRunner.MC.WJetsToLNu400to600.23.root" Lumi="0.0"/>
+    <InputData Lumi="1.804" NEventsMax="1000" Type="MC" Version="MC_QCD_Pt-50to80_EMEnriched" Cacheable="False">
+      <In FileName="/eos/uscms/store/user/drberry/ZprimePreSelectionCycle/13TeV/RunII_25ns_v1/uhh2.AnalysisModuleRunner.MC.MC_QCD_Pt-50to80_EMEnriched.17.root" Lumi="0.0"/>
       <InputTree Name="AnalysisTree" />
       <OutputTree Name="AnalysisTree" />
     </InputData>
-    <InputData Lumi="243585.4" NEventsMax="-1" Type="MC" Version="WJetsToLNu600toInf" Cacheable="False">
-      <In FileName="/eos/uscms/store/user/drberry/ZprimePreSelectionCycle/PHYS14_old/uhh2.AnalysisModuleRunner.MC.WJetsToLNu600toInf.24.root" Lumi="0.0"/>
+    <InputData Lumi="23.18" NEventsMax="1000" Type="MC" Version="MC_QCD_Pt-80to120_EMEnriched" Cacheable="False">
+      <In FileName="/eos/uscms/store/user/drberry/ZprimePreSelectionCycle/13TeV/RunII_25ns_v1/uhh2.AnalysisModuleRunner.MC.MC_QCD_Pt-80to120_EMEnriched.21.root" Lumi="0.0"/>
       <InputTree Name="AnalysisTree" />
       <OutputTree Name="AnalysisTree" />
     </InputData>
-    <InputData Lumi="0.1435298" NEventsMax="-1" Type="MC" Version="QCDHT100To250" Cacheable="False">
-      <In FileName="/eos/uscms/store/user/drberry/ZprimePreSelectionCycle/PHYS14_old_QCD/uhh2.AnalysisModuleRunner.MC.QCDHT100To250.1.root" Lumi="0.0"/>
+    <InputData Lumi="134.7" NEventsMax="1000" Type="MC" Version="MC_QCD_Pt-120to170_EMEnriched" Cacheable="False">
+      <In FileName="/eos/uscms/store/user/drberry/ZprimePreSelectionCycle/13TeV/RunII_25ns_v1/uhh2.AnalysisModuleRunner.MC.MC_QCD_Pt-120to170_EMEnriched.4.root" Lumi="0.0"/>
       <InputTree Name="AnalysisTree" />
       <OutputTree Name="AnalysisTree" />
     </InputData>
-    <InputData Lumi="0.29887398" NEventsMax="-1" Type="MC" Version="QCDHT250To500" Cacheable="False">
-      <In FileName="/eos/uscms/store/user/drberry/ZprimePreSelectionCycle/PHYS14_old_QCD/uhh2.AnalysisModuleRunner.MC.QCDHT250To500.2.root" Lumi="0.0"/>
+    <InputData Lumi="304.3" NEventsMax="1000" Type="MC" Version="MC_QCD_Pt-170to300_EMEnriched" Cacheable="False">
+      <In FileName="/eos/uscms/store/user/drberry/ZprimePreSelectionCycle/13TeV/RunII_25ns_v1/uhh2.AnalysisModuleRunner.MC.MC_QCD_Pt-170to300_EMEnriched.8.root" Lumi="0.0"/>
       <InputTree Name="AnalysisTree" />
       <OutputTree Name="AnalysisTree" />
     </InputData>
-    <InputData Lumi="120.2" NEventsMax="-1" Type="MC" Version="QCDHT500To1000" Cacheable="False">
-      <In FileName="/eos/uscms/store/user/drberry/ZprimePreSelectionCycle/PHYS14_old_QCD/uhh2.AnalysisModuleRunner.MC.QCDHT500To1000.3.root" Lumi="0.0"/>
+    <InputData Lumi="2732.4" NEventsMax="1000" Type="MC" Version="MC_QCD_Pt-300toInf_EMEnriched" Cacheable="False">
+      <In FileName="/eos/uscms/store/user/drberry/ZprimePreSelectionCycle/13TeV/RunII_25ns_v1/uhh2.AnalysisModuleRunner.MC.MC_QCD_Pt-300toInf_EMEnriched.13.root" Lumi="0.0"/>
       <InputTree Name="AnalysisTree" />
       <OutputTree Name="AnalysisTree" />
     </InputData>
-    <InputData Lumi="1469.0" NEventsMax="-1" Type="MC" Version="QCDHT1000ToInf" Cacheable="False">
-      <In FileName="/eos/uscms/store/user/drberry/ZprimePreSelectionCycle/PHYS14_old_QCD/uhh2.AnalysisModuleRunner.MC.QCDHT1000ToInf.4.root" Lumi="0.0"/>
+    <InputData Lumi="3.557" NEventsMax="1000" Type="MC" Version="MC_QCD_Pt_15to20_bcToE" Cacheable="False">
+      <In FileName="/eos/uscms/store/user/drberry/ZprimePreSelectionCycle/13TeV/RunII_25ns_v1/uhh2.AnalysisModuleRunner.MC.MC_QCD_Pt_15to20_bcToE.23.root" Lumi="0.0"/>
       <InputTree Name="AnalysisTree" />
       <OutputTree Name="AnalysisTree" />
     </InputData>
+    <InputData Lumi="9.856" NEventsMax="1000" Type="MC" Version="MC_QCD_Pt_20to30_bcToE" Cacheable="False">
+      <In FileName="/eos/uscms/store/user/drberry/ZprimePreSelectionCycle/13TeV/RunII_25ns_v1/uhh2.AnalysisModuleRunner.MC.MC_QCD_Pt_20to30_bcToE.25.root" Lumi="0.0"/>
+      <InputTree Name="AnalysisTree" />
+      <OutputTree Name="AnalysisTree" />
+    </InputData>
+    <InputData Lumi="12.53" NEventsMax="1000" Type="MC" Version="MC_QCD_Pt_30to80_bcToE" Cacheable="False">
+      <In FileName="/eos/uscms/store/user/drberry/ZprimePreSelectionCycle/13TeV/RunII_25ns_v1/uhh2.AnalysisModuleRunner.MC.MC_QCD_Pt_30to80_bcToE.27.root" Lumi="0.0"/>
+      <InputTree Name="AnalysisTree" />
+      <OutputTree Name="AnalysisTree" />
+    </InputData>
+    <InputData Lumi="134.6" NEventsMax="1000" Type="MC" Version="MC_QCD_Pt_80to170_bcToE" Cacheable="False">
+      <In FileName="/eos/uscms/store/user/drberry/ZprimePreSelectionCycle/13TeV/RunII_25ns_v1/uhh2.AnalysisModuleRunner.MC.MC_QCD_Pt_80to170_bcToE.28.root" Lumi="0.0"/>
+      <InputTree Name="AnalysisTree" />
+      <OutputTree Name="AnalysisTree" />
+    </InputData>
+    <InputData Lumi="1091.3" NEventsMax="1000" Type="MC" Version="MC_QCD_Pt_170to250_bcToE" Cacheable="False">
+      <In FileName="/eos/uscms/store/user/drberry/ZprimePreSelectionCycle/13TeV/RunII_25ns_v1/uhh2.AnalysisModuleRunner.MC.MC_QCD_Pt_170to250_bcToE.24.root" Lumi="0.0"/>
+      <InputTree Name="AnalysisTree" />
+      <OutputTree Name="AnalysisTree" />
+    </InputData>
+    <InputData Lumi="4136.1" NEventsMax="1000" Type="MC" Version="MC_QCD_Pt_250toInf_bcToE" Cacheable="False">
+      <In FileName="/eos/uscms/store/user/drberry/ZprimePreSelectionCycle/13TeV/RunII_25ns_v1/uhh2.AnalysisModuleRunner.MC.MC_QCD_Pt_250toInf_bcToE.26.root" Lumi="0.0"/>
+      <InputTree Name="AnalysisTree" />
+      <OutputTree Name="AnalysisTree" />
+    </InputData>
+    <InputData Lumi="45901773930" NEventsMax="1000" Type="MC" Version="MC_TTbarDMJets_EFT_M-1" Cacheable="False">
+      <In FileName="/eos/uscms/store/user/drberry/ZprimePreSelectionCycle/13TeV/RunII_25ns_v1/uhh2.AnalysisModuleRunner.MC.MC_TTbarDMJets_EFT_M-1.36.root" Lumi="0.0"/>
+      <InputTree Name="AnalysisTree" />
+      <OutputTree Name="AnalysisTree" />
+    </InputData>
+    <InputData Lumi="57301200370" NEventsMax="1000" Type="MC" Version="MC_TTbarDMJets_EFT_M-100" Cacheable="False">
+      <In FileName="/eos/uscms/store/user/drberry/ZprimePreSelectionCycle/13TeV/RunII_25ns_v1/uhh2.AnalysisModuleRunner.MC.MC_TTbarDMJets_EFT_M-100.37.root" Lumi="0.0"/>
+      <InputTree Name="AnalysisTree" />
+      <OutputTree Name="AnalysisTree" />
+    </InputData>
+    <InputData Lumi="77601515550" NEventsMax="1000" Type="MC" Version="MC_TTbarDMJets_EFT_M-200" Cacheable="False">
+      <In FileName="/eos/uscms/store/user/drberry/ZprimePreSelectionCycle/13TeV/RunII_25ns_v1/uhh2.AnalysisModuleRunner.MC.MC_TTbarDMJets_EFT_M-200.38.root" Lumi="0.0"/>
+      <InputTree Name="AnalysisTree" />
+      <OutputTree Name="AnalysisTree" />
+    </InputData>
+    <InputData Lumi="3250197" NEventsMax="1000" Type="MC" Version="MC_TTbarDMJets_pseudoscalar_Mchi-10_Mphi-10" Cacheable="False">
+      <In FileName="/eos/uscms/store/user/drberry/ZprimePreSelectionCycle/13TeV/RunII_25ns_v1/uhh2.AnalysisModuleRunner.MC.MC_TTbarDMJets_pseudoscalar_Mchi-10_Mphi-10.39.root" Lumi="0.0"/>
+      <InputTree Name="AnalysisTree" />
+      <OutputTree Name="AnalysisTree" />
+    </InputData>
+    <InputData Lumi="250344.1" NEventsMax="1000" Type="MC" Version="MC_TTbarDMJets_pseudoscalar_Mchi-10_Mphi-100" Cacheable="False">
+      <In FileName="/eos/uscms/store/user/drberry/ZprimePreSelectionCycle/13TeV/RunII_25ns_v1/uhh2.AnalysisModuleRunner.MC.MC_TTbarDMJets_pseudoscalar_Mchi-10_Mphi-100.40.root" Lumi="0.0"/>
+      <InputTree Name="AnalysisTree" />
+      <OutputTree Name="AnalysisTree" />
+    </InputData>
+    <InputData Lumi="163325.8" NEventsMax="1000" Type="MC" Version="MC_TTbarDMJets_pseudoscalar_Mchi-10_Mphi-50" Cacheable="False">
+      <In FileName="/eos/uscms/store/user/drberry/ZprimePreSelectionCycle/13TeV/RunII_25ns_v1/uhh2.AnalysisModuleRunner.MC.MC_TTbarDMJets_pseudoscalar_Mchi-10_Mphi-50.41.root" Lumi="0.0"/>
+      <InputTree Name="AnalysisTree" />
+      <OutputTree Name="AnalysisTree" />
+    </InputData>
+    <InputData Lumi="127494310" NEventsMax="1000" Type="MC" Version="MC_TTbarDMJets_pseudoscalar_Mchi-150_Mphi-200" Cacheable="False">
+      <In FileName="/eos/uscms/store/user/drberry/ZprimePreSelectionCycle/13TeV/RunII_25ns_v1/uhh2.AnalysisModuleRunner.MC.MC_TTbarDMJets_pseudoscalar_Mchi-150_Mphi-200.42.root" Lumi="0.0"/>
+      <InputTree Name="AnalysisTree" />
+      <OutputTree Name="AnalysisTree" />
+    </InputData>
+    <InputData Lumi="112382" NEventsMax="1000" Type="MC" Version="MC_TTbarDMJets_pseudoscalar_Mchi-1_Mphi-10" Cacheable="False">
+      <In FileName="/eos/uscms/store/user/drberry/ZprimePreSelectionCycle/13TeV/RunII_25ns_v1/uhh2.AnalysisModuleRunner.MC.MC_TTbarDMJets_pseudoscalar_Mchi-1_Mphi-10.43.root" Lumi="0.0"/>
+      <InputTree Name="AnalysisTree" />
+      <OutputTree Name="AnalysisTree" />
+    </InputData>
+    <InputData Lumi="260709.1" NEventsMax="1000" Type="MC" Version="MC_TTbarDMJets_pseudoscalar_Mchi-1_Mphi-100" Cacheable="False">
+      <In FileName="/eos/uscms/store/user/drberry/ZprimePreSelectionCycle/13TeV/RunII_25ns_v1/uhh2.AnalysisModuleRunner.MC.MC_TTbarDMJets_pseudoscalar_Mchi-1_Mphi-100.44.root" Lumi="0.0"/>
+      <InputTree Name="AnalysisTree" />
+      <OutputTree Name="AnalysisTree" />
+    </InputData>
+    <InputData Lumi="1266911.4" NEventsMax="1000" Type="MC" Version="MC_TTbarDMJets_pseudoscalar_Mchi-1_Mphi-300" Cacheable="False">
+      <In FileName="/eos/uscms/store/user/drberry/ZprimePreSelectionCycle/13TeV/RunII_25ns_v1/uhh2.AnalysisModuleRunner.MC.MC_TTbarDMJets_pseudoscalar_Mchi-1_Mphi-300.45.root" Lumi="0.0"/>
+      <InputTree Name="AnalysisTree" />
+      <OutputTree Name="AnalysisTree" />
+    </InputData>
+    <InputData Lumi="17922176310" NEventsMax="1000" Type="MC" Version="MC_TTbarDMJets_pseudoscalar_Mchi-500_Mphi-500" Cacheable="False">
+      <In FileName="/eos/uscms/store/user/drberry/ZprimePreSelectionCycle/13TeV/RunII_25ns_v1/uhh2.AnalysisModuleRunner.MC.MC_TTbarDMJets_pseudoscalar_Mchi-500_Mphi-500.46.root" Lumi="0.0"/>
+      <InputTree Name="AnalysisTree" />
+      <OutputTree Name="AnalysisTree" />
+    </InputData>
+    <InputData Lumi="1671503.6" NEventsMax="1000" Type="MC" Version="MC_TTbarDMJets_pseudoscalar_Mchi-50_Mphi-300" Cacheable="False">
+      <In FileName="/eos/uscms/store/user/drberry/ZprimePreSelectionCycle/13TeV/RunII_25ns_v1/uhh2.AnalysisModuleRunner.MC.MC_TTbarDMJets_pseudoscalar_Mchi-50_Mphi-300.47.root" Lumi="0.0"/>
+      <InputTree Name="AnalysisTree" />
+      <OutputTree Name="AnalysisTree" />
+    </InputData>
+    <InputData Lumi="19144916.2" NEventsMax="1000" Type="MC" Version="MC_TTbarDMJets_pseudoscalar_Mchi-50_Mphi-50" Cacheable="False">
+      <In FileName="/eos/uscms/store/user/drberry/ZprimePreSelectionCycle/13TeV/RunII_25ns_v1/uhh2.AnalysisModuleRunner.MC.MC_TTbarDMJets_pseudoscalar_Mchi-50_Mphi-50.48.root" Lumi="0.0"/>
+      <InputTree Name="AnalysisTree" />
+      <OutputTree Name="AnalysisTree" />
+    </InputData>
+    <InputData Lumi="494648.9" NEventsMax="1000" Type="MC" Version="MC_TTbarDMJets_scalar_Mchi-10_Mphi-10" Cacheable="False">
+      <In FileName="/eos/uscms/store/user/drberry/ZprimePreSelectionCycle/13TeV/RunII_25ns_v1/uhh2.AnalysisModuleRunner.MC.MC_TTbarDMJets_scalar_Mchi-10_Mphi-10.49.root" Lumi="0.0"/>
+      <InputTree Name="AnalysisTree" />
+      <OutputTree Name="AnalysisTree" />
+    </InputData>
+    <InputData Lumi="66370.5" NEventsMax="1000" Type="MC" Version="MC_TTbarDMJets_scalar_Mchi-10_Mphi-100" Cacheable="False">
+      <In FileName="/eos/uscms/store/user/drberry/ZprimePreSelectionCycle/13TeV/RunII_25ns_v1/uhh2.AnalysisModuleRunner.MC.MC_TTbarDMJets_scalar_Mchi-10_Mphi-100.50.root" Lumi="0.0"/>
+      <InputTree Name="AnalysisTree" />
+      <OutputTree Name="AnalysisTree" />
+    </InputData>
+    <InputData Lumi="16350.3" NEventsMax="1000" Type="MC" Version="MC_TTbarDMJets_scalar_Mchi-10_Mphi-50" Cacheable="False">
+      <In FileName="/eos/uscms/store/user/drberry/ZprimePreSelectionCycle/13TeV/RunII_25ns_v1/uhh2.AnalysisModuleRunner.MC.MC_TTbarDMJets_scalar_Mchi-10_Mphi-50.51.root" Lumi="0.0"/>
+      <InputTree Name="AnalysisTree" />
+      <OutputTree Name="AnalysisTree" />
+    </InputData>
+    <InputData Lumi="158066801.6" NEventsMax="1000" Type="MC" Version="MC_TTbarDMJets_scalar_Mchi-150_Mphi-1000" Cacheable="False">
+      <In FileName="/eos/uscms/store/user/drberry/ZprimePreSelectionCycle/13TeV/RunII_25ns_v1/uhh2.AnalysisModuleRunner.MC.MC_TTbarDMJets_scalar_Mchi-150_Mphi-1000.52.root" Lumi="0.0"/>
+      <InputTree Name="AnalysisTree" />
+      <OutputTree Name="AnalysisTree" />
+    </InputData>
+    <InputData Lumi="12917746.5" NEventsMax="1000" Type="MC" Version="MC_TTbarDMJets_scalar_Mchi-150_Mphi-500" Cacheable="False">
+      <In FileName="/eos/uscms/store/user/drberry/ZprimePreSelectionCycle/13TeV/RunII_25ns_v1/uhh2.AnalysisModuleRunner.MC.MC_TTbarDMJets_scalar_Mchi-150_Mphi-500.53.root" Lumi="0.0"/>
+      <InputTree Name="AnalysisTree" />
+      <OutputTree Name="AnalysisTree" />
+    </InputData>
+    <InputData Lumi="71303.3" NEventsMax="1000" Type="MC" Version="MC_TTbarDMJets_scalar_Mchi-1_Mphi-100" Cacheable="False">
+      <In FileName="/eos/uscms/store/user/drberry/ZprimePreSelectionCycle/13TeV/RunII_25ns_v1/uhh2.AnalysisModuleRunner.MC.MC_TTbarDMJets_scalar_Mchi-1_Mphi-100.54.root" Lumi="0.0"/>
+      <InputTree Name="AnalysisTree" />
+      <OutputTree Name="AnalysisTree" />
+    </InputData>
+    <InputData Lumi="16457.6" NEventsMax="1000" Type="MC" Version="MC_TTbarDMJets_scalar_Mchi-1_Mphi-50" Cacheable="False">
+      <In FileName="/eos/uscms/store/user/drberry/ZprimePreSelectionCycle/13TeV/RunII_25ns_v1/uhh2.AnalysisModuleRunner.MC.MC_TTbarDMJets_scalar_Mchi-1_Mphi-50.55.root" Lumi="0.0"/>
+      <InputTree Name="AnalysisTree" />
+      <OutputTree Name="AnalysisTree" />
+    </InputData>
+    <InputData Lumi="1671503.6" NEventsMax="1000" Type="MC" Version="MC_TTbarDMJets_scalar_Mchi-50_Mphi-300" Cacheable="False">
+      <In FileName="/eos/uscms/store/user/drberry/ZprimePreSelectionCycle/13TeV/RunII_25ns_v1/uhh2.AnalysisModuleRunner.MC.MC_TTbarDMJets_scalar_Mchi-50_Mphi-300.56.root" Lumi="0.0"/>
+      <InputTree Name="AnalysisTree" />
+      <OutputTree Name="AnalysisTree" />
+    </InputData>
+    <InputData Lumi="19144916.2" NEventsMax="1000" Type="MC" Version="MC_TTbarDMJets_scalar_Mchi-50_Mphi-50" Cacheable="False">
+      <In FileName="/eos/uscms/store/user/drberry/ZprimePreSelectionCycle/13TeV/RunII_25ns_v1/uhh2.AnalysisModuleRunner.MC.MC_TTbarDMJets_scalar_Mchi-50_Mphi-50.57.root" Lumi="0.0"/>
+      <InputTree Name="AnalysisTree" />
+      <OutputTree Name="AnalysisTree" />
+    </InputData>
+    <InputData Lumi="60501928.3" NEventsMax="1000" Type="MC" Version="MC_WJetsToLNu" Cacheable="False">
+      <In FileName="/eos/uscms/store/user/drberry/ZprimePreSelectionCycle/13TeV/RunII_25ns_v1/uhh2.AnalysisModuleRunner.MC.MC_WJetsToLNu.58.root" Lumi="0.0"/>
+      <InputTree Name="AnalysisTree" />
+      <OutputTree Name="AnalysisTree" />
+    </InputData>
+    <InputData Lumi="8358.5" NEventsMax="1000" Type="MC" Version="MC_WW" Cacheable="False">
+      <In FileName="/eos/uscms/store/user/drberry/ZprimePreSelectionCycle/13TeV/RunII_25ns_v1/uhh2.AnalysisModuleRunner.MC.MC_WW.59.root" Lumi="0.0"/>
+      <InputTree Name="AnalysisTree" />
+      <OutputTree Name="AnalysisTree" />
+    </InputData>
+    <InputData Lumi="20982.7" NEventsMax="1000" Type="MC" Version="MC_WZ" Cacheable="False">
+      <In FileName="/eos/uscms/store/user/drberry/ZprimePreSelectionCycle/13TeV/RunII_25ns_v1/uhh2.AnalysisModuleRunner.MC.MC_WZ.60.root" Lumi="0.0"/>
+      <InputTree Name="AnalysisTree" />
+      <OutputTree Name="AnalysisTree" />
+    </InputData>
+    <InputData Lumi="60158.9" NEventsMax="1000" Type="MC" Version="MC_ZZ" Cacheable="False">
+      <In FileName="/eos/uscms/store/user/drberry/ZprimePreSelectionCycle/13TeV/RunII_25ns_v1/uhh2.AnalysisModuleRunner.MC.MC_ZZ.61.root" Lumi="0.0"/>
+      <InputTree Name="AnalysisTree" />
+      <OutputTree Name="AnalysisTree" />
+    </InputData>
+
     <UserConfig>
       <Item Name="PrimaryVertexCollection" Value="offlineSlimmedPrimaryVertices" />
-      <Item Name="ElectronCollection" Value="slimmedElectrons" />
-      <Item Name="MuonCollection" Value="slimmedMuons" />
+      <Item Name="ElectronCollection" Value="slimmedElectronsUSER" />
+      <Item Name="MuonCollection" Value="slimmedMuonsUSER" />
       <Item Name="TauCollection" Value="slimmedTaus" />
       <Item Name="JetCollection" Value="slimmedJets" />
       <Item Name="GenJetCollection" Value="slimmedGenJets" />
       <Item Name="METName" Value="slimmedMETs" />
-      <Item Name="TopJetCollection" Value="patJetsCMSTopTagCHSPacked" />
+      <Item Name="TopJetCollection" Value="slimmedJetsAK8_CMSTopTag" />
       <Item Name="GenParticleCollection" Value="GenParticles" />
 
       <Item Name="channel" Value="muon" />
+
+      <Item Name="dopvfilter" Value="true" />
+      <Item Name="dometfilters" Value="true" />
+      <Item Name="lumi_file" Value="" />
+
+      <Item Name="pileup_directory_data" Value="/eos/uscms/store/user/drberry/ZprimePreSelectionCycle/13TeV/RunII_25ns_v1/PileupFiles/MyDataPileupHistogram.root" />
+      <Item Name="pileup_directory_25ns" Value="/eos/uscms/store/user/drberry/ZprimePreSelectionCycle/13TeV/RunII_25ns_v1/PileupFiles/Pileup.MC.TTbar.root" />
+
       <Item Name="AnalysisModule" Value="ttDMSelectionModule" />
     </UserConfig>
 
