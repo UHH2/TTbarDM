@@ -87,6 +87,7 @@ class ttDMSelectionModule: public AnalysisModule {
   std::unique_ptr<AndSelection> lep1_sel;
   std::unique_ptr<Selection> jet2_sel;
   std::unique_ptr<Selection> jet1_sel;
+  std::unique_ptr<Selection> twodcut_sel;
   std::unique_ptr<Selection> met_sel;
   std::unique_ptr<Selection> toptagevent_sel;
   std::unique_ptr<Selection> heptoptagevent_sel;
@@ -103,6 +104,7 @@ class ttDMSelectionModule: public AnalysisModule {
   std::unique_ptr<Hists> lep1_h;
   std::unique_ptr<Hists> jet2_h;
   std::unique_ptr<Hists> jet1_h;
+  std::unique_ptr<Hists> twodcut_h;
   std::unique_ptr<Hists> met_h;
   std::unique_ptr<Hists> toptagevent_h;
   std::unique_ptr<Hists> heptoptagevent_h;
@@ -172,12 +174,13 @@ ttDMSelectionModule::ttDMSelectionModule(Context & ctx){
 
     if(triggername != "NotSet") trigger_sel = make_unique<TriggerSelection>(triggername);
     else {
-      trigger_sel = make_unique<TriggerSelection>("HLT_Ele45_CaloIdVT_GsfTrkIdT_PFJet200_PFJet50_v1");
+      trigger_sel = make_unique<TriggerSelection>("HLT_Ele45_CaloIdVT_GsfTrkIdT_PFJet200_PFJet50_v*");
     }
   }
 
   jet2_sel.reset(new NJetSelection(2, -1, JetId(PtEtaCut( 50., 2.4))));
   jet1_sel.reset(new NJetSelection(1, -1, JetId(PtEtaCut(200., 2.4))));
+  twodcut_sel.reset(new TwoDCut(.4, 20.));
   met_sel.reset(new METCut(160., std::numeric_limits<double>::infinity()));
 
   const TopJetId topjetID = AndId<TopJet>(CMSTopTag(), Tau32());
@@ -202,6 +205,7 @@ ttDMSelectionModule::ttDMSelectionModule(Context & ctx){
   lep1_h.reset(new ttDMSelectionHists(ctx, "lep1"));
   jet2_h.reset(new ttDMSelectionHists(ctx, "jet2"));
   jet1_h.reset(new ttDMSelectionHists(ctx, "jet1"));
+  twodcut_h.reset(new ttDMSelectionHists(ctx, "twodcut"));
   met_h.reset(new ttDMSelectionHists(ctx, "met"));
   toptagevent_h.reset(new ttDMSelectionHists(ctx, "toptagevent"));
   heptoptagevent_h.reset(new ttDMSelectionHists(ctx, "heptoptagevent"));
@@ -260,6 +264,11 @@ bool ttDMSelectionModule::process(Event & event){
   bool pass_jet1 = jet1_sel->passes(event);
   if(!pass_jet1) return false;
   jet1_h->fill(event);
+
+  //// LEPTON-2Dcut selection
+  const bool pass_twodcut = twodcut_sel->passes(event);
+  if(!pass_twodcut) return false;
+  twodcut_h->fill(event);
 
   //// MET selection
   bool pass_met = met_sel->passes(event);
