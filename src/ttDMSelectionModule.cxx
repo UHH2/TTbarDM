@@ -137,13 +137,13 @@ ttDMSelectionModule::ttDMSelectionModule(Context & ctx){
   muo_cleaner.reset(new MuonCleaner(AndId<Muon>(MuonIDMedium(), PtEtaCut(45., 2.1))));
   ele_cleaner.reset(new ElectronCleaner(AndId<Electron>(ElectronID_MVAnotrig_Spring15_25ns_loose, PtEtaCut(50., 2.5))));
   if (is_mc) {
-    jet_corrector.reset(new JetCorrector(JERFiles::Summer15_25ns_L123_AK4PFchs_MC));
-    jetlepton_cleaner.reset(new JetLeptonCleaner(JERFiles::Summer15_25ns_L123_AK4PFchs_MC));
-    topjet_corrector.reset(new TopJetCorrector(JERFiles::Summer15_25ns_L123_AK8PFchs_MC));
+    jet_corrector.reset(new JetCorrector(ctx, JERFiles::Summer15_25ns_L123_AK4PFchs_MC));
+    jetlepton_cleaner.reset(new JetLeptonCleaner(ctx, JERFiles::Summer15_25ns_L123_AK4PFchs_MC));
+    topjet_corrector.reset(new TopJetCorrector(ctx, JERFiles::Summer15_25ns_L123_AK8PFchs_MC));
   } else {
-    jet_corrector.reset(new JetCorrector(JERFiles::Summer15_25ns_L123_AK4PFchs_DATA));
-    jetlepton_cleaner.reset(new JetLeptonCleaner(JERFiles::Summer15_25ns_L123_AK4PFchs_DATA));
-    topjet_corrector.reset(new TopJetCorrector(JERFiles::Summer15_25ns_L123_AK8PFchs_DATA));
+    jet_corrector.reset(new JetCorrector(ctx, JERFiles::Summer15_25ns_L123_AK4PFchs_DATA));
+    jetlepton_cleaner.reset(new JetLeptonCleaner(ctx, JERFiles::Summer15_25ns_L123_AK4PFchs_DATA));
+    topjet_corrector.reset(new TopJetCorrector(ctx, JERFiles::Summer15_25ns_L123_AK8PFchs_DATA));
   }
   jetER_smearer.reset(new JetResolutionSmearer(ctx));
   jetlepton_cleaner->set_drmax(.4);
