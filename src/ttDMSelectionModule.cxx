@@ -135,7 +135,7 @@ ttDMSelectionModule::ttDMSelectionModule(Context & ctx){
 
   //// OBJ CLEANING
   muo_cleaner.reset(new MuonCleaner(AndId<Muon>(MuonIDMedium(), PtEtaCut(45., 2.1))));
-  ele_cleaner.reset(new ElectronCleaner(AndId<Electron>(ElectronID_MVAnotrig_Spring15_25ns_loose, PtEtaCut(50., 2.5))));
+  ele_cleaner.reset(new ElectronCleaner(AndId<Electron>(ElectronID_MVAnotrig_Spring15_25ns_tight, PtEtaCut(50., 2.5))));
   if (is_mc) {
     jet_corrector.reset(new JetCorrector(ctx, JERFiles::Summer15_25ns_L123_AK4PFchs_MC));
     jetlepton_cleaner.reset(new JetLeptonCleaner(ctx, JERFiles::Summer15_25ns_L123_AK4PFchs_MC));

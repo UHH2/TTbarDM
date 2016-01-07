@@ -5,6 +5,9 @@
 #include "UHH2/core/include/Event.h"
 #include "UHH2/core/include/Selection.h"
 #include "UHH2/core/include/Utils.h"
+#include "UHH2/common/include/MCWeight.h"
+#include "UHH2/common/include/CleaningModules.h"
+#include "UHH2/common/include/LumiSelection.h"
 
 #include "UHH2/common/include/NSelections.h"
 #include "UHH2/common/include/ObjectIdUtils.h"
@@ -27,6 +30,10 @@ class ttDMPostSelectionModule: public AnalysisModule {
   Event::Handle<TTbarGen> h_ttbargen;
 
   //Event::Handle<std::vector<ReconstructionHypothesis>> h_ttbar_hyps;
+  bool is_mc;
+  bool lumisel;
+  bool mcpileupreweight;
+  bool pvfilter;
 
   JetId btagAK4_wp;
   Event::Handle<int> h_flag_toptagevent;
@@ -34,17 +41,21 @@ class ttDMPostSelectionModule: public AnalysisModule {
 
   // selections
   std::unique_ptr<Selection> btagAK4_sel;
-  std::unique_ptr<Selection> leptoppt_sel;
+  //std::unique_ptr<Selection> leptoppt_sel;
   //std::unique_ptr<Selection> chi2_sel;
   std::unique_ptr<Selection> met_sel;
   std::unique_ptr<Selection> mtlep_sel;
   std::unique_ptr<Selection> jetmetdphi_sel;
   std::unique_ptr<Selection> mt2w_sel;
+  std::unique_ptr<AnalysisModule> pu_reweight;
+  std::unique_ptr<AnalysisModule> primaryvertex_filter;
+  std::unique_ptr<Selection> lumi_selection;
 
   // hists
   std::unique_ptr<Hists> hi_input;
   //std::unique_ptr<Hists> hi_input__hyp;
-  std::unique_ptr<Hists> hi_leptoppt;
+  std::unique_ptr<Hists> hi_filter;
+  //std::unique_ptr<Hists> hi_leptoppt;
   //std::unique_ptr<Hists> hi_leptoppt__hyp;
   //std::unique_ptr<Hists> hi_chi2;
   //std::unique_ptr<Hists> hi_chi2__hyp;
@@ -65,6 +76,19 @@ class ttDMPostSelectionModule: public AnalysisModule {
 
 ttDMPostSelectionModule::ttDMPostSelectionModule(Context& ctx){
 
+  is_mc = ctx.get("dataset_type") == "MC";
+  mcpileupreweight = ctx.get("pileup_directory_25ns") != "";
+  pvfilter = string2bool(ctx.get("dopvfilter","true"));
+  lumisel = ctx.get("lumi_file") != "";
+
+  PrimaryVertexId pvid = StandardPrimaryVertexId();
+  if(is_mc) {
+    if(mcpileupreweight) pu_reweight.reset(new MCPileupReweight(ctx));
+  } else {
+    if(lumisel) lumi_selection.reset(new LumiSelection(ctx));
+    if(pvfilter) primaryvertex_filter.reset(new PrimaryVertexCleaner(pvid));
+  }
+  
   //bool muon(false), elec(false);
   const std::string channel(ctx.get("channel", ""));
   // if(channel == "muon") muon = true;
@@ -89,7 +113,7 @@ ttDMPostSelectionModule::ttDMPostSelectionModule(Context& ctx){
   // SELECTION
   // if(elec) leptoppt_sel.reset(new LeptonicTopPtCut(ctx, 140., infinity, "TTbarReconstruction", "Chi2"));
   // else if(muon) leptoppt_sel.reset(new AndSelection(ctx));
-  leptoppt_sel.reset(new AndSelection(ctx));
+  //leptoppt_sel.reset(new AndSelection(ctx));
 
   //chi2_sel.reset(new HypothesisDiscriminatorCut(ctx, 0., 50., "TTbarReconstruction", "Chi2"));
 
@@ -103,7 +127,8 @@ ttDMPostSelectionModule::ttDMPostSelectionModule(Context& ctx){
   hi_input.reset(new ttDMPostSelectionHists(ctx, "input"));
   //hi_input__hyp.reset(new HypothesisHists(ctx, "input__hyp_chi2min", "TTbarReconstruction", "Chi2"));
 
-  hi_leptoppt.reset(new ttDMPostSelectionHists(ctx, "leptoppt"));
+  hi_filter.reset(new ttDMPostSelectionHists(ctx, "filter"));
+  //hi_leptoppt.reset(new ttDMPostSelectionHists(ctx, "leptoppt"));
   //hi_leptoppt__hyp.reset(new HypothesisHists(ctx, "leptoppt__hyp_chi2min", "TTbarReconstruction", "Chi2"));
 
   //hi_chi2.reset(new ttDMPostSelectionHists(ctx, "chi2"));
@@ -130,12 +155,17 @@ ttDMPostSelectionModule::ttDMPostSelectionModule(Context& ctx){
 bool ttDMPostSelectionModule::process(Event& event) {
 
   hi_input->fill(event);
+  if(lumisel && !is_mc) if(!lumi_selection->passes(event)) return false;
+  if(mcpileupreweight && is_mc) pu_reweight->process(event);
+  if(pvfilter && !is_mc) primaryvertex_filter->process(event);
+
+  hi_filter->fill(event);
   //hi_input__hyp->fill(event);
 
   //// LEPTONIC-TOP pt selection
-  bool pass_leptoppt = leptoppt_sel->passes(event);
-  if(!pass_leptoppt) return false;
-  hi_leptoppt->fill(event);
+  // bool pass_leptoppt = leptoppt_sel->passes(event);
+  // if(!pass_leptoppt) return false;
+  // hi_leptoppt->fill(event);
   //hi_leptoppt__hyp->fill(event);
   ////
 
