@@ -12,7 +12,7 @@ ttDMSelectionHists::ttDMSelectionHists(uhh2::Context & ctx, const std::string & 
 
   // MUON
   muoN = book<TH1F>("muoN", ";# of muons", 20, 0, 20);
-  muo1__pt = book<TH1F>("muo1__pt", ";muon p_{T} [GeV]", 240, 0, 1200);
+  muo1__pt = book<TH1F>("muo1__pt", ";muon p_{T} [GeV]", 240, 0, 500);
   muo1__eta = book<TH1F>("muo1__eta", ";muon #eta", 60, -3, 3);
   muo1__minDR_jet = book<TH1F>("muo1__minDR_jet", ";#DeltaR_{min}(#mu, jet)", 60, 0, 6);
   muo1__pTrel_jet = book<TH1F>("muo1__pTrel_jet", ";p_{T, rel}(#mu, jet)", 180, 0, 180);
@@ -38,23 +38,23 @@ ttDMSelectionHists::ttDMSelectionHists(uhh2::Context & ctx, const std::string & 
 
   // JET
   jetN = book<TH1F>("jetN", ";# of jets", 20, 0, 20);
-  jet1__pt = book<TH1F>("jet1__pt", ";jet p_{T} [GeV]", 180, 0, 1800);
+  jet1__pt = book<TH1F>("jet1__pt", ";jet p_{T} [GeV]", 180, 0, 1200);
   jet1__eta = book<TH1F>("jet1__eta", ";jet #eta", 60, -3, 3);
-  jet2__pt = book<TH1F>("jet2__pt", ";jet p_{T} [GeV]", 180, 0, 1800);
-  jet2__eta = book<TH1F>("jet2__eta", ";jet #eta", 60, -3, 3);
-  jet3__pt = book<TH1F>("jet3__pt", ";jet p_{T} [GeV]", 180, 0, 1800);
-  jet3__eta = book<TH1F>("jet3__eta", ";jet #eta", 60, -3, 3);
+  jet2__pt = book<TH1F>("jet2__pt", ";jet 2 p_{T} [GeV]", 180, 0, 1800);
+  jet2__eta = book<TH1F>("jet2__eta", ";jet 2 #eta", 60, -3, 3);
+  jet3__pt = book<TH1F>("jet3__pt", ";jet 3 p_{T} [GeV]", 180, 0, 1800);
+  jet3__eta = book<TH1F>("jet3__eta", ";jet 3 #eta", 60, -3, 3);
 
   // TOPJET
   topjetN = book<TH1F>("topjetN", ";# of topjets", 20, 0, 20);
-  topjet1__pt = book<TH1F>("topjet1__pt", ";topjet p_{T} [GeV]", 180, 0, 1800);
-  topjet1__eta = book<TH1F>("topjet1__eta", ";topjet #eta", 60, -3, 3);
-  topjet2__pt = book<TH1F>("topjet2__pt", ";topjet p_{T} [GeV]", 180, 0, 1800);
-  topjet2__eta = book<TH1F>("topjet2__eta", ";topjet #eta", 60, -3, 3);
+  topjet1__pt = book<TH1F>("topjet1__pt", "leading topjet p_{T} [GeV]", 180, 0, 1800);
+  topjet1__eta = book<TH1F>("topjet1__eta", "leading topjet #eta", 60, -3, 3);
+  topjet2__pt = book<TH1F>("topjet2__pt", "topjet 2 p_{T} [GeV]", 180, 0, 1800);
+  topjet2__eta = book<TH1F>("topjet2__eta", "topjet 2 #eta", 60, -3, 3);
 
   // MET
-  met = book<TH1F>("met", ";MET [GeV]", 8, 160, 480);
-  met__pt = book<TH1F>("met__pt", ";MET [GeV]", 180, 0, 1800);
+  met = book<TH1F>("met", ";MET [GeV]", 500, 0, 5000);
+  met__pt = book<TH1F>("met__pt", ";MET pt [GeV]", 180, 0, 1800);
   met__phi = book<TH1F>("met__phi", ";MET #phi", 72, -3.6, 3.6);
   //htlep__pt = book<TH1F>("htlep__pt", ";H_{T}^{lep} [GeV]", 180, 0, 1800);
   met_VS_dphi_lep1 = book<TH2F>("met_VS_dphi_lep1", ";MET [GeV];#Delta#phi(MET, l1)", 180, 0, 1800, 60, 0, 3.6);
@@ -65,18 +65,19 @@ ttDMSelectionHists::ttDMSelectionHists(uhh2::Context & ctx, const std::string & 
 
   // TTDM
   mtlep = book<TH1F>("mtlep", ";M_{T}", 10, 0, 500);
+  mtlep2 = book<TH1F>("mtlep2", ";M_{T}", 50, 0, 500);
   mt2w = book<TH1F>("mt2w", ";M^{W}_{T2}", 7, 95, 410);
   jetmetdphi = book<TH1F>("jetmetdphi", ";#Delta#phi(j_{1,2},E_{T}^{miss})", 8, 0, 3.2);
 }
 
 void ttDMSelectionHists::fill(const uhh2::Event & event){
-
+   
   assert(event.pvs && event.muons && event.electrons);
   assert(event.jets && event.topjets && event.met);
 
   const double weight = event.weight;
   wgt->Fill(weight);
-
+  
   // PV
   pvN->Fill(event.pvs->size(), weight);
 
@@ -93,7 +94,7 @@ void ttDMSelectionHists::fill(const uhh2::Event & event){
     float minDR_topjet(uhh2::infinity);
     for(const auto& tj: *event.topjets)
       if(uhh2::deltaR(p, tj) < minDR_topjet) minDR_topjet = uhh2::deltaR(p, tj);
-
+ 
     if(i == 0){
       muo1__pt->Fill(p.pt(), weight);
       muo1__eta->Fill(p.eta(), weight);
@@ -109,7 +110,7 @@ void ttDMSelectionHists::fill(const uhh2::Event & event){
       muo2__minDR_topjet->Fill(minDR_topjet, weight);
     }
   }
-
+  
   // ELECTRON
   int ele_n(event.electrons->size());
   eleN->Fill(ele_n, weight);
@@ -123,7 +124,7 @@ void ttDMSelectionHists::fill(const uhh2::Event & event){
     float minDR_topjet(uhh2::infinity);
     for(const auto& tj: *event.topjets)
       if(uhh2::deltaR(p, tj) < minDR_topjet) minDR_topjet = uhh2::deltaR(p, tj);
-
+    
     if(i == 0){
       ele1__pt->Fill(p.pt(), weight);
       ele1__eta->Fill(p.eta(), weight);
@@ -139,7 +140,7 @@ void ttDMSelectionHists::fill(const uhh2::Event & event){
       ele2__minDR_topjet->Fill(minDR_topjet, weight);
     }
   }
-
+  
   // JET
   int jet_n(event.jets->size());
   jetN->Fill(jet_n, weight);
@@ -177,7 +178,7 @@ void ttDMSelectionHists::fill(const uhh2::Event & event){
       topjet2__eta->Fill(p.eta(), weight);
     }
   }
-
+  
   // MET
   met->Fill(event.met->pt(), weight);
   met__pt->Fill(event.met->pt(), weight);
@@ -196,10 +197,11 @@ void ttDMSelectionHists::fill(const uhh2::Event & event){
   if(event.jets->size()) met_VS_dphi_jet1->Fill(event.met->pt(), fabs(uhh2::deltaPhi(*event.met, event.jets->at(0))), weight);
   if(event.jets->size()>1) met_VS_dphi_jet2->Fill(event.met->pt(), fabs(uhh2::deltaPhi(*event.met, event.jets->at(1))), weight);
   if(event.jets->size()>1) jetmetdphi->Fill(std::min(uhh2::deltaPhi(*event.met, event.jets->at(0)),uhh2::deltaPhi(*event.met, event.jets->at(1))),weight);
-
+  
   // TTDM
   if (lep1 && event.jets->size()>1) mt2w->Fill(CalculateMT2W(event), weight);
-  mtlep->Fill(sqrt(2*event.met->pt()*lep1->pt()*(1-cos(uhh2::deltaPhi(*event.met, *lep1)))), weight);
+  if (lep1) mtlep->Fill(sqrt(2*event.met->pt()*lep1->pt()*(1-cos(uhh2::deltaPhi(*event.met, *lep1)))),weight);
+  if (lep1) mtlep2->Fill(sqrt(2*event.met->pt()*lep1->pt()*(1-cos(uhh2::deltaPhi(*event.met, *lep1)))),weight);
 
   return;
 }

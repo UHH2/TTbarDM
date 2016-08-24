@@ -100,11 +100,11 @@ bool uhh2::METJetDPhiCut::passes(const uhh2::Event & event){
   assert(event.jets->size() >= maxjetindex_);
 
   double mindeltaphi = 9999;
-  for(size_t i=0; i<=maxjetindex_; i++){
-    double deltaphi = uhh2::deltaPhi(*event.met, event.jets->at(maxjetindex_));
-    if (deltaphi < mindeltaphi) mindeltaphi=deltaphi;
-  }
-  return (mindeltaphi > min_dphi_);
+  // for(size_t i=0; i<maxjetindex_; i++){
+  double deltaphi = uhh2::deltaPhi(*event.met, event.jets->at(maxjetindex_-1));
+  //  if (deltaphi < mindeltaphi) mindeltaphi=deltaphi;
+  //}
+  return (deltaphi > min_dphi_);
 }
 ////////////////////////////////////////////////////////
 
@@ -196,6 +196,27 @@ bool uhh2::TopTagEventSelection::passes(const uhh2::Event & event){
   return false;
 }
 ////////////////////////////////////////////////////////
+uhh2::Type2TopTagEventSelection::Type2TopTagEventSelection(const TopJetId& tjetID, float minDR_jet_ttag, float maxDR_jet_ttag, float mininvmass_jet_ttag, float maxinvmass_jet_ttag):
+   topjetID_(tjetID), minDR_jet_toptag_(minDR_jet_ttag), maxDR_jet_toptag_(maxDR_jet_ttag), mininvmass_jet_ttag_(mininvmass_jet_ttag), maxinvmass_jet_ttag_(maxinvmass_jet_ttag){
+   topjet1_sel_.reset(new NTopJetSelection(1, -1, topjetID_));
+}
+
+bool uhh2::Type2TopTagEventSelection::passes(const uhh2::Event & event){
+
+  if(!topjet1_sel_->passes(event)) return false;
+
+  for(auto & topjet : * event.topjets){
+    if(!topjetID_(topjet, event)) continue;
+
+    for(auto & jet : * event.jets)
+       if(deltaR(jet, topjet) > minDR_jet_toptag_ && deltaR(jet, topjet) < maxDR_jet_toptag_ && (topjet.v4()+jet.v4()).M() > mininvmass_jet_ttag_ && (topjet.v4()+jet.v4()).M() < maxinvmass_jet_ttag_) 
+          {
+             return true;
+          }
+  }
+  return false;
+}
+////////////////////////////////////////////////////////
 
 uhh2::LeptonicTopPtCut::LeptonicTopPtCut(uhh2::Context& ctx, float pt_min, float pt_max, const std::string& hyps_name, const std::string& disc_name):
   tlep_pt_min_(pt_min), tlep_pt_max_(pt_max), h_hyps_(ctx.get_handle<std::vector<ReconstructionHypothesis>>(hyps_name)), disc_name_(disc_name) {}
@@ -226,3 +247,11 @@ bool uhh2::HypothesisDiscriminatorCut::passes(const uhh2::Event & event){
   return (disc_val > disc_min_) && (disc_val < disc_max_);
 }
 ////////////////////////////////////////////////////////
+
+uhh2::LikelihoodSelection::LikelihoodSelection(uhh2::Context& ctx, float lmax ):
+   lmax_(lmax), h_likelihood_(ctx.get_handle<double>("likelihood")) {}
+
+bool uhh2::LikelihoodSelection::passes(const uhh2::Event & event){
+   double likelihood = event.get(h_likelihood_);
+   return ((likelihood < lmax_) && (likelihood > 0)) ;
+}

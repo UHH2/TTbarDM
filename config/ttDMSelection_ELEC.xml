@@ -59,15 +59,6 @@
       <Item Name="channel" Value="electron" />
       <!-- <Item Name="triggername" Value="HLT_.." /> -->
 
-      <Item Name="dopvfilter" Value="true" />
-      <Item Name="dometfilters" Value="true" />
-
-      <Item Name="lumi_file" Value="/eos/uscms/store/user/drberry/LumiFiles/13TeV/Lumifile.root" />
- 
-      <Item Name="pileup_directory_data" Value="/eos/uscms/store/user/drberry/ZprimePreSelectionCycle/RunII_PRData_8_4_2015/uhh2.AnalysisModuleRunner.DATA.All_Data.root" />
-      <Item Name="pileup_directory_50ns" Value="/eos/uscms/store/user/drberry/ZprimePreSelectionCycle/RunII_PRData_8_4_2015/uhh2.AnalysisModuleRunner.MC.TT.24.root" />
-      <Item Name="pileup_directory_25ns" Value="/eos/uscms/store/user/drberry/ZprimePreSelectionCycle/RunII_PRData_8_4_2015/uhh2.AnalysisModuleRunner.MC.TTbarDMJets_pseudoscalar_Mchi-10_Mphi-100.25.root" />
-
       <Item Name="AnalysisModule" Value="ttDMSelectionModule" />
     </UserConfig>
 

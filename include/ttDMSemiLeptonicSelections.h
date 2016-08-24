@@ -107,6 +107,22 @@ namespace uhh2 {
   };
   /////
 
+   class Type2TopTagEventSelection: public Selection {
+   public:
+      explicit Type2TopTagEventSelection(const TopJetId& tjet_id=CMSTopTag(), float minDR_jet_ttag=0.8, float maxDR_jet_ttag=2.0, float mininvmass_jet_ttag=140., float maxinvmass_jet_ttag=250.);
+    virtual bool passes(const Event&) override;
+
+   private:
+      TopJetId topjetID_;
+      std::unique_ptr<Selection> topjet1_sel_;
+      float minDR_jet_toptag_;
+      float maxDR_jet_toptag_;  
+      float mininvmass_jet_ttag_;
+      float maxinvmass_jet_ttag_;
+   };
+  /////
+
+
   class LeptonicTopPtCut: public Selection {
    public:
     explicit LeptonicTopPtCut(Context&, float, float, const std::string& hyps="TTbarReconstruction", const std::string& disc="Chi2");
@@ -131,4 +147,14 @@ namespace uhh2 {
   };
   /////
 
+  class LikelihoodSelection: public Selection {
+   public:
+     explicit LikelihoodSelection(uhh2::Context& ctx, float lmax );
+     virtual bool passes(const Event&) override;
+
+  private:
+     float lmax_;
+     Event::Handle<double> h_likelihood_;
+  };   
+   /////
 }

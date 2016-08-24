@@ -43,7 +43,7 @@ ttDMPostSelectionHists::ttDMPostSelectionHists(uhh2::Context& ctx, const std::st
   topjet2__eta = book<TH1F>("topjet2__eta", ";topjet #eta", 60, -3, 3);
 
   // MET
-  met = book<TH1F>("met", ";MET [GeV]", 8, 160, 480);
+  met = book<TH1F>("met", ";MET [GeV]", 25, 0, 1800);
   met__pt = book<TH1F>("met__pt", ";MET [GeV]", 180, 0, 1800);
   met__phi = book<TH1F>("met__phi", ";MET #phi", 72, -3.6, 3.6);
   //htlep__pt = book<TH1F>("htlep__pt", ";H_{T}^{lep} [GeV]", 180, 0, 1800);
