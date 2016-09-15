@@ -97,6 +97,7 @@ bool ttDMReconstruction_Likelihood::process(uhh2::Event & e)
          nu_scan.SetPxPyPzE(fit->GetParameter(0), fit->GetParameter(1), fit->GetParameter(2), energy); 
          MT = (indata_likelihood.lep+nu_scan+indata_likelihood.bjet).M();
          double res_T = TMath::Power((MT-Mt0),2)/TMath::Power(sigmaMt,2);
+         //double res_T = TMath::Power((MT-Mt0),2)/TMath::Power(sigmaMt,2)+(TMath::Power((indata_likelihood.met.Px()-fit->GetParameter(0)),2) / TMath::Power(27.3,2)) + (TMath::Power((indata_likelihood.met.Py()-fit->GetParameter(1)),2) / TMath::Power(27.4,2));
          if (res_T < res_min)
             {
                res_min =res_T;

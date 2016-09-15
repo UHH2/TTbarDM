@@ -99,7 +99,7 @@ bool uhh2::METJetDPhiCut::passes(const uhh2::Event & event){
   assert(event.met);
   assert(event.jets->size() >= maxjetindex_);
 
-  double mindeltaphi = 9999;
+  //  double mindeltaphi = 9999;
   // for(size_t i=0; i<maxjetindex_; i++){
   double deltaphi = uhh2::deltaPhi(*event.met, event.jets->at(maxjetindex_-1));
   //  if (deltaphi < mindeltaphi) mindeltaphi=deltaphi;

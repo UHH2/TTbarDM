@@ -126,6 +126,7 @@ class ttDMSelectionModuleAfterLikelihood: public AnalysisModule {
    std::unique_ptr<Hists> jetmetdphi_h;
    std::unique_ptr<Hists> jetmetdphi_noniso_h;
    std::unique_ptr<Hists> likelihood_hists_preselection;
+   std::unique_ptr<Hists> likelihood_hists_met;
    std::unique_ptr<Hists> likelihood_hists_twodcut;
    std::unique_ptr<Hists> likelihood_hists_jetmetdphi_highMET_h;
    std::unique_ptr<Hists> likelihood_hists_highMET;
@@ -194,9 +195,10 @@ ttDMSelectionModuleAfterLikelihood::ttDMSelectionModuleAfterLikelihood(Context &
    //Eff(b)=3%
    
    JetId subBtag = CSVBTag(0.46f);
-   const TopJetId HTTTopJetId_WP3 = AndId<TopJet>(PtEtaCut(150., 2.4),HEPTopTagV2(85,280,0.47, subBtag), Tau32(0.97)); 
-   const TopJetId HTTTopJetId_WP1= AndId<TopJet>(PtEtaCut(150., 2.4),HEPTopTagV2(110,185,0.2, subBtag), Tau32(0.93));
-      
+   //const TopJetId HTTTopJetId_WP3 = AndId<TopJet>(PtEtaCut(150., 2.4),HEPTopTagV2(85,280,0.47, subBtag), Tau32(0.97)); 
+   const TopJetId HTTTopJetId_WP3 = AndId<TopJet>(PtEtaCut(150., 2.4),HEPTopTagV2(120,330,0.25,-0.76,0.24), Tau32(0.71));   //old HepTT, as long as subjet b-tag does not work
+   //const TopJetId HTTTopJetId_WP1= AndId<TopJet>(PtEtaCut(150., 2.4),HEPTopTagV2(110,185,0.2, subBtag), Tau32(0.93));
+   const TopJetId HTTTopJetId_WP1= AndId<TopJet>(PtEtaCut(150., 2.4),HEPTopTagV2(80,300,0.5,-0.67,0.71), Tau32(0.91));//old HepTT, as long as subjet b-tag does not work
    //// OBJ CLEANING
    muon_cleaner_iso.reset(new MuonCleaner(AndId<Muon>(MuonIDMedium(), PtEtaCut(47., 2.5),MuonIso(0.15))));
    ////
@@ -336,6 +338,7 @@ ttDMSelectionModuleAfterLikelihood::ttDMSelectionModuleAfterLikelihood(Context &
    likelihood_hists_cut2_noiso_mtlep.reset(new ttDMReconstructionHists_Likelihood(ctx, "likelihood_hists_cut2_noiso_mtlep"));
                   
    likelihood_hists_preselection.reset(new ttDMReconstructionHists_Likelihood(ctx, "hists_likelihood_preselection"));
+   likelihood_hists_met.reset(new ttDMReconstructionHists_Likelihood(ctx, "hists_likelihood_met"));
    likelihood_hists_twodcut.reset(new ttDMReconstructionHists_Likelihood(ctx, "hists_likelihood_twodcut"));
    likelihood_hists_highMET.reset(new ttDMReconstructionHists_Likelihood(ctx,"likelihood_hists_highMET"));
    likelihood_hists_noiso.reset(new ttDMReconstructionHists_Likelihood(ctx, "hists_likelihood_noiso"));
@@ -396,7 +399,8 @@ bool ttDMSelectionModuleAfterLikelihood::process(Event & event){
    events_met_h->fill(event);
    topjets_met_h->fill(event);
    if(!event.isRealData) genhists_met_h->fill(event);
-  
+   likelihood_hists_met->fill(event); 
+ 
    bool pass_twodcut = event.get(h_flag_twodcut);
    
    if(pass_twodcut)                                               //pre-selection control plots 

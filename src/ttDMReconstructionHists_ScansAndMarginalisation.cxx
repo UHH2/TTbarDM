@@ -237,7 +237,7 @@ void ttDMReconstructionHists_ScansAndMarginalisation::fill(const Event & event){
                   }
                likelihood = likelihood*2 + (TMath::Power((MT-Mt0),2)/TMath::Power(sigmaMt,2));
                //test MET in Chi2
-               // likelihood = likelihood*2 + (TMath::Power((MT-Mt0),2)/TMath::Power(sigmaMt,2)) + (TMath::Power((event.met->v4().Px()-px),2) / TMath::Power(27.3,2)) + (TMath::Power((event.met->v4().Py()-py),2) / TMath::Power(27.4,2));
+               //likelihood = likelihood*2 + (TMath::Power((MT-Mt0),2)/TMath::Power(sigmaMt,2)) + (TMath::Power((event.met->v4().Px()-px),2) / TMath::Power(27.3,2)) + (TMath::Power((event.met->v4().Py()-py),2) / TMath::Power(27.4,2));
                
                int binx,biny,binz;
                h_px_py_likelihood_1 ->GetBinXYZ(h_px_py_likelihood_1 ->FindBin(px,py),binx,biny,binz);

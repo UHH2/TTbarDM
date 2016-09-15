@@ -8,6 +8,9 @@
 #include "TFile.h"
 #include "TError.h"
 using namespace uhh2;
+double METUncertainty_px(MET *met);
+double METUncertainty_py(MET *met);
+double CalcUncertainty(MET *met, bool px, double up, double down);
 
 
 ttDMReconstructionHists_Likelihood::ttDMReconstructionHists_Likelihood(Context & ctx, const std::string & dirname): Hists(ctx, dirname){
@@ -16,14 +19,34 @@ ttDMReconstructionHists_Likelihood::ttDMReconstructionHists_Likelihood(Context &
    h_recneutrino =ctx.get_handle<LorentzVector>("rec_neutrino");
    h_ttbargen =ctx.get_handle<TTbarGen>("ttbargen");
    
-   hist_chi2 = book<TH1F>("chi2","#chi^{2}", 500, 0, 500);
+   hist_chi2 = book<TH1F>("chi2","#chi^{2}", 50, 0, 500);
    
    hist_pxrec_pxgen = book<TH1F>("pxrec_pxgen","p_{x}^{rec} - p_{x}^{gen}", 100, -500, 500);
    hist_pyrec_pygen = book<TH1F>("pyrec_pygen","p_{y}^{rec} - p_{y}^{gen}", 100, -500, 500);
    hist_pzrec_pzgen = book<TH1F>("pzrec_pzgen","p_{z}^{rec} - p_{z}^{gen}", 100, -500, 500);
    
    hist_DM_MET = book<TH1F>("DM_MET","|#vec{MET} - #vec{p_{T,#nu}^{rec}}| [GeV]", 500, 0, 5000);
-   hist_DM_MET_chi2 = book<TH1F>("DM_MET_chi2","DM_MET_chi2", 250, 0, 1000);
+   hist_DM_MET_chi2 = book<TH1F>("DM_MET_chi2","DM_MET_chi2", 50, 0, 20000);
+   
+   hist_unc_px = book<TH1F>("unc_px","unc_px", 30, 0, 300);
+   hist_unc_py = book<TH1F>("unc_py","unc_py", 30, 0, 300);
+   hist_relunc_px = book<TH1F>("relunc_px","relunc_px", 10, 0, 100);
+   hist_relunc_py = book<TH1F>("relunc_py","relunc_py", 10, 0, 100);
+   
+   //test different variables
+   hist_chi2_METpT_components = book<TH1F>("chi2_METpT_components","chi2_METpT_components", 50, 0, 1000);    
+   hist_pTmisspT = book<TH1F>("pTmisspT","pTmisspT", 100, -2000, 2000);         
+   hist_pTmisspT_fabs = book<TH1F>("pTmisspT_abs","|pTmisspT|", 50, 0, 2000);         //done 
+   hist_pTmisspT_quotient = book<TH1F>("pTmisspT_quotient","pTmisspT_quotient", 50, 0, 50);        
+   hist_2D_ptmiss_pT=book<TH2F>("hist_2D_ptmiss_pT","hist_2D_ptmiss_pT", 150, 0, 1500, 150,0, 1500);                 //done
+   hist_2D_METx_px =book<TH2F>("hist_2D_METx_px","hist_2D_METx_px", 200, -1000, 1000, 200,-1000, 1000);              //done
+   hist_2D_METy_py=book<TH2F>("hist_2D_METy_py","hist_2D_METy_py",200, -1000, 1000, 200,-1000, 1000);                //done
+    
+   hist_Metxpx= book<TH1F>("hist_Metxpx","hist_Metxpx", 100, -2000, 2000); 
+   hist_Metypy = book<TH1F>("hist_Metypy","hist_Metypy", 100, -2000, 2000);
+   hist_Metxpx_quad = book<TH1F>("hist_Metxpx_quad","hist_Metxpx_quad", 50, 0, 500000); 
+   hist_Metypy_quad = book<TH1F>("hist_Metypy_quad","hist_Metypy_quad", 50, 0, 500000);
+   hist_Metxpx_Metypy_quad = book<TH1F>("hist_Metxpx_Metypy_quad","hist_Metxpx_Metypy_quad", 50, 0, 1000000); 
 
    //DM_MET with generated neutrino
    hist_DM_MET_gen = book<TH1F>("DM_MET_gen","|#vec{MET} - #vec{p_{T,#nu}^{gen}}| [GeV]", 500, 0, 5000);
@@ -112,19 +135,42 @@ void ttDMReconstructionHists_Likelihood::fill(const Event & event){
    LorentzVector neutrino = event.get(h_recneutrino);
   
    hist_chi2->Fill(chi2, event.weight);
-   
+   hist_chi2_METpT_components->Fill(chi2 + TMath::Power((event.met->v4().Px()-neutrino.Px()),2)/TMath::Power(122.2,2) + TMath::Power((event.met->v4().Py()-neutrino.Py()),2)/TMath::Power(137.4,2), event.weight);
+
    double DM_MET = std::sqrt((event.met->v4().Px()-neutrino.Px())*(event.met->v4().Px()-neutrino.Px())+(event.met->v4().Py()-neutrino.Py())*(event.met->v4().Py()-neutrino.Py()));
    hist_DM_MET->Fill(DM_MET,event.weight);
-   
+      
    hist_neutrino_pT->Fill(neutrino.Pt(),event.weight);
    hist_neutrino_phi->Fill(TVector2::Phi_mpi_pi(neutrino.phi()),event.weight);
+ 
+   hist_pTmisspT->Fill(event.met->v4().Pt()-neutrino.Pt(),event.weight);
+   hist_pTmisspT_fabs->Fill(fabs(event.met->v4().Pt()-neutrino.Pt()),event.weight);
+   hist_pTmisspT_quotient->Fill(event.met->v4().Pt()/neutrino.Pt(),event.weight);
+   hist_2D_ptmiss_pT ->Fill(event.met->v4().Pt(),neutrino.Pt(),event.weight);
+   hist_2D_METx_px ->Fill(event.met->v4().Px(),neutrino.Px(),event.weight);
+   hist_2D_METy_py ->Fill(event.met->v4().Py(),neutrino.Py(),event.weight);
 
-   double chi2_comparisonMetNu = (event.met->v4().Px() - neutrino.Px()) * (event.met->v4().Px() - neutrino.Px()) / (0.1*event.met->v4().Px() *0.1*event.met->v4().Px()) + (event.met->v4().Py() - neutrino.Py()) * (event.met->v4().Py() - neutrino.Py()) / (0.1*event.met->v4().Py() *0.1*event.met->v4().Py());
+   double unc_px = METUncertainty_px(event.met);
+   double unc_py = METUncertainty_py(event.met);
+   
+   hist_unc_px ->Fill(unc_px, event.weight);
+   hist_unc_py ->Fill(unc_py, event.weight);
+   hist_relunc_px ->Fill(unc_px*100/event.met->v4().Px(), event.weight);
+   hist_relunc_py ->Fill(unc_py*100/event.met->v4().Py(), event.weight);
+   
+
+   double chi2_comparisonMetNu = (event.met->v4().Px() - neutrino.Px()) * (event.met->v4().Px() - neutrino.Px()) / (unc_px*unc_px) + (event.met->v4().Py() - neutrino.Py()) * (event.met->v4().Py() - neutrino.Py()) / (unc_py*unc_py);
    hist_DM_MET_chi2->Fill(chi2_comparisonMetNu, event.weight);
       
    hist_MET_RecNeutrino_px->Fill((event.met->v4().Px()-neutrino.Px())/event.met->v4().Px(), event.weight);
    hist_MET_RecNeutrino_py->Fill((event.met->v4().Py()-neutrino.Py())/event.met->v4().Py(), event.weight);
     
+   hist_Metxpx  ->Fill((event.met->v4().Px()-neutrino.Px()),event.weight);
+   hist_Metypy  ->Fill((event.met->v4().Py()-neutrino.Py()),event.weight);
+   hist_Metxpx_quad ->Fill(TMath::Power((event.met->v4().Px()-neutrino.Px()),2),event.weight);
+   hist_Metypy_quad ->Fill(TMath::Power((event.met->v4().Py()-neutrino.Py()),2),event.weight);
+   hist_Metxpx_Metypy_quad ->Fill((TMath::Power((event.met->v4().Px()-neutrino.Px()),2) + TMath::Power((event.met->v4().Py()-neutrino.Py()),2)),event.weight);
+
    if (event.isRealData) return;
 
    TTbarGen ttbargen = event.get(h_ttbargen);
@@ -171,9 +217,7 @@ void ttDMReconstructionHists_Likelihood::fill(const Event & event){
    x = DM_MET -fabs(DM.Pt());
    hist_DMMET_GenDMpT_genmet -> Fill(x, event.weight);
 
-   
-   
- 
+    
    if(ttbargen.IsSemiLeptonicDecay())
       {
          hist_MET_Neutrino_px->Fill((event.met->v4().Px()-ttbargen.Neutrino().v4().Px())/ttbargen.Neutrino().v4().Px(), event.weight);
@@ -269,3 +313,48 @@ void ttDMReconstructionHists_Likelihood::fill(const Event & event){
    return;
 }
 
+double METUncertainty_px(MET *met)
+{
+   double uncertainty_up_px[6] = {met->shiftedPx_JetEnUp(), met->shiftedPx_JetResUp(),  met->shiftedPx_UnclusteredEnUp(), met->shiftedPx_ElectronEnUp(),  met->shiftedPx_TauEnUp(), met->shiftedPx_MuonEnUp()}; 
+   double uncertainty_down_px[6] = {met->shiftedPx_JetEnDown(), met->shiftedPx_JetResDown(),  met->shiftedPx_UnclusteredEnDown(), met->shiftedPx_ElectronEnDown(),  met->shiftedPx_TauEnDown(), met->shiftedPx_MuonEnDown()}; 
+
+   double total_unc =0;
+   for (int i = 0;i<6;i++){   
+      double unc = CalcUncertainty(met, true, uncertainty_up_px[i], uncertainty_down_px[i]);
+      total_unc = total_unc+ unc*unc; 
+   }
+   total_unc = sqrt(total_unc);
+   return total_unc;
+}   
+
+double METUncertainty_py(MET *met)
+{
+   double uncertainty_up_py[6] = {met->shiftedPy_JetEnUp(), met->shiftedPy_JetResUp(),  met->shiftedPy_UnclusteredEnUp(), met->shiftedPy_ElectronEnUp(),  met->shiftedPy_TauEnUp(), met->shiftedPy_MuonEnUp()}; 
+   double uncertainty_down_py[6] = {met->shiftedPy_JetEnDown(), met->shiftedPy_JetResDown(),  met->shiftedPy_UnclusteredEnDown(), met->shiftedPy_ElectronEnDown(),  met->shiftedPy_TauEnDown(), met->shiftedPy_MuonEnDown()};  
+
+   double total_unc =0;
+   for (int i = 0;i<6;i++){   
+      double unc = CalcUncertainty(met, false, uncertainty_up_py[i], uncertainty_down_py[i]);
+      total_unc = total_unc+ unc*unc; 
+   }
+   total_unc = sqrt(total_unc);
+   return total_unc;
+}
+
+double CalcUncertainty(MET *met, bool px, double up, double down)
+{
+   double unc =0;
+   double met_unc_up;
+   double met_unc_down;
+   if (px){
+      met_unc_up = fabs(up - met->v4().Px());
+      met_unc_down = fabs(met->v4().Px() -down);
+   }
+   else {
+      met_unc_up = fabs(up - met->v4().Py());
+      met_unc_down = fabs(met->v4().Py()-down);
+   }
+   if (met_unc_up >= met_unc_down ) unc=met_unc_up;
+   else unc = met_unc_down;
+   return unc;
+}

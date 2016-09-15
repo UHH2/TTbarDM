@@ -15,7 +15,7 @@ private:
    TH1F *hist_pxrec_pxgen;
    TH1F *hist_pyrec_pygen;
    TH1F *hist_pzrec_pzgen;
-   TH1F *hist_DM_MET, *hist_DM_MET_chi2, *hist_DM_MET_semilept, *hist_DM_MET_chi2_semilept;
+   TH1F *hist_DM_MET,  *hist_DM_MET_chi2, *hist_DM_MET_semilept, *hist_DM_MET_chi2_semilept;
    TH1F *hist_MET_Neutrino_px; 
    TH1F *hist_MET_Neutrino_py; 
    TH1F *hist_MET_Neutrino_DM_px;
@@ -78,4 +78,23 @@ private:
    TH1F *hist_neutrino_pT_120_220_reweighted;
    TH1F *hist_neutrino_pT_220_320_reweighted;
    TH1F *hist_neutrino_pT_320_reweighted;
+
+   TH2F *hist_2D_ptmiss_pT;
+   TH2F *hist_2D_METx_px;
+   TH2F *hist_2D_METy_py;
+
+   TH1F *hist_chi2_METpT_components;
+   TH1F *hist_pTmisspT;
+   TH1F *hist_pTmisspT_fabs;
+   TH1F *hist_pTmisspT_quotient;
+   TH1F *hist_Metxpx;
+   TH1F *hist_Metypy;
+   TH1F *hist_Metxpx_quad;
+   TH1F *hist_Metypy_quad;
+   TH1F *hist_Metxpx_Metypy_quad;
+      
+   TH1F *hist_unc_px;
+   TH1F *hist_unc_py;
+   TH1F *hist_relunc_px;
+   TH1F *hist_relunc_py;
 };

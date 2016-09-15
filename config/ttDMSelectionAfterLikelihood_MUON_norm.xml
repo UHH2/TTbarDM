@@ -2,8 +2,8 @@
 <!DOCTYPE JobConfiguration PUBLIC "" "JobConfig.dtd" [
 
   <!ENTITY NEVT "-1">
-  <!ENTITY PRESELdir "/nfs/dust/cms/user/mameyer/TTDMDM/selection_MUON_RunII_25ns_76X/WithMETinChi/">
-  <!ENTITY SELdir "/nfs/dust/cms/user/mameyer/TTDMDM/selection_MUON_RunII_25ns_76X_AfterLikelihood/WithMETinChi/norm/">
+  <!ENTITY PRESELdir "/nfs/dust/cms/user/mameyer/TTDMDM/selection_MUON_RunII_25ns_76X/WithLikelihood/">
+  <!ENTITY SELdir "/nfs/dust/cms/user/mameyer/TTDMDM/selection_MUON_RunII_25ns_76X_AfterLikelihood/WithLikelihood/norm/">
   <!ENTITY PROOFdir  "/nfs/dust/cms/user/mameyer/PROOF">
 ]>
 
@@ -16,8 +16,8 @@
   <Library Name="libSUHH2ttDMSemiLeptonic"/>
   <Package Name="SUHH2ttDMSemiLeptonic.par" />
  
-<Cycle Name="uhh2::AnalysisModuleRunner" OutputDirectory="&SELdir;/" PostFix="" TargetLumi="2263.5525" > 
-<!--<Cycle Name="uhh2::AnalysisModuleRunner" OutputDirectory="&SELdir;/" PostFix="" TargetLumi="2263.5525" RunMode="PROOF" ProofServer="lite://" ProofWorkDir="&PROOFdir;/" ProofNodes="10" > -->
+<!--<Cycle Name="uhh2::AnalysisModuleRunner" OutputDirectory="&SELdir;/" PostFix="" TargetLumi="2263.5525" > -->
+<Cycle Name="uhh2::AnalysisModuleRunner" OutputDirectory="&SELdir;/" PostFix="" TargetLumi="2263.5525" RunMode="PROOF" ProofServer="lite://" ProofWorkDir="&PROOFdir;/" ProofNodes="10" > 
  
 
 <!-- ========================================================= signals: scalar ===================================================================== -->
