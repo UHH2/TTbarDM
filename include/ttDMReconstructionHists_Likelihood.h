@@ -22,6 +22,8 @@ private:
    TH1F *hist_MET_Neutrino_DM_py;
    TH1F *hist_MET_RecNeutrino_px; 
    TH1F *hist_MET_RecNeutrino_py; 
+   TH1F *hist_MET_RecNeutrino_px_abs; 
+   TH1F *hist_MET_RecNeutrino_py_abs; 
    TH1F *hist_MET_RecNeutrino_DM_px;
    TH1F *hist_MET_RecNeutrino_DM_py;
    TH1F *hist_DM_MET_gen;
@@ -29,6 +31,8 @@ private:
    uhh2::Event::Handle<double> h_likelihood;
    uhh2::Event::Handle<LorentzVector> h_recneutrino;
    uhh2::Event::Handle<TTbarGen> h_ttbargen;
+   uhh2::Event::Handle<std::vector<TopJet>> h_heptopjets_WP3;
+   uhh2::Event::Handle<Jet> h_bjets;
 
    TH1F *hist_DeltaR_genb_nextjet;
    TH1F *hist_DeltaR_genb_nextjet_lowchi2;
@@ -97,4 +101,23 @@ private:
    TH1F *hist_unc_py;
    TH1F *hist_relunc_px;
    TH1F *hist_relunc_py;
-};
+   TH1F *hist_pTttbar;
+   TH2F* hist_2d_DMMET_MET;
+   TH2F* hist_2d_DMMET_MT2W;
+   TH2F* hist_2d_DMMET_deltaphijetmet12;
+   TH2F* hist_2d_DMMET_deltaphijet123;
+   TH2F* hist_2d_DMMET_deltphilep;
+   TH2F* hist_2d_DMMET_mtlep;
+
+   TH1F *hist_deltaphi_tj_met;
+   TH1F *hist_deltaphi_tj_lep;
+   TH1F *hist_deltaphi_neutrino_lep;
+   TH1F *hist_deltaphi_tj_neutrino;
+   TH1F *hist_deltaphi_neutrino_met;
+   TH1F *hist_deltaphi_thad_tlep;
+   TH1F *hist_deltaphi_thad_MET;
+   
+   
+
+};  
+

@@ -18,14 +18,14 @@
   <Library Name="libSUHH2ttDMSemiLeptonic"/>
   <Package Name="SUHH2ttDMSemiLeptonic.par" />
  
-<!--<Cycle Name="uhh2::AnalysisModuleRunner" OutputDirectory="&SELdir;/" PostFix="" TargetLumi="2263.5525" > -->
-<Cycle Name="uhh2::AnalysisModuleRunner" OutputDirectory="&SELdir;/" PostFix="" TargetLumi="2263.5525" RunMode="PROOF" ProofServer="lite://" ProofWorkDir="&PROOFdir;/" ProofNodes="10" > 
+<Cycle Name="uhh2::AnalysisModuleRunner" OutputDirectory="&SELdir;/" PostFix="" TargetLumi="2263.5525" > 
+<!--<Cycle Name="uhh2::AnalysisModuleRunner" OutputDirectory="&SELdir;/" PostFix="" TargetLumi="2263.5525" RunMode="PROOF" ProofServer="lite://" ProofWorkDir="&PROOFdir;/" ProofNodes="10" > -->
  
 
 <!-- ========================================================= signals: scalar ===================================================================== -->
 
 <!-- Mchi = 1 GeV-->
-<InputData Lumi="13523.50" NEventsMax="&NEVT;" Type="MC" Version="ttbarDMJets_scalar_Mchi-1_Mphi-10" Cacheable="False">
+<!--<InputData Lumi="13523.50" NEventsMax="&NEVT;" Type="MC" Version="ttbarDMJets_scalar_Mchi-1_Mphi-10" Cacheable="False">
   <In FileName="&PRESELdir;/uhh2.AnalysisModuleRunner.MC.ttbarDMJets_scalar_Mchi-1_Mphi-10.root" Lumi="0.0"/> 
   <InputTree Name="AnalysisTree" />
   <OutputTree Name="AnalysisTree" />
@@ -77,10 +77,10 @@
   <In FileName="&PRESELdir;/uhh2.AnalysisModuleRunner.MC.ttbarDMJets_scalar_Mchi-1_Mphi-10000.root" Lumi="0.0"/> 
   <InputTree Name="AnalysisTree" />
   <OutputTree Name="AnalysisTree" />
-</InputData> 
+</InputData>--> 
 
 <!-- Mchi = 10 GeV -->
-<InputData Lumi="2923956.48" NEventsMax="&NEVT;" Type="MC" Version="ttbarDMJets_scalar_Mchi-10_Mphi-10" Cacheable="False">
+<!--<InputData Lumi="2923956.48" NEventsMax="&NEVT;" Type="MC" Version="ttbarDMJets_scalar_Mchi-10_Mphi-10" Cacheable="False">
   <In FileName="&PRESELdir;/uhh2.AnalysisModuleRunner.MC.ttbarDMJets_scalar_Mchi-10_Mphi-10.root" Lumi="0.0"/> 
   <InputTree Name="AnalysisTree" />
   <OutputTree Name="AnalysisTree" />
@@ -109,9 +109,9 @@
   <InputTree Name="AnalysisTree" />
   <OutputTree Name="AnalysisTree" />
 </InputData> 
-
+-->
 <!-- Mchi = 50 GeV -->
-<InputData Lumi="160346005.77" NEventsMax="&NEVT;" Type="MC" Version="ttbarDMJets_scalar_Mchi-50_Mphi-10" Cacheable="False">
+<!--<InputData Lumi="160346005.77" NEventsMax="&NEVT;" Type="MC" Version="ttbarDMJets_scalar_Mchi-50_Mphi-10" Cacheable="False">
   <In FileName="&PRESELdir;/uhh2.AnalysisModuleRunner.MC.ttbarDMJets_scalar_Mchi-50_Mphi-10.root" Lumi="0.0"/> 
   <InputTree Name="AnalysisTree" />
   <OutputTree Name="AnalysisTree" />
@@ -146,9 +146,9 @@
   <InputTree Name="AnalysisTree" />
   <OutputTree Name="AnalysisTree" />
 </InputData> 
-
+-->
 <!-- Mchi = 150 GeV -->
-<InputData Lumi="6205792400.37" NEventsMax="&NEVT;" Type="MC" Version="ttbarDMJets_scalar_Mchi-150_Mphi-10" Cacheable="False">
+<!--<InputData Lumi="6205792400.37" NEventsMax="&NEVT;" Type="MC" Version="ttbarDMJets_scalar_Mchi-150_Mphi-10" Cacheable="False">
   <In FileName="&PRESELdir;/uhh2.AnalysisModuleRunner.MC.ttbarDMJets_scalar_Mchi-150_Mphi-10.root" Lumi="0.0"/> 
   <InputTree Name="AnalysisTree" />
   <OutputTree Name="AnalysisTree" />
@@ -171,9 +171,9 @@
   <InputTree Name="AnalysisTree" />
   <OutputTree Name="AnalysisTree" />
 </InputData> 
-
+-->
 <!-- Mchi = 500 GeV -->
-<InputData Lumi="351599826263.21" NEventsMax="&NEVT;" Type="MC" Version="ttbarDMJets_scalar_Mchi-500_Mphi-10" Cacheable="False">
+<!--<InputData Lumi="351599826263.21" NEventsMax="&NEVT;" Type="MC" Version="ttbarDMJets_scalar_Mchi-500_Mphi-10" Cacheable="False">
   <In FileName="&PRESELdir;/uhh2.AnalysisModuleRunner.MC.ttbarDMJets_scalar_Mchi-500_Mphi-10.root" Lumi="0.0"/> 
   <InputTree Name="AnalysisTree" />
   <OutputTree Name="AnalysisTree" />
@@ -213,11 +213,11 @@
   <In FileName="&PRESELdir;/uhh2.AnalysisModuleRunner.MC.ttbarDMJets_scalar_Mchi-1000_Mphi-10000.root" Lumi="0.0"/> 
   <InputTree Name="AnalysisTree" />
   <OutputTree Name="AnalysisTree" />
-</InputData> 
+</InputData> --> 
 <!-- ========================================================= signals: pseudoscalar ===================================================================== -->
 
 <!-- Mchi = 1 GeV -->
-<InputData Lumi="558011.95" NEventsMax="&NEVT;" Type="MC" Version="ttbarDMJets_pseudoscalar_Mchi-1_Mphi-10" Cacheable="False">
+<!--<InputData Lumi="558011.95" NEventsMax="&NEVT;" Type="MC" Version="ttbarDMJets_pseudoscalar_Mchi-1_Mphi-10" Cacheable="False">
   <In FileName="&PRESELdir;/uhh2.AnalysisModuleRunner.MC.ttbarDMJets_pseudoscalar_Mchi-1_Mphi-10.root" Lumi="0.0"/> 
   <InputTree Name="AnalysisTree" />
   <OutputTree Name="AnalysisTree" />
@@ -270,9 +270,9 @@
   <InputTree Name="AnalysisTree" />
   <OutputTree Name="AnalysisTree" />
 </InputData> 
-
+-->
 <!-- Mchi = 10 GeV -->
-<InputData Lumi="16416754.27" NEventsMax="&NEVT;" Type="MC" Version="ttbarDMJets_pseudoscalar_Mchi-10_Mphi-10" Cacheable="False">
+<!--<InputData Lumi="16416754.27" NEventsMax="&NEVT;" Type="MC" Version="ttbarDMJets_pseudoscalar_Mchi-10_Mphi-10" Cacheable="False">
   <In FileName="&PRESELdir;/uhh2.AnalysisModuleRunner.MC.ttbarDMJets_pseudoscalar_Mchi-10_Mphi-10.root" Lumi="0.0"/> 
   <InputTree Name="AnalysisTree" />
   <OutputTree Name="AnalysisTree" />
@@ -301,9 +301,9 @@
   <InputTree Name="AnalysisTree" />
   <OutputTree Name="AnalysisTree" />
 </InputData> 
-
+-->
 <!-- Mchi = 50 GeV -->
-<InputData Lumi="114292723.49" NEventsMax="&NEVT;" Type="MC" Version="ttbarDMJets_pseudoscalar_Mchi-50_Mphi-10" Cacheable="False">
+<!--<InputData Lumi="114292723.49" NEventsMax="&NEVT;" Type="MC" Version="ttbarDMJets_pseudoscalar_Mchi-50_Mphi-10" Cacheable="False">
   <In FileName="&PRESELdir;/uhh2.AnalysisModuleRunner.MC.ttbarDMJets_pseudoscalar_Mchi-50_Mphi-10.root" Lumi="0.0"/> 
   <InputTree Name="AnalysisTree" />
   <OutputTree Name="AnalysisTree" />
@@ -338,7 +338,7 @@
   <InputTree Name="AnalysisTree" />
   <OutputTree Name="AnalysisTree" />
 </InputData> 
-
+-->
 <!-- Mchi = 150 GeV -->
 <InputData Lumi="1300624169.99" NEventsMax="&NEVT;" Type="MC" Version="ttbarDMJets_pseudoscalar_Mchi-150_Mphi-10" Cacheable="False">
   <In FileName="&PRESELdir;/uhh2.AnalysisModuleRunner.MC.ttbarDMJets_pseudoscalar_Mchi-150_Mphi-10.root" Lumi="0.0"/> 
@@ -647,7 +647,7 @@
             <Item Name="METName"                   Value="slimmedMETs" /> 
             <Item Name="TopJetCollection"          Value="slimmedJetsAK8_SoftDrop" />
             <Item Name="GenParticleCollection"     Value="GenParticles" /> 
-            <Item Name="additionalBranches"        Value="patJetsHepTopTagCHSPacked_daughters patJetsCa15CHSJetsSoftDropPacked_daughters patJetsCa15PuppiJetsSoftDropPacked_daughters flag_twodcut likelihood rec_neutrino" />
+            <Item Name="additionalBranches"        Value="patJetsHepTopTagCHSPacked_daughters patJetsCa15CHSJetsSoftDropPacked_daughters patJetsCa15PuppiJetsSoftDropPacked_daughters flag_twodcut likelihood rec_neutrino bjet" />
         <!--    <Item Name="additionalBranches"        Value="patJetsHepTopTagCHSPacked_daughters patJetsCa15CHSJetsSoftDropPacked_daughters patJetsCa15PuppiJetsSoftDropPacked_daughters flag_twodcut" /> -->
             <Item Name="use_sframe_weight"         Value="false" />
            

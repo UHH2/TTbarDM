@@ -95,16 +95,34 @@ uhh2::METJetDPhiCut::METJetDPhiCut(float min_dphi, int maxjetindex):
   min_dphi_(min_dphi), maxjetindex_(maxjetindex) {}
 
 bool uhh2::METJetDPhiCut::passes(const uhh2::Event & event){
-
   assert(event.met);
   assert(event.jets->size() >= maxjetindex_);
+  //assert(event.jets);
+  //if (event.jets->size() < maxjetindex_) maxjetindex_ =event.jets->size();
+  double deltaphi=0;
+  double mindeltaphi = 9999;
+  for(size_t i=0; i<maxjetindex_; i++){
+     deltaphi = uhh2::deltaPhi(*event.met, event.jets->at(i));
+     if (deltaphi < mindeltaphi) mindeltaphi=deltaphi;
+  }
+  return (mindeltaphi > min_dphi_);
+}
+////////////////////////////////////////////////////////
 
-  //  double mindeltaphi = 9999;
-  // for(size_t i=0; i<maxjetindex_; i++){
-  double deltaphi = uhh2::deltaPhi(*event.met, event.jets->at(maxjetindex_-1));
-  //  if (deltaphi < mindeltaphi) mindeltaphi=deltaphi;
-  //}
-  return (deltaphi > min_dphi_);
+uhh2::METLeptonDPhiCut::METLeptonDPhiCut(float min_dphi):
+   min_dphi_(min_dphi) {}
+
+bool uhh2::METLeptonDPhiCut::passes(const uhh2::Event & event){
+  
+   assert(event.met);
+   assert(event.electrons);
+   assert(event.muons);
+   
+   double deltaphi;
+   if (event.muons->size()>0) deltaphi = uhh2::deltaPhi(*event.met, event.muons->at(0));
+   else deltaphi = uhh2::deltaPhi(*event.met, event.electrons->at(0));
+   
+   return (deltaphi > min_dphi_);
 }
 ////////////////////////////////////////////////////////
 
@@ -124,15 +142,32 @@ bool uhh2::MT2WCut::passes(const uhh2::Event & event){
 
 bool uhh2::TwoDCut::passes(const uhh2::Event & event){
 
-  assert(event.muons && event.electrons && event.jets);
-  if((event.muons->size()+event.electrons->size()) != 1){
-    std::cout << "\n @@@ WARNING -- TwoDCut::passes -- unexpected number of muons+electrons in the event (!=1). returning 'false'\n";
-    return false;
+   //assert(event.muons && event.electrons && event.jets);
+  assert(event.jets);
+  std::vector<Muon> muons_med=event.get(h_muons);
+  std::vector<Electron> electrons=event.get(h_electrons);
+  // std::cout<<"electron size: "<<electrons.size()<<std::endl;
+  // if (electrons.size()>0) std::cout<<"pt: "<<electrons.at(0).pt()<<std::endl;
+  // if (electrons.size()>0)std::cout<<"eta: "<<electrons.at(0).eta()<<std::endl;
+  // if (electrons.size()>0)std::cout<<ElectronID_Spring15_25ns_tight_noIso(electrons.at(0),event)<<std::endl;
+  // std::cout<<"Muon size: im 2D cut "<<muons_med.size()<<std::endl;
+  // for (unsigned int i=0; i<muons_med.size(); i++) 
+  //    {
+  //       if (muons_med.size()>0) std::cout<<"pt: "<<muons_med.at(i).pt()<<std::endl;
+  //       if (muons_med.size()>0)std::cout<<"eta: "<<muons_med.at(i).eta()<<std::endl;
+  //       std::cout<<"medium? "<< MuonIDMedium()(muons_med.at(i),event)<<std::endl;
+  //       if (!MuonIDMedium()(muons_med.at(i),event)) std::cout<<"NOT MEDIUM MUON!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"<<std::endl;
+  //    }
+  if((muons_med.size()+electrons.size()) != 1){
+     std::cout << "\n @@@ WARNING -- TwoDCut::passes -- unexpected number of muons+electrons in the event (!=1). returning 'false'\n";
+     
+     return false;
   }
 
-  float drmin, ptrel;
-  if(event.muons->size()) std::tie(drmin, ptrel) = drmin_pTrel(event.muons->at(0), *event.jets);
-  else std::tie(drmin, ptrel) = drmin_pTrel(event.electrons->at(0), *event.jets);
+  float drmin=0;
+  float ptrel=0;
+  if(muons_med.size()) std::tie(drmin, ptrel) = drmin_pTrel(muons_med.at(0), *event.jets);
+  else std::tie(drmin, ptrel) = drmin_pTrel(electrons.at(0), *event.jets);
 
   return (drmin > min_deltaR_) || (ptrel > min_pTrel_);
 }
@@ -255,3 +290,62 @@ bool uhh2::LikelihoodSelection::passes(const uhh2::Event & event){
    double likelihood = event.get(h_likelihood_);
    return ((likelihood < lmax_) && (likelihood > 0)) ;
 }
+
+
+uhh2::DeltaPhiMetNeutrino::DeltaPhiMetNeutrino(uhh2::Context& ctx, float deltaphimin ):
+   deltaphimin_(deltaphimin), h_neutrino_(ctx.get_handle<LorentzVector>("rec_neutrino")) {}
+
+bool uhh2::DeltaPhiMetNeutrino::passes(const uhh2::Event & event){
+   LorentzVector neutrino = event.get(h_neutrino_);
+   double deltaphi_neutrino_met = uhh2::deltaPhi(neutrino,*event.met);
+
+   return (deltaphi_neutrino_met >deltaphimin_); 
+}
+
+uhh2::DeltaPhiTaggedJetNeutrino::DeltaPhiTaggedJetNeutrino(uhh2::Context& ctx, float deltaphimax ):
+   deltaphimax_(deltaphimax), h_neutrino_(ctx.get_handle<LorentzVector>("rec_neutrino")), h_taggedjet_(ctx.get_handle<std::vector<TopJet>>("h_heptopjets_WP3")) {}
+
+bool uhh2::DeltaPhiTaggedJetNeutrino::passes(const uhh2::Event & event){
+   LorentzVector neutrino = event.get(h_neutrino_);
+   TopJet tj = event.get(h_taggedjet_).at(0);
+   double deltaphi_neutrino_tj = uhh2::deltaPhi(neutrino,tj);
+
+   return (deltaphi_neutrino_tj <deltaphimax_); 
+}
+
+uhh2::DeltaPhiTaggedJetTopLep::DeltaPhiTaggedJetTopLep(uhh2::Context& ctx, float  deltaphimax):
+   deltaphimax_(deltaphimax), h_neutrino_(ctx.get_handle<LorentzVector>("rec_neutrino")), h_taggedjet_(ctx.get_handle<std::vector<TopJet>>("h_heptopjets_WP3")), h_b_jets_(ctx.get_handle<Jet>("bjet")) {}
+
+bool uhh2::DeltaPhiTaggedJetTopLep::passes(const uhh2::Event & event){
+   LorentzVector neutrino = event.get(h_neutrino_);
+   TopJet tj = event.get(h_taggedjet_).at(0);
+   Jet b_jet = event.get(h_b_jets_);
+   Muon muon = event.muons->at(0);
+
+   LorentzVector toplep = muon.v4()+neutrino+b_jet.v4();
+   double deltaphi_toplep_tj = uhh2::deltaPhi(toplep,tj);
+
+   return (deltaphi_toplep_tj <deltaphimax_);
+}
+
+uhh2::NeutrinopTSelection::NeutrinopTSelection(uhh2::Context& ctx, float pTmin ):
+   pTmin_(pTmin), h_neutrino_(ctx.get_handle<LorentzVector>("rec_neutrino")) {}
+
+bool uhh2::NeutrinopTSelection::passes(const uhh2::Event & event){
+   LorentzVector neutrino = event.get(h_neutrino_);
+   return (pTmin_ < neutrino.pt());
+}
+
+uhh2::ttbarpTSel::ttbarpTSel(uhh2::Context& ctx, float pTmin ):
+   pTmin_(pTmin), h_neutrino_(ctx.get_handle<LorentzVector>("rec_neutrino")), h_taggedjet_(ctx.get_handle<std::vector<TopJet>>("h_heptopjets_WP3")),h_b_jets_(ctx.get_handle<Jet>("bjet"))  {}
+
+bool uhh2::ttbarpTSel::passes(const uhh2::Event & event){
+   LorentzVector neutrino = event.get(h_neutrino_);
+   TopJet tj = event.get(h_taggedjet_).at(0);
+   Muon lepton =event.muons->at(0);
+   Jet b_jet = event.get(h_b_jets_);
+   
+   LorentzVector ttbar = tj.v4()+neutrino+lepton.v4()+b_jet.v4();
+   return (ttbar.pt() >pTmin_); 
+}
+

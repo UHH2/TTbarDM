@@ -111,41 +111,41 @@ void ttDMReconstructionHists_ScansAndMarginalisation::fill(const Event & event){
    if (!ttbargen.IsSemiLeptonicDecay()) return;
 
    k =k+1;
-   // if (k==1) {
-   //    neutrino_px_1 ->Fill(ttbargen.Neutrino().v4().Px(), weight);
-   //    neutrino_py_1 ->Fill(ttbargen.Neutrino().v4().Py(), weight);
-   //    neutrino_pz_1 ->Fill(ttbargen.Neutrino().v4().Pz(), weight);
-   //    met_px_1 ->Fill(event.met->v4().Px(), weight);
-   //    met_py_1 ->Fill(event.met->v4().Py(), weight);
-   // }
-   // if (k==2) {
-   //    neutrino_px_2 ->Fill(ttbargen.Neutrino().v4().Px(), weight);
-   //    neutrino_py_2 ->Fill(ttbargen.Neutrino().v4().Py(), weight);
-   //    neutrino_pz_2 ->Fill(ttbargen.Neutrino().v4().Pz(), weight);
-   //    met_px_2 ->Fill(event.met->v4().Px(), weight);
-   //    met_py_2 ->Fill(event.met->v4().Py(), weight);
-   // }
-   // if (k==3) {
-   //    neutrino_px_3 ->Fill(ttbargen.Neutrino().v4().Px(), weight);
-   //    neutrino_py_3 ->Fill(ttbargen.Neutrino().v4().Py(), weight);
-   //    neutrino_pz_3 ->Fill(ttbargen.Neutrino().v4().Pz(), weight);
-   //    met_px_3 ->Fill(event.met->v4().Px(), weight);
-   //    met_py_3 ->Fill(event.met->v4().Py(), weight);
-   // }
-   // if (k==4) {
-   //    neutrino_px_4 ->Fill(ttbargen.Neutrino().v4().Px(), weight);
-   //    neutrino_py_4 ->Fill(ttbargen.Neutrino().v4().Py(), weight);
-   //    neutrino_pz_4 ->Fill(ttbargen.Neutrino().v4().Pz(), weight);
-   //    met_px_4 ->Fill(event.met->v4().Px(), weight);
-   //    met_py_4 ->Fill(event.met->v4().Py(), weight);
-   // }
-   //  if (k==5) {
-   //    neutrino_px_5 ->Fill(ttbargen.Neutrino().v4().Px(), weight);
-   //    neutrino_py_5 ->Fill(ttbargen.Neutrino().v4().Py(), weight);
-   //    neutrino_pz_5 ->Fill(ttbargen.Neutrino().v4().Pz(), weight);
-   //    met_px_5 ->Fill(event.met->v4().Px(), weight);
-   //    met_py_5 ->Fill(event.met->v4().Py(), weight);
-   // }
+   if (k==1) {
+      neutrino_px_1 ->Fill(ttbargen.Neutrino().v4().Px(), weight);
+      neutrino_py_1 ->Fill(ttbargen.Neutrino().v4().Py(), weight);
+      neutrino_pz_1 ->Fill(ttbargen.Neutrino().v4().Pz(), weight);
+      met_px_1 ->Fill(event.met->v4().Px(), weight);
+      met_py_1 ->Fill(event.met->v4().Py(), weight);
+   }
+   if (k==2) {
+      neutrino_px_2 ->Fill(ttbargen.Neutrino().v4().Px(), weight);
+      neutrino_py_2 ->Fill(ttbargen.Neutrino().v4().Py(), weight);
+      neutrino_pz_2 ->Fill(ttbargen.Neutrino().v4().Pz(), weight);
+      met_px_2 ->Fill(event.met->v4().Px(), weight);
+      met_py_2 ->Fill(event.met->v4().Py(), weight);
+   }
+   if (k==3) {
+      neutrino_px_3 ->Fill(ttbargen.Neutrino().v4().Px(), weight);
+      neutrino_py_3 ->Fill(ttbargen.Neutrino().v4().Py(), weight);
+      neutrino_pz_3 ->Fill(ttbargen.Neutrino().v4().Pz(), weight);
+      met_px_3 ->Fill(event.met->v4().Px(), weight);
+      met_py_3 ->Fill(event.met->v4().Py(), weight);
+   }
+   if (k==4) {
+      neutrino_px_4 ->Fill(ttbargen.Neutrino().v4().Px(), weight);
+      neutrino_py_4 ->Fill(ttbargen.Neutrino().v4().Py(), weight);
+      neutrino_pz_4 ->Fill(ttbargen.Neutrino().v4().Pz(), weight);
+      met_px_4 ->Fill(event.met->v4().Px(), weight);
+      met_py_4 ->Fill(event.met->v4().Py(), weight);
+   }
+    if (k==5) {
+      neutrino_px_5 ->Fill(ttbargen.Neutrino().v4().Px(), weight);
+      neutrino_py_5 ->Fill(ttbargen.Neutrino().v4().Py(), weight);
+      neutrino_pz_5 ->Fill(ttbargen.Neutrino().v4().Pz(), weight);
+      met_px_5 ->Fill(event.met->v4().Px(), weight);
+      met_py_5 ->Fill(event.met->v4().Py(), weight);
+   }
    //  if (k==6) {
    //    neutrino_px_6 ->Fill(ttbargen.Neutrino().v4().Px(), weight);
    //    neutrino_py_6 ->Fill(ttbargen.Neutrino().v4().Py(), weight);
@@ -206,7 +206,8 @@ void ttDMReconstructionHists_ScansAndMarginalisation::fill(const Event & event){
    if (event.muons->size()>0) lepton = event.muons->at(0);
    
    LorentzVector nu_scan;
-   Jet bjet2 = *nextJet(lepton,*event.jets);  //here next jet as b-jet
+   // Jet bjet2 = *nextJet(lepton,*event.jets);  //here next jet as b-jet
+   GenParticle bjet2 = ttbargen.BLep();
    Double_t likelihood;
    
    for (int i=0; i<421;i++) 
@@ -443,7 +444,7 @@ Double_t ttDMReconstructionHists_ScansAndMarginalisation::MWParametrization(Doub
 
 Double_t ttDMReconstructionHists_ScansAndMarginalisation::DPhiParametrization(Double_t dphi)
 {
-   TF1* f = new TF1("f", "[0]*TMath::Exp([1]*TMath::Abs(x)) + [3]*TMath::Exp(-0.5*TMath::Power((TMath::Abs(x)-[2])/[4],2))", -3.1415, 3.1415);
+   static TF1* f = new TF1("f", "[0]*TMath::Exp([1]*TMath::Abs(x)) + [3]*TMath::Exp(-0.5*TMath::Power((TMath::Abs(x)-[2])/[4],2))", -3.1415, 3.1415);
 
    f->SetParameter(0, 1.40257e+03);
    f->SetParameter(1, -2.21625e+00);
@@ -459,7 +460,7 @@ Double_t ttDMReconstructionHists_ScansAndMarginalisation::DPhiParametrization(Do
 
 Double_t ttDMReconstructionHists_ScansAndMarginalisation::DEtaParametrization(Double_t dphi)
 {
-   TF1* f = new TF1("f", "[0]*TMath::Exp([1]*TMath::Abs(x))*TMath::Abs(TMath::ATan(3*x)) + [3]*TMath::Exp(-0.5*TMath::Power((TMath::Abs(x)-[2])/[4],2))", -2.5, 2.5);
+   static TF1* f = new TF1("f", "[0]*TMath::Exp([1]*TMath::Abs(x))*TMath::Abs(TMath::ATan(3*x)) + [3]*TMath::Exp(-0.5*TMath::Power((TMath::Abs(x)-[2])/[4],2))", -2.5, 2.5);
 
    f->SetParameter(0, 1.85995e+02);
    f->SetParameter(1, -1.65177e+00);

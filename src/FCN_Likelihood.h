@@ -93,7 +93,7 @@ Double_t MWParametrization(Double_t mw)
 
 Double_t DPhiParametrization(Double_t dphi)
 {
-   TF1* f = new TF1("f", "[0]*TMath::Exp([1]*TMath::Abs(x)) + [3]*TMath::Exp(-0.5*TMath::Power((TMath::Abs(x)-[2])/[4],2))", -3.1415, 3.1415);
+   static TF1* f = new TF1("f", "[0]*TMath::Exp([1]*TMath::Abs(x)) + [3]*TMath::Exp(-0.5*TMath::Power((TMath::Abs(x)-[2])/[4],2))", -3.1415, 3.1415);
 
    f->SetParameter(0, 1.40257e+03);
    f->SetParameter(1, -2.21625e+00);
@@ -109,7 +109,7 @@ Double_t DPhiParametrization(Double_t dphi)
 
 Double_t DEtaParametrization(Double_t dphi)
 {
-   TF1* f = new TF1("f", "[0]*TMath::Exp([1]*TMath::Abs(x))*TMath::Abs(TMath::ATan(3*x)) + [3]*TMath::Exp(-0.5*TMath::Power((TMath::Abs(x)-[2])/[4],2))", -2.5, 2.5);
+   static TF1* f = new TF1("f", "[0]*TMath::Exp([1]*TMath::Abs(x))*TMath::Abs(TMath::ATan(3*x)) + [3]*TMath::Exp(-0.5*TMath::Power((TMath::Abs(x)-[2])/[4],2))", -2.5, 2.5);
 
    f->SetParameter(0, 1.85995e+02);
    f->SetParameter(1, -1.65177e+00);

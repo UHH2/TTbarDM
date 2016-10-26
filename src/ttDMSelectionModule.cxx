@@ -87,7 +87,8 @@ private:
    std::unique_ptr<AnalysisModule> muo_med_noniso_SF;
    //std::unique_ptr<AnalysisModule> muo_triggerSF;
     std::unique_ptr<AnalysisModule> reco_primlep;
-   
+   std::unique_ptr<AnalysisModule> collectionprod_muonmed;
+   std::unique_ptr<AnalysisModule> collectionprod_eletight;
    // cleaners
    std::unique_ptr<MuonCleaner> muo_cleaner;
    std::unique_ptr<ElectronCleaner> ele_cleaner;
@@ -123,7 +124,7 @@ private:
    std::unique_ptr<Hists> lep1_h,electrons_lep1_h,jets_lep1_h,muons_lep1_h,events_lep1_h,topjets_lep1_h;
    std::unique_ptr<Hists> jet1_h, electrons_jet1_h,jets_jet1_h,muons_jet1_h,events_jet1_h,topjets_jet1_h;
    std::unique_ptr<Hists> jet2_h, electrons_jet2_h,jets_jet2_h,muons_jet2_h,events_jet2_h,topjets_jet2_h;
-   std::unique_ptr<Hists> met_h, electrons_met_h,jets_met_h,muons_met_h,events_met_h,topjets_met_h, genhists_met_h, scans_h;
+   std::unique_ptr<Hists> met_h, electrons_met_h,jets_met_h,muons_met_h,events_met_h,topjets_met_h, genhists_met_h;//scans_h;
 };
 
 ttDMSelectionModule::ttDMSelectionModule(Context & ctx){
@@ -172,8 +173,10 @@ ttDMSelectionModule::ttDMSelectionModule(Context & ctx){
    likelihood_hists.reset(new ttDMReconstructionHists_Likelihood(ctx, "hists_likelihood"));
 
    //// OBJ CLEANING
-   muo_cleaner.reset(new MuonCleaner(AndId<Muon>(MuonIDMedium(),PtEtaCut(47., 2.1)))); 
-   ele_cleaner.reset(new ElectronCleaner(AndId<Electron>(ElectronID_Spring15_25ns_tight_noIso, PtEtaCut(50., 2.5))));
+   //muo_cleaner.reset(new MuonCleaner(AndId<Muon>(MuonIDMedium(),PtEtaCut(47., 2.1)))); 
+   //ele_cleaner.reset(new ElectronCleaner(AndId<Electron>(ElectronID_Spring15_25ns_tight_noIso, PtEtaCut(50., 2.5))));
+   muo_cleaner.reset(new MuonCleaner    (AndId<Muon>    (PtEtaCut  (10., 2.1), MuonIDLoose()))); 
+   ele_cleaner.reset(new ElectronCleaner(AndId<Electron>(PtEtaSCCut(10., 2.5), ElectronID_MVAnotrig_Spring15_25ns_loose)));
    
    if (is_mc) {
       jet_corrector.reset(new JetCorrector(ctx, JERFiles::Fall15_25ns_L123_AK4PFchs_MC));
@@ -204,17 +207,20 @@ ttDMSelectionModule::ttDMSelectionModule(Context & ctx){
    else if(channel == "electron") elec = true;
    else throw std::runtime_error("undefined argument for 'channel' key in xml file (must be 'muon' or 'electron'): "+channel);
    
+   const MuonId muonid = AndId<Muon>(PtEtaCut  (47., 2.1), MuonIDMedium());
+   const ElectronId electronid = AndId<Electron>(ElectronID_Spring15_25ns_tight_noIso,PtEtaSCCut(50., 2.5));
+   
    lep1_sel.reset(new AndSelection(ctx));
    if(muon){
-      lep1_sel->add<NMuonSelection>("muoN == 1", 1, 1);
-      lep1_sel->add<NElectronSelection>("eleN == 0", 0, 0);
+      lep1_sel->add<NMuonSelection>("muo==1", 1, 1, muonid);
+      lep1_sel->add<NElectronSelection>("ele=0",0, 0, electronid);
       
       if(triggername != "NotSet") trigger_sel.reset(new TriggerSelection(triggername));
       else trigger_sel.reset(new TriggerSelection("HLT_Mu45_eta2p1_v*"));
    }
    else if(elec){
-      lep1_sel->add<NMuonSelection>("muoN == 0", 0, 0);
-      lep1_sel->add<NElectronSelection>("eleN == 1", 1, 1);
+      lep1_sel->add<NMuonSelection>("muo==0", 0, 0, muonid);
+      lep1_sel->add<NElectronSelection>("elle==1",1, 1, electronid);
 
       if(triggername != "NotSet") trigger_sel.reset(new TriggerSelection(triggername));
       else {
@@ -222,14 +228,15 @@ ttDMSelectionModule::ttDMSelectionModule(Context & ctx){
          else trigger_sel.reset (new TriggerSelection("HLT_Ele15_IsoVVVL_PFHT400_PFMET70_v*"));
       }
    }
-   
+   collectionprod_muonmed.reset(new CollectionProducer<Muon>(ctx, "muons", "h_muons_medium", muonid)); 
+   collectionprod_eletight.reset(new CollectionProducer<Electron>(ctx, "electrons", "h_electrons_tight", electronid)); 
    // jet2_sel.reset(new NJetSelection(3, -1, JetId(PtEtaCut( 50., 2.4))));    
    // jet1_sel.reset(new NJetSelection(1, -1, JetId(PtEtaCut(200., 2.4))));
    jet2_sel.reset(new NJetSelection(2, -1, JetId(PtEtaCut( 50., 2.4))));    
    jet1_sel.reset(new NJetSelection(1, -1, JetId(PtEtaCut(50., 2.4))));
    
-   met_sel.reset(new METCut(160., std::numeric_limits<double>::infinity()));  
-   twodcut_sel.reset(new TwoDCut(.4, 20.));
+   met_sel.reset(new METCut(50., std::numeric_limits<double>::infinity()));  
+   twodcut_sel.reset(new TwoDCut(ctx,.4, 20.));
       
    //// HISTS
    lumihists.reset(new LuminosityHists(ctx, "lumi"));
@@ -277,14 +284,12 @@ ttDMSelectionModule::ttDMSelectionModule(Context & ctx){
    events_met_h.reset(new EventHists(ctx,"events_met"));
    topjets_met_h.reset(new TopJetHists(ctx,"topjets_met",4,"patJetsHepTopTagCHSPacked_daughters"));
    genhists_met_h.reset(new ttDMGenHists(ctx,"genhists_met"));
-   scans_h.reset(new ttDMReconstructionHists_ScansAndMarginalisation(ctx,"scans"));
+   //scans_h.reset(new ttDMReconstructionHists_ScansAndMarginalisation(ctx,"scans"));
 }
 
 bool ttDMSelectionModule::process(Event & event){
-   
    if (is_mc) ttgenprod->process(event);
    input_h->fill(event);
-   
    if(lumisel && !is_mc) if(!lumi_selection->passes(event)) return false;
    if(metfilters) if(!metfilters_selection->passes(event)) return false;
    if(mcpileupreweight && is_mc) pu_reweight->process(event);
@@ -297,7 +302,6 @@ bool ttDMSelectionModule::process(Event & event){
       }
    ht_calculator->process(event);
    filter_h->fill(event); 
-   
    //// HLT selection
    bool pass_trigger = trigger_sel->passes(event);
    if(!pass_trigger) return false;
@@ -308,7 +312,7 @@ bool ttDMSelectionModule::process(Event & event){
    muons_trigger_h->fill(event);
    events_trigger_h->fill(event);
    topjets_trigger_h->fill(event);
-   
+
    //// LEPTON selection
    muo_cleaner->process(event);
    sort_by_pt<Muon>(*event.muons);
@@ -320,12 +324,14 @@ bool ttDMSelectionModule::process(Event & event){
    jet_cleaner0->process(event);
    if (is_mc) jetER_smearer->process(event);
    jetlepton_cleaner->process(event);
-   
+  
    bool pass_lep1 = lep1_sel->passes(event);
    if(!pass_lep1) return false;
+   collectionprod_muonmed->process(event);
+   collectionprod_eletight->process(event);
 
    jet_cleaner1->process(event); // jets w/ pt>15 GeV for lepton-2Dcut
-   bool pass_twodcut = twodcut_sel->passes(event);
+   bool pass_twodcut = twodcut_sel->passes(event); //ACHTUNG DARF NUR EIN MUON!!
    event.set(h_flag_twodcut, bool(pass_twodcut));
    
    jet_cleaner2->process(event);

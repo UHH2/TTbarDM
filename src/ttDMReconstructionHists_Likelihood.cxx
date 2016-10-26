@@ -1,7 +1,8 @@
 #include "UHH2/TTbarDM/include/ttDMReconstructionHists_Likelihood.h"
 #include "UHH2/core/include/Event.h"
 #include "UHH2/common/include/Utils.h"
-
+#include "UHH2/TTbarDM/include/MT2Utility.h"
+#include "UHH2/TTbarDM/include/ttDMSemiLeptonicUtils.h"
 #include "TH1F.h"
 #include "TH2F.h"
 #include "TH3F.h"
@@ -18,8 +19,10 @@ ttDMReconstructionHists_Likelihood::ttDMReconstructionHists_Likelihood(Context &
    h_likelihood = ctx.get_handle<double>("likelihood");
    h_recneutrino =ctx.get_handle<LorentzVector>("rec_neutrino");
    h_ttbargen =ctx.get_handle<TTbarGen>("ttbargen");
-   
-   hist_chi2 = book<TH1F>("chi2","#chi^{2}", 50, 0, 500);
+   h_bjets=ctx.get_handle<Jet>("bjet");
+   h_heptopjets_WP3=ctx.get_handle<std::vector<TopJet>>("h_heptopjets_WP3");
+
+   hist_chi2 = book<TH1F>("chi2","#chi^{2}", 100, 0, 100);
    
    hist_pxrec_pxgen = book<TH1F>("pxrec_pxgen","p_{x}^{rec} - p_{x}^{gen}", 100, -500, 500);
    hist_pyrec_pygen = book<TH1F>("pyrec_pygen","p_{y}^{rec} - p_{y}^{gen}", 100, -500, 500);
@@ -71,6 +74,8 @@ ttDMReconstructionHists_Likelihood::ttDMReconstructionHists_Likelihood(Context &
    //compatibility MET with reconstructed neutrino
    hist_MET_RecNeutrino_px = book<TH1F>("MET_RecNeutrino_px","(MET_{x} - p_{x, #nu}^{rec})/ MET_{x}", 50, -5, 5);
    hist_MET_RecNeutrino_py = book<TH1F>("MET_RecNeutrino_py","(MET_{y} - p_{y, #nu}^{rec})/ MET_{y}", 50, -5, 5);
+   hist_MET_RecNeutrino_px_abs = book<TH1F>("MET_RecNeutrino_px_abs","|(MET_{x} - p_{x, #nu}^{rec})/ MET_{x}|", 50, 0, 5);
+   hist_MET_RecNeutrino_py_abs = book<TH1F>("MET_RecNeutrino_py_abs","|(MET_{y} - p_{y, #nu}^{rec})/ MET_{y}|", 50, 0, 5);
    
    //compatiblity MET with reconstructed neutrino + generated DM particle
    hist_MET_RecNeutrino_DM_px = book<TH1F>("MET_RecNeutrino_DM_px","(MET_{x} - (p_{x, #nu}^{rec} + p_{x, DM}^{rec}))/ MET_{x}", 50, -5, 5);
@@ -126,17 +131,36 @@ ttDMReconstructionHists_Likelihood::ttDMReconstructionHists_Likelihood(Context &
    hist_neutrino_pT_120_220_reweighted = book<TH1F>("hist_neutrino_pT_120_220_reweighted","p_{T,rec}^{#nu}-p_{T,gen}^{#nu}, 120 GeV < p_{T,gen}^{#nu} < 220 GeV reweighted",100,-500,500);
    hist_neutrino_pT_220_320_reweighted = book<TH1F>("hist_neutrino_pT_220_320_reweighted","p_{T,rec}^{#nu}-p_{T,gen}^{#nu}, 220 GeV < p_{T,gen}^{#nu} < 320 GeV reweighted",100,-500,500);
    hist_neutrino_pT_320_reweighted = book<TH1F>("hist_neutrino_pT_320_reweighted","p_{T,rec}^{#nu}-p_{T,gen}^{#nu}, p_{T,gen}^{#nu} > 320 GeV reweighted",100,-500,500);
-     
+
+   hist_2d_DMMET_MET =book<TH2F>("hist_2d_DMMET_MET","MET", 250, 0, 5000, 250, 0, 5000);
+   hist_2d_DMMET_MT2W=book<TH2F>(" hist_2d_DMMET_MT2W","MT2W", 250, 0, 5000, 50, 0, TMath::Pi());   
+   hist_2d_DMMET_deltaphijetmet12=book<TH2F>("hist_2d_DMMET_deltaphijetmet12","#Delta#Phi(MET, jet12)", 250, 0, 5000, 50, 0, TMath::Pi());
+   hist_2d_DMMET_deltaphijet123=book<TH2F>("hist_2d_DMMET_deltaphijet123","#Delta#Phi(MET, jet123)", 250, 0, 5000, 50, 0, TMath::Pi());
+   hist_2d_DMMET_deltphilep=book<TH2F>("hist_2d_DMMET_deltphilep","#Delta#Phi(MET, lep)", 250, 0, 5000, 50, 0, TMath::Pi());
+   hist_2d_DMMET_mtlep=book<TH2F>("hist_2d_DMMET_mtlep","m_{T}^{lep}", 250, 0, 5000, 50, 0, 500);
+
+   hist_pTttbar=book<TH1F>("hist_pTttbar","p_T (t#bar{t})",100,0,1000);
+   hist_deltaphi_tj_met=book<TH1F>("hist_deltaphi_tj_met","#Delta#phi(tagged jet, MET)",50,0,TMath::Pi());
+   hist_deltaphi_tj_lep=book<TH1F>("hist_deltaphi_tj_lep","#Delta#phi(tagged jet, lep)",50,0,TMath::Pi());
+   hist_deltaphi_neutrino_lep=book<TH1F>("hist_deltaphi_neutrino_lep","#Delta#phi(neutrino, lep)",50,0,TMath::Pi());
+   hist_deltaphi_tj_neutrino=book<TH1F>("hist_deltaphi_tj_neutrino","#Delta#phi(tagged jet, neutrino)",50,0,TMath::Pi());
+   hist_deltaphi_neutrino_met=book<TH1F>("hist_deltaphi_neutrino_met","#Delta#phi(neutrino,MET)",50,0,TMath::Pi());
+   hist_deltaphi_thad_tlep=book<TH1F>("hist_deltaphi_thad_tlep","#Delta#phi(thad,tlep)",50,0,TMath::Pi());
+   hist_deltaphi_thad_MET=book<TH1F>("hist_deltaphi_thad_MET","#Delta#phi(thad,met)",50,0,TMath::Pi());
 }
 
 void ttDMReconstructionHists_Likelihood::fill(const Event & event){
-   
+ 
    double chi2 = event.get(h_likelihood);
    LorentzVector neutrino = event.get(h_recneutrino);
-  
+   std::vector<TopJet> heptopjets_WP3;
+ 
+   if (event.is_valid(h_heptopjets_WP3)) heptopjets_WP3=event.get(h_heptopjets_WP3);
+   Jet b_jet;
+   if (event.is_valid(h_bjets))b_jet = event.get(h_bjets);
    hist_chi2->Fill(chi2, event.weight);
    hist_chi2_METpT_components->Fill(chi2 + TMath::Power((event.met->v4().Px()-neutrino.Px()),2)/TMath::Power(122.2,2) + TMath::Power((event.met->v4().Py()-neutrino.Py()),2)/TMath::Power(137.4,2), event.weight);
-
+   
    double DM_MET = std::sqrt((event.met->v4().Px()-neutrino.Px())*(event.met->v4().Px()-neutrino.Px())+(event.met->v4().Py()-neutrino.Py())*(event.met->v4().Py()-neutrino.Py()));
    hist_DM_MET->Fill(DM_MET,event.weight);
       
@@ -164,6 +188,8 @@ void ttDMReconstructionHists_Likelihood::fill(const Event & event){
       
    hist_MET_RecNeutrino_px->Fill((event.met->v4().Px()-neutrino.Px())/event.met->v4().Px(), event.weight);
    hist_MET_RecNeutrino_py->Fill((event.met->v4().Py()-neutrino.Py())/event.met->v4().Py(), event.weight);
+   hist_MET_RecNeutrino_px_abs->Fill((fabs(event.met->v4().Px()-neutrino.Px())/event.met->v4().Px()), event.weight);
+   hist_MET_RecNeutrino_py_abs->Fill((fabs(event.met->v4().Py()-neutrino.Py())/event.met->v4().Py()), event.weight);
     
    hist_Metxpx  ->Fill((event.met->v4().Px()-neutrino.Px()),event.weight);
    hist_Metypy  ->Fill((event.met->v4().Py()-neutrino.Py()),event.weight);
@@ -171,6 +197,53 @@ void ttDMReconstructionHists_Likelihood::fill(const Event & event){
    hist_Metypy_quad ->Fill(TMath::Power((event.met->v4().Py()-neutrino.Py()),2),event.weight);
    hist_Metxpx_Metypy_quad ->Fill((TMath::Power((event.met->v4().Px()-neutrino.Px()),2) + TMath::Power((event.met->v4().Py()-neutrino.Py()),2)),event.weight);
 
+   hist_2d_DMMET_MET ->Fill(DM_MET, event.met->pt(), event.weight); 
+   Muon *lep1 = &event.muons->at(0);
+   if (lep1 &&  event.jets->size()> 1) hist_2d_DMMET_MT2W->Fill(DM_MET,CalculateMT2W(event) , event.weight);
+
+   double mindeltaphi = 9999;
+   if(event.jets->size()>1) {
+      for(size_t i=0; i<2; i++){
+         double deltaphi = uhh2::deltaPhi(*event.met, event.jets->at(i));
+         if (deltaphi < mindeltaphi) mindeltaphi=deltaphi;
+      }
+   }
+   hist_2d_DMMET_deltaphijetmet12->Fill(DM_MET, mindeltaphi, event.weight); 
+
+   mindeltaphi = 9999;
+   if(event.jets->size()>2) {
+      for(size_t i=0; i<3; i++){
+         double deltaphi = uhh2::deltaPhi(*event.met, event.jets->at(i));
+         if (deltaphi < mindeltaphi) mindeltaphi=deltaphi;
+      }
+   }
+   hist_2d_DMMET_deltaphijet123->Fill(DM_MET, mindeltaphi, event.weight); 
+   if (event.muons->size()) hist_2d_DMMET_deltphilep->Fill(DM_MET,uhh2::deltaPhi(*event.met, event.muons->at(0)) , event.weight); 
+   if (lep1)hist_2d_DMMET_mtlep->Fill(DM_MET,sqrt(2*event.met->pt()*lep1->pt()*(1-cos(uhh2::deltaPhi(*event.met, *lep1)))) , event.weight);
+
+   Muon lepton = event.muons->at(0); 
+   double deltaphi_neutrino_lep = uhh2::deltaPhi(neutrino,lepton);
+   hist_deltaphi_neutrino_lep->Fill(deltaphi_neutrino_lep, event.weight);
+   double deltaphi_neutrino_met = uhh2::deltaPhi(neutrino,*event.met);
+   hist_deltaphi_neutrino_met->Fill(deltaphi_neutrino_met, event.weight);
+
+   if(heptopjets_WP3.size()>0)
+      {
+         TopJet taggedjet=heptopjets_WP3.at(0);
+         LorentzVector ttbar = taggedjet.v4()+neutrino+lepton.v4()+b_jet.v4();
+         hist_pTttbar->Fill(ttbar.pt(), event.weight);
+         double deltaphi_tj_met = uhh2::deltaPhi(taggedjet,*event.met);
+         hist_deltaphi_tj_met->Fill(deltaphi_tj_met, event.weight); 
+         double deltaphi_tj_lep = uhh2::deltaPhi(taggedjet,lepton);
+         hist_deltaphi_tj_lep->Fill(deltaphi_tj_lep, event.weight);
+         double deltaphi_tj_neutrino = uhh2::deltaPhi(taggedjet,neutrino);
+         hist_deltaphi_tj_neutrino->Fill(deltaphi_tj_neutrino, event.weight);
+         double deltaphi_thad_tlep = uhh2::deltaPhi(taggedjet,neutrino+lepton.v4()+b_jet.v4());
+         hist_deltaphi_thad_tlep->Fill(deltaphi_thad_tlep, event.weight);
+         double deltaphi_thad_MET = uhh2::deltaPhi(taggedjet,*event.met);
+         hist_deltaphi_thad_MET->Fill(deltaphi_thad_MET, event.weight);
+      }
+   
    if (event.isRealData) return;
 
    TTbarGen ttbargen = event.get(h_ttbargen);
@@ -202,7 +275,7 @@ void ttDMReconstructionHists_Likelihood::fill(const Event & event){
 
    hist_MET_RecNeutrino_DM_px->Fill((event.met->v4().Px()-(neutrino.Px()+ DM.Px()))/event.met->v4().Px(), event.weight);
    hist_MET_RecNeutrino_DM_py->Fill((event.met->v4().Py()-(neutrino.Py() + DM.Py()))/event.met->v4().Py(), event.weight);
- 
+  
    LorentzVector met_gen;
    int n_nu = 0;
    for(unsigned int i=0; i<event.genparticles->size(); ++i) {
@@ -309,6 +382,8 @@ void ttDMReconstructionHists_Likelihood::fill(const Event & event){
          // if (ttbargen.Neutrino().v4().Pt() >= 220 && neutrino.Pt() <320) hist_neutrino_pT_220_320_reweighted->Fill((neutrino.Pt()-ttbargen.Neutrino().v4().Pt())*weight_pT,event.weight);
          // if (ttbargen.Neutrino().v4().Pt() >= 320) hist_neutrino_pT_320_reweighted->Fill((neutrino.Pt()-ttbargen.Neutrino().v4().Pt())*weight_pT,event.weight);
       }
+
+   
 
    return;
 }

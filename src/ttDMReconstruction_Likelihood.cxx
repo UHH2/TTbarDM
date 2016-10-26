@@ -13,18 +13,27 @@ ttDMReconstruction_Likelihood::ttDMReconstruction_Likelihood(uhh2::Context & ctx
  {
     h_likelihood =ctx.declare_event_output<double>("likelihood");
     h_recneutrino =ctx.declare_event_output<LorentzVector>("rec_neutrino");
+    h_bjet =ctx.declare_event_output<Jet>("bjet");
     h_ttbargen =ctx.get_handle<TTbarGen>("ttbargen");
+    h_muons=ctx.get_handle<std::vector<Muon>>("h_muons_medium");
+
+    f = new TFile("/nfs/dust/cms/user/mameyer/TTDMDM/selection_MUON_RunII_25ns_v2/Likelihood_VariableBinning_2_Filled.root", "READ");
+    h = (TH3F*)f->Get("likelihood3D");
+    h->Scale(1./h->Integral(1,20,2,19,1,22,""));
  }
 
 bool ttDMReconstruction_Likelihood::process(uhh2::Event & e)
 {
+
    bool print = false;
    if (print) std::cout<<"Start Minimization"<<std::endl;
+   if (print) std::cout<<"integral: "<<h->Integral(1,20,2,19,1,22,"")<<std::endl;
 
-   assert(e.muons);
+   //assert(e.muons);
    assert(e.electrons);
-  
-   if (e.muons->size()>0) lepton = e.muons->at(0);
+   std::vector<Muon> muons=e.get(h_muons);
+
+   if (muons.size()>0) lepton = muons.at(0);
    else lepton = e.electrons->at(0);
    indata_likelihood.lep = lepton.v4(); 
    indata_likelihood.met = e.met->v4();
@@ -115,6 +124,7 @@ bool ttDMReconstruction_Likelihood::process(uhh2::Event & e)
        std::cout<<"pz was: "<<fit->GetParameter(2)<<std::endl;
     }
     
+
     //scan with pZ
     double px = -1050;
     double py = -1050;
@@ -127,10 +137,7 @@ bool ttDMReconstruction_Likelihood::process(uhh2::Event & e)
     double px_min=2000;
     double py_min=2000;
     double gmax = 0.0191095; 
-    
-    static TFile *f = new TFile("/nfs/dust/cms/user/mameyer/TTDMDM/selection_MUON_RunII_25ns_v2/Likelihood_VariableBinning_2_Filled.root", "READ");
-    static TH3F *h=(TH3F*)f->Get("likelihood3D");
-    h->Scale(1./h->Integral(1,20,2,19,1,22,""));
+  
     for (int i=0; i<52;i++) 
        {
          for (int j=0; j<52;j++) 
@@ -244,9 +251,12 @@ bool ttDMReconstruction_Likelihood::process(uhh2::Event & e)
        else std::cout<<"not semi-leptonic"<<std::endl;
     }
     }
+
+    std::cout<<"Event done"<<std::endl;
+
     e.set(h_likelihood, likelihood);
     e.set(h_recneutrino, nu_scan);
-   
+    e.set(h_bjet, bjet_min);
    return true;
 }
  

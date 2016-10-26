@@ -62,6 +62,9 @@ ttDMSelectionHists::ttDMSelectionHists(uhh2::Context & ctx, const std::string & 
   met_VS_dphi_jet2 = book<TH2F>("met_VS_dphi_jet2", ";MET [GeV];#Delta#phi(MET, j2)", 180, 0, 1800, 60, 0, 3.6);
   met_dphi_jet1 = book<TH1F>("met__dphi_jet1", ";#Delta#phi(MET, j1)", 36, 0, 3.6);
   met_dphi_jet2 = book<TH1F>("met__dphi_jet2", ";#Delta#phi(MET, j2)", 36, 0, 3.6);
+  met_dphi_jet12_min = book<TH1F>("met_dphi_jet12_min", ";min(#Delta#phi(MET, j1), #Delta#phi(MET, j2))", 36, 0, 3.6);
+  met_dphi_jet123_min = book<TH1F>("met_dphi_jet123_min", ";min(#Delta#phi(MET, j1), #Delta#phi(MET, j2), #Delta#phi(MET, j3))", 36, 0, 3.6);
+  met_dphi_lep = book<TH1F>("met__dphi_lep", ";#Delta#phi(MET, l)", 36, 0, 3.6);
 
   // TTDM
   mtlep = book<TH1F>("mtlep", ";M_{T}", 10, 0, 500);
@@ -194,6 +197,23 @@ void ttDMSelectionHists::fill(const uhh2::Event & event){
   if(lep1) met_VS_dphi_lep1->Fill(event.met->pt(), fabs(uhh2::deltaPhi(*event.met, *lep1)), weight);
   if(event.jets->size()) met_dphi_jet1->Fill(uhh2::deltaPhi(*event.met, event.jets->at(0)), weight);
   if(event.jets->size()>1) met_dphi_jet2->Fill(uhh2::deltaPhi(*event.met, event.jets->at(1)), weight);
+  double mindeltaphi = 9999;
+  if(event.jets->size()>1) {
+     for(size_t i=0; i<2; i++){
+        double deltaphi = uhh2::deltaPhi(*event.met, event.jets->at(i));
+        if (deltaphi < mindeltaphi) mindeltaphi=deltaphi;
+     }
+     met_dphi_jet12_min->Fill(mindeltaphi, weight);
+  }
+  mindeltaphi = 9999;
+  if(event.jets->size()>2) {
+     for(size_t i=0; i<3; i++){
+        double deltaphi = uhh2::deltaPhi(*event.met, event.jets->at(i));
+        if (deltaphi < mindeltaphi) mindeltaphi=deltaphi;
+     }
+     met_dphi_jet123_min->Fill(mindeltaphi, weight);
+  }
+  if(event.muons->size()) met_dphi_lep->Fill(uhh2::deltaPhi(*event.met, event.muons->at(0)), weight);
   if(event.jets->size()) met_VS_dphi_jet1->Fill(event.met->pt(), fabs(uhh2::deltaPhi(*event.met, event.jets->at(0))), weight);
   if(event.jets->size()>1) met_VS_dphi_jet2->Fill(event.met->pt(), fabs(uhh2::deltaPhi(*event.met, event.jets->at(1))), weight);
   if(event.jets->size()>1) jetmetdphi->Fill(std::min(uhh2::deltaPhi(*event.met, event.jets->at(0)),uhh2::deltaPhi(*event.met, event.jets->at(1))),weight);
