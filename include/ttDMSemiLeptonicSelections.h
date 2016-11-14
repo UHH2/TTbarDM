@@ -230,7 +230,15 @@ class ttbarpTSel: public Selection {
    uhh2::Event::Handle<Jet> h_b_jets_;
 };  
 
-
+   class DMMETSelection: public Selection {
+   public:
+      explicit DMMETSelection(uhh2::Context& ctx, float DMMETmin);
+      virtual bool passes(const Event&) override;
+      
+   private:
+      float DMMETmin_;
+      Event::Handle<LorentzVector> h_neutrino_;
+   };
 
    /////
 }

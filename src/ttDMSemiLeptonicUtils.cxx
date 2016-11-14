@@ -33,6 +33,38 @@ bool TopJetLeptonDeltaRCleaner::process(uhh2::Event & event){
   return true;
 }
 
+bool HepTTLeptonDeltaRCleaner::process(uhh2::Event & event){
+
+   std::vector<TopJet> heptopjets_WP3;
+   if (event.is_valid(h_heptopjets_WP3)) heptopjets_WP3=event.get(h_heptopjets_WP3);
+   else return false;
+   
+   std::vector<TopJet> cleaned_topjets;
+   
+   for(const auto & tjet : heptopjets_WP3){
+    bool skip_tjet(false);
+
+    if(event.muons){
+      for(const auto & muo : *event.muons)
+        if(uhh2::deltaR(tjet, muo) < minDR_) skip_tjet = true;
+    }
+
+    if(skip_tjet) continue;
+
+    if(event.electrons){
+      for(const auto & ele : *event.electrons)
+        if(uhh2::deltaR(tjet, ele) < minDR_) skip_tjet = true;
+    }
+
+    if(!skip_tjet) cleaned_topjets.push_back(tjet);
+  }
+  heptopjets_WP3.clear();
+  heptopjets_WP3.reserve(cleaned_topjets.size());
+  for(auto & j : cleaned_topjets) heptopjets_WP3.push_back(j);
+  event.set(h_heptopjets_WP3, heptopjets_WP3);
+  return true;
+}
+
 double CalculateMT2W(const uhh2::Event & event){
 
   assert(event.met);

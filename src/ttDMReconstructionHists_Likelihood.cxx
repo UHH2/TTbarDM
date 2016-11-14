@@ -20,7 +20,7 @@ ttDMReconstructionHists_Likelihood::ttDMReconstructionHists_Likelihood(Context &
    h_recneutrino =ctx.get_handle<LorentzVector>("rec_neutrino");
    h_ttbargen =ctx.get_handle<TTbarGen>("ttbargen");
    h_bjets=ctx.get_handle<Jet>("bjet");
-   h_heptopjets_WP3=ctx.get_handle<std::vector<TopJet>>("h_heptopjets_WP3");
+   h_heptopjets_WP3=ctx.get_handle<std::vector<TopJet>>("h_heptopjets_WP3_wobtag");
 
    hist_chi2 = book<TH1F>("chi2","#chi^{2}", 100, 0, 100);
    
@@ -147,6 +147,14 @@ ttDMReconstructionHists_Likelihood::ttDMReconstructionHists_Likelihood(Context &
    hist_deltaphi_neutrino_met=book<TH1F>("hist_deltaphi_neutrino_met","#Delta#phi(neutrino,MET)",50,0,TMath::Pi());
    hist_deltaphi_thad_tlep=book<TH1F>("hist_deltaphi_thad_tlep","#Delta#phi(thad,tlep)",50,0,TMath::Pi());
    hist_deltaphi_thad_MET=book<TH1F>("hist_deltaphi_thad_MET","#Delta#phi(thad,met)",50,0,TMath::Pi());
+   hist_deltaR_tj_bjet=book<TH1F>("hist_deltaR_tj_bjet","#Delta R(tj,bjet)",40,0,8);
+   hist_deltar_tj_lep=book<TH1F>("hist_deltar_tj_lep","#Delta R(tagged jet, lep)",40,0,8);
+   hist_deltar_neutrino_lep=book<TH1F>("hist_deltar_neutrino_lep","#Delta R(neutrino, lep)",40,0,8);
+   hist_deltar_tj_neutrino=book<TH1F>("hist_deltar_tj_neutrino","#Delta R(tagged jet, neutrino)",40,0,8);
+   hist_deltar_neutrino_met=book<TH1F>("hist_deltar_neutrino_met","#Delta R(neutrino,MET)",40,0,8);
+   hist_deltar_thad_tlep=book<TH1F>("hist_deltar_thad_tlep","#Delta R(thad,tlep)",40,0,8);
+   mtlep = book<TH1F>("mtlep", ";M_{T}", 10, 0, 500);
+   mtlep2 = book<TH1F>("mtlep2", ";M_{T}", 50, 0, 500);
 }
 
 void ttDMReconstructionHists_Likelihood::fill(const Event & event){
@@ -226,24 +234,37 @@ void ttDMReconstructionHists_Likelihood::fill(const Event & event){
    hist_deltaphi_neutrino_lep->Fill(deltaphi_neutrino_lep, event.weight);
    double deltaphi_neutrino_met = uhh2::deltaPhi(neutrino,*event.met);
    hist_deltaphi_neutrino_met->Fill(deltaphi_neutrino_met, event.weight);
-
+   double deltar_neutrino_lep = deltaR(neutrino,lepton);
+   hist_deltar_neutrino_lep->Fill(deltar_neutrino_lep, event.weight);
+ 
    if(heptopjets_WP3.size()>0)
       {
          TopJet taggedjet=heptopjets_WP3.at(0);
+         double deltaR_tj_bjet=deltaR(taggedjet, b_jet);
+         hist_deltaR_tj_bjet -> Fill(deltaR_tj_bjet, event.weight);
          LorentzVector ttbar = taggedjet.v4()+neutrino+lepton.v4()+b_jet.v4();
          hist_pTttbar->Fill(ttbar.pt(), event.weight);
          double deltaphi_tj_met = uhh2::deltaPhi(taggedjet,*event.met);
          hist_deltaphi_tj_met->Fill(deltaphi_tj_met, event.weight); 
          double deltaphi_tj_lep = uhh2::deltaPhi(taggedjet,lepton);
          hist_deltaphi_tj_lep->Fill(deltaphi_tj_lep, event.weight);
+         double deltar_tj_lep = deltaR(taggedjet,lepton);
+         hist_deltar_tj_lep->Fill(deltar_tj_lep, event.weight);
          double deltaphi_tj_neutrino = uhh2::deltaPhi(taggedjet,neutrino);
          hist_deltaphi_tj_neutrino->Fill(deltaphi_tj_neutrino, event.weight);
+         double deltar_tj_neutrino = deltaR(taggedjet,neutrino);
+         hist_deltar_tj_neutrino->Fill(deltar_tj_neutrino, event.weight);
          double deltaphi_thad_tlep = uhh2::deltaPhi(taggedjet,neutrino+lepton.v4()+b_jet.v4());
          hist_deltaphi_thad_tlep->Fill(deltaphi_thad_tlep, event.weight);
+         double deltar_thad_tlep = deltaR(taggedjet,neutrino+lepton.v4()+b_jet.v4());
+         hist_deltar_thad_tlep->Fill(deltar_thad_tlep, event.weight);
          double deltaphi_thad_MET = uhh2::deltaPhi(taggedjet,*event.met);
          hist_deltaphi_thad_MET->Fill(deltaphi_thad_MET, event.weight);
       }
    
+   mtlep->Fill(sqrt(2*neutrino.Pt()*lepton.pt()*(1-cos(uhh2::deltaPhi(neutrino, lepton)))),event.weight);
+   mtlep2->Fill(sqrt(2*neutrino.Pt()*lepton.pt()*(1-cos(uhh2::deltaPhi(neutrino, lepton)))),event.weight);
+
    if (event.isRealData) return;
 
    TTbarGen ttbargen = event.get(h_ttbargen);

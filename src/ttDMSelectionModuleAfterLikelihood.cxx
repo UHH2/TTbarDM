@@ -98,17 +98,14 @@ class ttDMSelectionModuleAfterLikelihood: public AnalysisModule {
    std::unique_ptr<Selection> heptoptagevent_WP1_wobtag_sel;
    std::unique_ptr<Selection> heptoptagevent_WP3_wobtag_sel;
    std::unique_ptr<Selection> pv_sel;
-   std::unique_ptr<Selection> highMET_sel;
    std::unique_ptr<Selection> MET_sel;
    std::unique_ptr<Selection> MET100_sel;
-   std::unique_ptr<Selection> MET80_sel;
    std::unique_ptr<Selection> MET160_sel,btag_sel;
-   std::unique_ptr<AndSelection> jetsel1208050;
    std::unique_ptr<AndSelection> lep1_sel, lepVeto_sel;
-
-   std::unique_ptr<Hists> highMET_h;
+   std::unique_ptr<Selection> jetmetdphijet2_sel;
+   std::unique_ptr<Selection> DeltaPhiMetNeutrino_sel2;
+   std::unique_ptr<Selection> DeltaPhiMetNeutrino_sel15;
    std::unique_ptr<Hists> mtlep_noniso_h;
-   std::unique_ptr<Hists> highMET_noniso_h;
    std::unique_ptr<Hists> likelihood_noiso_h;
    std::unique_ptr<AnalysisModule> muo_med_noniso_SF;
 
@@ -124,137 +121,68 @@ class ttDMSelectionModuleAfterLikelihood: public AnalysisModule {
    std::unique_ptr<AnalysisModule> collectionsizeprod_heptt_WP1_wobtag;
    //std::unique_ptr<AnalysisModule> muo_triggerSF;
    std::unique_ptr<AnalysisModule> ttgenprod;
+   std::unique_ptr<AnalysisModule> hepttleptoncleaner;
    
    // hists
    std::unique_ptr<Hists> lumihists;
    std::unique_ptr<Hists> filter_h;
    std::unique_ptr<Hists> input_h;
    std::unique_ptr<Hists> met_h, electrons_met_h,jets_met_h,muons_met_h,events_met_h,topjets_met_h, genhists_met_h;
-   std::unique_ptr<Hists> met100_h, electrons_met100_h,jets_met100_h,muons_met100_h,events_met100_h,topjets_met100_h, genhists_met100_h;
    std::unique_ptr<Hists> nonisolep_h, electrons_nonisolep_h,jets_nonisolep_h,muons_nonisolep_h,events_nonisolep_h,topjets_nonisolep_h;
    std::unique_ptr<Hists> isolep_h, electrons_isolep_h,jets_isolep_h,muons_isolep_h,events_isolep_h,topjets_isolep_h;
    std::unique_ptr<TopJetHists> topjets_isolep_tagged_WP1_h, topjets_isolep_tagged_WP3_h, topjets_isolep_notag_WP1_h, topjets_isolep_notag_WP3_h;
    std::unique_ptr<TopJetHists> topjets_isolep_tagged_WP1_wobtag_h, topjets_isolep_tagged_WP3_wobtag_h;
    std::unique_ptr<Hists> heptoptagevent_WP3_h,electrons_heptoptagevent_WP3_h,jets_heptoptagevent_WP3_h,muons_heptoptagevent_WP3_h,events_heptoptagevent_WP3_h,topjets_heptoptagevent_WP3_h;
    std::unique_ptr<Hists> heptoptagevent_WP3_wobtag_h,electrons_heptoptagevent_WP3_wobtag_h,jets_heptoptagevent_WP3_wobtag_h,muons_heptoptagevent_WP3_wobtag_h,events_heptoptagevent_WP3_wobtag_h,topjets_heptoptagevent_WP3_wobtag_h;
+   std::unique_ptr<Hists> mediumMET_h,electrons_mediumMET_h,jets_mediumMET_h,topjets_mediumMET_h,muons_mediumMET_h,events_mediumMET_h, likelihood_mediumMET_h;
    std::unique_ptr<TopJetHists>  topjets_heptoptagevent_WP3_tagged_h;
    std::unique_ptr<TopJetHists>  topjets_heptoptagevent_WP3_wobtag_tagged_h;
    std::unique_ptr<Hists> twodcut_h,electrons_twodcut_h, jets_twodcut_h,topjets_twodcut_h,events_twodcut_h,muons_twodcut_h;
-   std::unique_ptr<Hists> metlepdphi_noiso_h,electrons_metlepdphi_noiso_h, jets_metlepdphi_noiso_h,topjets_metlepdphi_noiso_h,events_metlepdphi_noiso_h,muons_metlepdphi_noiso_h;
    std::unique_ptr<Hists> preselection_h,electrons_preselection_h, jets_preselection_h,topjets_preselection_h,events_preselection_h,muons_preselection_h, genhists_preselection_h;
    std::unique_ptr<Hists> leptonveto_h,electrons_leptonveto_h, jets_leptonveto_h,topjets_leptonveto_h,events_leptonveto_h,muons_leptonveto_h, genhists_leptonveto_h;
+   std::unique_ptr<Hists> dileptcontrolregion_h,electrons_dileptcontrolregion_h, jets_dileptcontrolregion_h,topjets_dileptcontrolregion_h,events_dileptcontrolregion_h,muons_dileptcontrolregion_h, genhists_dileptcontrolregion_h;
    std::unique_ptr<Hists> heptoptagevent_WP1_h;
    std::unique_ptr<Hists> heptoptagevent_WP1_wobtag_h;
-   std::unique_ptr<Hists> jetmetdphi_h;
    std::unique_ptr<Hists> jetmetdphi_noniso_h;
    std::unique_ptr<Hists> likelihood_preselection_h;
    std::unique_ptr<Hists> likelihood_leptonveto_h;
+   std::unique_ptr<Hists> likelihood_dileptcontrolregion_h;
    std::unique_ptr<Hists> likelihood_met_h;
    std::unique_ptr<Hists> likelihood_twodcut_h;
-   std::unique_ptr<Hists> likelihood_metlepdphi_h;
-   std::unique_ptr<Hists> likelihood_jetmetdphi_h;
-   std::unique_ptr<Hists> likelihood_cut1_noiso_h;
-   std::unique_ptr<Hists> likelihood_cut2_noiso_h;
-   std::unique_ptr<Hists> metlepdphi_h,jetmetdphi_mediumMET_h;
-   std::unique_ptr<Hists> likelihood_metlepdphi_noiso_h;
-   std::unique_ptr<Selection> jetmetdphi_sel, jetmetdphijet2_sel;
-   std::unique_ptr<Selection> mtlep_sel,mediumMET_sel;
-   std::unique_ptr<Selection> cut1_likelihood;
-   std::unique_ptr<Selection> cut2_likelihood;
-   std::unique_ptr<Selection> highpTJetSel;
-   std::unique_ptr<Selection> leadingjet_sel;
-   std::unique_ptr<Selection> HTlep_sel;
+   std::unique_ptr<Selection> jetmetdphi_sel;
+   std::unique_ptr<Selection> mtlep_sel;
    std::unique_ptr<Selection> thirdjet_sel, mtlep100_sel, mtlep150_sel;
-   std::unique_ptr<Selection> metleptondphi_sel;
    std::unique_ptr<Selection> jet123metdphi_sel;
-   std::unique_ptr<Selection> MT2WCut_sel;
    std::unique_ptr<Selection> DeltaPhiMetNeutrino_sel;
-   std::unique_ptr<Selection> DeltaPhiTaggedjet_Neutrino_sel;
-   std::unique_ptr<Selection> DeltaPhiTaggedJetTopLep_sel;
-   std::unique_ptr<Selection> neutrinopT_sel;
-   std::unique_ptr<Selection> ttbarpT_sel;
-   
+   std::unique_ptr<Selection> DMMETSel;
    std::unique_ptr<Hists> genhists_nonisolep_h;
-   std::unique_ptr<Hists> likelihood_metlepdphi_mtlep_h, likelihood_heptoptagevent_WP3_h,likelihood_heptoptagevent_WP1_h, likelihood_met100_h;
+   std::unique_ptr<Hists> likelihood_heptoptagevent_WP3_h,likelihood_heptoptagevent_WP1_h;
    std::unique_ptr<Hists> likelihood_heptoptagevent_WP3_wobtag_h,likelihood_heptoptagevent_WP1_wobtag_h;
-   std::unique_ptr<Hists> hists_metlepdphi_mtlep;
-   std::unique_ptr<Hists> cut2_noiso_mtlep;
-   std::unique_ptr<Hists> likelihood_cut2_noiso_mtlep_h;
-  
-   std::unique_ptr<Hists> met50_btag_ttbarpTSel;
-   std::unique_ptr<Hists> likelihood_met50_btag_ttbarpTSel;
-
-   std::unique_ptr<Hists> mediumMET_h,electrons_mediumMET_h,jets_mediumMET_h,topjets_mediumMET_h,muons_mediumMET_h,events_mediumMET_h, likelihood_mediumMET_h;
+ 
    std::unique_ptr<Hists> thirdjet_h,electrons_thirdjet_h,jets_thirdjet_h,topjets_thirdjet_h,muons_thirdjet_h,events_thirdjet_h,likelihood_thirdjet_h;
-   std::unique_ptr<Hists> mtlep_h,electrons_mtlep_h,jets_mtlep_h,topjets_mtlep_h,muons_mtlep_h,events_mtlep_h,likelihood_mtlep_h;
+   std::unique_ptr<Hists> electrons_mtlep_h,jets_mtlep_h,topjets_mtlep_h,muons_mtlep_h,events_mtlep_h,likelihood_mtlep_h, mtlep_h;
    std::unique_ptr<Hists> jetmetdphijet2_h,electrons_jetmetdphijet2_h,jets_jetmetdphijet2_h,topjets_jetmetdphijet2_h,muons_jetmetdphijet2_h,events_jetmetdphijet2_h,likelihood_jetmetdphijet2_h;
    std::unique_ptr<Hists> electrons_btagsel_h,jets_btagsel_h,topjets_btagsel_h,muons_btagsel_h,events_btagsel_h,ttbargenhists_btagsel_h;
 
-   std::unique_ptr<Hists> likelihood_heptoptagevent_WP3_wobtag_highMET_h;
-   std::unique_ptr<Hists> heptoptagevent_WP3_wobtag_highMET_h;
-   std::unique_ptr<Hists> likelihood_heptoptagevent_WP1_wobtag_highMET_h;
-   std::unique_ptr<Hists> heptoptagevent_WP1_wobtag_highMET_h;
-   std::unique_ptr<Hists> likelihood_heptoptagevent_WP1_highMET_h;
-   std::unique_ptr<Hists> heptoptagevent_WP1_highMET_h;
-
    std::unique_ptr<Hists> likelihood_thirdjet_mtlep_h;
    std::unique_ptr<Hists> thirdjet_mtlep_h;
-   std::unique_ptr<Hists> likelihood_thirdjet_jetmetdphi_h;
-   std::unique_ptr<Hists> thirdjet_jetmetdphi_h;
-
-   std::unique_ptr<Hists> electrons_thirdjet_jetmetdphi_h;
-   std::unique_ptr<Hists> jets_thirdjet_jetmetdphi_h;
-   std::unique_ptr<Hists> topjets_thirdjet_jetmetdphi_h;
-   std::unique_ptr<Hists> muons_thirdjet_jetmetdphi_h;
-   std::unique_ptr<Hists> events_thirdjet_jetmetdphi_h;
-   std::unique_ptr<Hists> likelihood_jetmetdphi_mediumMET_h;
+ 
    std::unique_ptr<Hists> jet123metdphi_h;
    std::unique_ptr<Hists> hists_likelihood_jet123metdphi_h;
    
-   std::unique_ptr<Hists> jet123metdphi_MT2WCut_h;
-   std::unique_ptr<Hists> hists_likelihood_jet123metdphi_MT2WCut_h;
-   std::unique_ptr<Hists> metlepdphi_MT2WCut_h;
-   std::unique_ptr<Hists> likelihood_metlepdphi_MT2WCut_h;
    std::unique_ptr<Hists> ttbargenhists_preselection_h;
    std::unique_ptr<Hists> ttbargenhists_leptonveto_h;
+   std::unique_ptr<Hists> ttbargenhists_dileptcontrolregion_h;
    std::unique_ptr<Hists> ttbargenhists_heptoptagevent_WP3_h;
-   std::unique_ptr<Hists> ttbargenhists_jetmetdphi_mediumMET_h;
-   std::unique_ptr<Hists> ttbargenhists_metlepdphi_mtlep;
-   std::unique_ptr<Hists> ttbargenhists_metlepdphi_MT2WCut_h;
-   std::unique_ptr<Hists> jet123metdphi_MT2WCut_MET240_h;
    std::unique_ptr<Hists> ttbargenhists_met_h;
-   std::unique_ptr<Hists> likelihood_jet123metdphi_MT2WCut_MET240_h;
-   std::unique_ptr<Hists> thirdjet_MT2WCut_MetSel_h;
-   std::unique_ptr<Hists> likelihood_thirdjet_MT2WCut_MetSel_h;
-   std::unique_ptr<Hists> thirdjet_MT2WCut_h;
-   std::unique_ptr<Hists> likelihood_thirdjet_MT2WCut_h;
    uhh2::Event::Handle<TTbarGen> h_ttbargen;
    
-   std::unique_ptr<Hists> electrons_jet123metdphi_MT2WCut_h;
-   std::unique_ptr<Hists> jets_jet123metdphi_MT2WCut_h;
-   std::unique_ptr<Hists> topjets_jet123metdphi_MT2WCut_h;
-   std::unique_ptr<Hists> muons_jet123metdphi_MT2WCut_h;
-   std::unique_ptr<Hists> events_jet123metdphi_MT2WCut_h;
-   std::unique_ptr<Hists> jetsel1208050_h;
-   std::unique_ptr<Hists> likelihood_jetsel1208050_h;
-   std::unique_ptr<Hists> met80_h;
-   std::unique_ptr<Hists> likelihood_met80;
    std::unique_ptr<Hists> btagsel_h;
    std::unique_ptr<Hists> likelihood_btagsel;
    std::unique_ptr<Hists> met160_h;
    std::unique_ptr<Hists> likelihood_met160;
-   std::unique_ptr<Hists> met160_btag_h;
    std::unique_ptr<Hists> likelihood_met160_btag;
-   std::unique_ptr<Hists> hists_likelihood_DeltaPhiMetNeutrino;
-   std::unique_ptr<Hists> hists_DeltaPhiMetNeutrino;
-   std::unique_ptr<Hists> heptoptagevent_WP3_highMET_h;
-   std::unique_ptr<Hists> likelihood_heptoptagevent_WP3_highMET_h;
-   std::unique_ptr<Hists> DeltaPhiTaggedjet_Neutrino_mtlep150;
-   std::unique_ptr<Hists> likelihood_DeltaPhiTaggedjet_Neutrino_mtlep150;
-   std::unique_ptr<Hists> electrons_btagsel_MT2WCut_h,jets_btagsel_MT2WCut_h,topjets_btagsel_MT2WCut_h,muons_btagsel_MT2WCut_h,events_btagsel_MT2WCut_h,ttbargenhists_btagsel_MT2WCut_h,btagsel_MT2WCut_h,likelihood_btagsel_MT2WCut;
-   std::unique_ptr<Hists> electrons_btagsel_mtlep_h,jets_btagsel_mtlep_h,topjets_btagsel_mtlep_h,muons_btagsel_mtlep_h,events_btagsel_mtlep_h,ttbargenhists_btagsel_mtlep_h,btagsel_mtlep_h,likelihood_btagsel_mtlep;
-   std::unique_ptr<Hists> electrons_btagsel_MT2WCut_metsel_h,jets_btagsel_MT2WCut_metsel_h,topjets_btagsel_MT2WCut_metsel_h,muons_btagsel_MT2WCut_metsel_h,events_btagsel_MT2WCut_metsel_h,ttbargenhists_btagsel_MT2WCut_metsel_h,btagsel_MT2WCut_metsel_h,likelihood_btagsel_MT2WCut_metsel;
-   std::unique_ptr<Hists> jets_met160_btag_h,topjets_met160_btag_h,muons_met160_btag_h,events_met160_btag_h;
+   std::unique_ptr<Hists> jets_met160_btag_h,topjets_met160_btag_h,muons_met160_btag_h,events_met160_btag_h,met160_btag_h;
   
    std::unique_ptr<Hists> jets_met50_btag_h;
    std::unique_ptr<Hists> topjets_met50_btag_h;
@@ -277,27 +205,75 @@ class ttDMSelectionModuleAfterLikelihood: public AnalysisModule {
    std::unique_ptr<Hists> muons_btag_noniso_h;
    std::unique_ptr<Hists> events_btag_noniso_h;
    
-   std::unique_ptr<Hists> met160_btag_metlep100_h;
-   std::unique_ptr<Hists> likelihood_met160_btag_metlep100;
-   std::unique_ptr<Hists> met160_btag_metlepdphi_h;
-   std::unique_ptr<Hists> likelihood_met160_btag_metlepdphi;
-   std::unique_ptr<Hists> DeltaPhiTaggedjet_Neutrino;
-   std::unique_ptr<Hists> likelihood_DeltaPhiTaggedjet_Neutrino;
    std::unique_ptr<Hists> met100_btag_mtlep100_h;
    std::unique_ptr<Hists> likelihood_met100_btag_mtlep100;
-   std::unique_ptr<Hists> met100_btag_neutrinopT_h;
-   std::unique_ptr<Hists> likelihood_met100_btag_neutrinopT;
-   std::unique_ptr<Hists> met100_btag_DeltaPhiTaggedJetTopLep_h;
-   std::unique_ptr<Hists> likelihood_met100_btag_DeltaPhiTaggedJetTopLep;
    std::unique_ptr<Hists> HEPTT_WP3_noniso_h;
    std::unique_ptr<Hists> likelihood_WP3_noniso_h;
    std::unique_ptr<Hists> likelihood_btag_noniso_h;
-   std::unique_ptr<Hists> met100_btag_neutrinopT_ttbarpTSel_h;
-   std::unique_ptr<Hists> likelihood_met100_btag_neutrinopT_ttbarpTSel;
+   std::unique_ptr<Hists> nomet_noDeltaPhi_h;
+   std::unique_ptr<Hists> likelihood_nomet_noDeltaPhi_h;
+   std::unique_ptr<Hists> nobtag_h;
+   std::unique_ptr<Hists> likelihood_nobtag_h;
+   std::unique_ptr<Hists> nothirdjet_h;
+   std::unique_ptr<Hists> likelihood_nothirdjet_h;
+   std::unique_ptr<Hists> noDeltaPhiJets_h;
+   std::unique_ptr<Hists> likelihood_noDeltaPhiJets_h;
+   std::unique_ptr<Hists> nomet_h;
+   std::unique_ptr<Hists> likelihood_nomet_h;
+   std::unique_ptr<Hists> nomtlep;
+   std::unique_ptr<Hists> likelihood_nomtlep;
+   std::unique_ptr<Hists> noDeltaPhiMetNeutrino;
+   std::unique_ptr<Hists> likelihood_noDeltaPhiMetNeutrino;
 
+   std::unique_ptr<Hists> noDeltaPhiMetNeutrino_met160;
+   std::unique_ptr<Hists> likelihood_noDeltaPhiMetNeutrino_met160;
+   std::unique_ptr<Hists> DeltaPhiMetNeutrinotight;
+   std::unique_ptr<Hists> likelihood_DeltaPhiMetNeutrinotight;
+   std::unique_ptr<Hists> noDeltaPhiMetNeutrino_DMMET;
+   std::unique_ptr<Hists> likelihood_noDeltaPhiMetNeutrino_DMMET;
+   std::unique_ptr<Hists> noDeltaPhiMetNeutrino_MT2W;
+   std::unique_ptr<Hists> likelihood_noDeltaPhiMetNeutrino_MT2W;
+   std::unique_ptr<Hists> noDeltaPhiMetNeutrino_DeltaPhi;
+   std::unique_ptr<Hists> likelihood_noDeltaPhiMetNeutrino_DeltaPhi;
+   
+   std::unique_ptr<Hists> heptoptagevent_WP3_wobtag_noDeltaPhiMET_h;
+   std::unique_ptr<Hists> electrons_heptoptagevent_WP3_wobtag_noDeltaPhiMET_h;
+   std::unique_ptr<Hists> jets_heptoptagevent_WP3_wobtag_noDeltaPhiMET_h;
+   std::unique_ptr<Hists> muons_heptoptagevent_WP3_wobtag_noDeltaPhiMET_h;
+   std::unique_ptr<Hists> events_heptoptagevent_WP3_wobtag_noDeltaPhiMET_h;
+   std::unique_ptr<Hists> topjets_heptoptagevent_WP3_wobtag_noDeltaPhiMET_h;
+   std::unique_ptr<Hists> likelihood_heptoptagevent_WP3_wobtag_noDeltaPhiMET_h;
+
+  std::unique_ptr<Hists>  heptoptagevent_WP3_wobtag_nobtag_h;
+   std::unique_ptr<Hists> electrons_heptoptagevent_WP3_wobtag_nobtag_h;
+   std::unique_ptr<Hists> jets_heptoptagevent_WP3_wobtag_nobtag_h;
+   std::unique_ptr<Hists> muons_heptoptagevent_WP3_wobtag_nobtag_h;
+   std::unique_ptr<Hists> events_heptoptagevent_WP3_wobtag_nobtag_h;
+   std::unique_ptr<Hists> topjets_heptoptagevent_WP3_wobtag_nobtag_h;
+   std::unique_ptr<Hists> likelihood_heptoptagevent_WP3_wobtag_nobtag_h;
+   
+   std::unique_ptr<Hists> heptoptagevent_WP3_wobtag_nomtlep_h;
+   std::unique_ptr<Hists> electrons_heptoptagevent_WP3_wobtag_nomtlep_h;
+   std::unique_ptr<Hists> jets_heptoptagevent_WP3_wobtag_nomtlep_h;
+   std::unique_ptr<Hists> muons_heptoptagevent_WP3_wobtag_nomtlep_h;
+   std::unique_ptr<Hists> events_heptoptagevent_WP3_wobtag_nomtlep_h;
+   std::unique_ptr<Hists> topjets_heptoptagevent_WP3_wobtag_nomtlep_h;
+   std::unique_ptr<Hists> likelihood_heptoptagevent_WP3_wobtag_nomtlep_h;
+   std::unique_ptr<Selection>  DeltaPhiTaggedJetTopLep_sel, MT2W_sel,tightbtag_sel;
+   std::unique_ptr<Hists> HEPTT_WP3_noniso_mtlep_h,likelihood_WP3_noniso_mtlep_h;
+   std::unique_ptr<Hists> mtlep200_h;
+   std::unique_ptr<Hists> likelihood_mtlep200;
+   std::unique_ptr<Hists> btagtight_h;
+   std::unique_ptr<Hists> likelihood_btagtight_h;
    bool isSemiLept;
    bool isDiLept;
    bool isOther;
+
+   std::unique_ptr<Hists> WJetsControlRegion_noniso_h,electrons_WJetsControlRegion_noniso_h,jets_WJetsControlRegion_noniso_h, topjets_WJetsControlRegion_noniso_h, muons_WJetsControlRegion_noniso_h, events_WJetsControlRegion_noniso_h, likelihood_WJetsControlRegion_noniso_h;
+
+   std::unique_ptr<Hists> DileptControlRegion_noniso_h, electrons_DileptControlRegion_noniso_h, jets_DileptControlRegion_noniso_h,topjets_DileptControlRegion_noniso_h, muons_DileptControlRegion_noniso_h, events_DileptControlRegion_noniso_h, likelihood_DileptControlRegion_noniso_h;
+
+   std::unique_ptr<Hists>  SemileptControlRegion_noniso_h,electrons_SemileptControlRegion_noniso_h,jets_SemileptControlRegion_noniso_h,topjets_SemileptControlRegion_noniso_h,muons_SemileptControlRegion_noniso_h,events_SemileptControlRegion_noniso_h,likelihood_SemileptControlRegion_noniso_h;
 };
 
 ttDMSelectionModuleAfterLikelihood::ttDMSelectionModuleAfterLikelihood(Context & ctx){
@@ -385,49 +361,33 @@ ttDMSelectionModuleAfterLikelihood::ttDMSelectionModuleAfterLikelihood(Context &
       lepVeto_sel->add<NMuonSelection>("muoN == 0", 0, 0);
       lepVeto_sel->add<NElectronSelection>("eleN == 1", 1, 1);
    }
-   
-   
-   highpTJetSel.reset(new NJetSelection(2, -1, JetId(PtEtaCut( 100., 2.4))));
-   HTlep_sel.reset(new HTlepCut(300, std::numeric_limits<double>::infinity()));
-   
-   jetsel1208050.reset(new AndSelection(ctx));
-   jetsel1208050->add<NJetSelection>("",1, -1, JetId(PtEtaCut( 120., 2.4)));
-   jetsel1208050->add<NJetSelection>("",2, -1, JetId(PtEtaCut( 80., 2.4)));
-   jetsel1208050->add<NJetSelection>("",3, -1, JetId(PtEtaCut( 50., 2.4)));
-
    JetId Btag = CSVBTag(0.8);
+   JetId BtagTight = CSVBTag(0.935);
    btag_sel.reset(new NJetSelection(1, -1, Btag));
+   tightbtag_sel.reset(new NJetSelection(1, -1, BtagTight));
 
-   leadingjet_sel.reset(new NJetSelection(1, -1, JetId(PtEtaCut( 150., 2.4))));
-   highMET_sel.reset(new METCut(150., std::numeric_limits<double>::infinity()));
-   mediumMET_sel.reset(new METCut(260., std::numeric_limits<double>::infinity()));
+   DMMETSel.reset(new DMMETSelection(ctx,250));
    MET_sel.reset(new METCut(320., std::numeric_limits<double>::infinity()));
    MET100_sel.reset(new METCut(100., std::numeric_limits<double>::infinity()));
    MET160_sel.reset(new METCut(160., std::numeric_limits<double>::infinity()));
-   MET80_sel.reset(new METCut(80., std::numeric_limits<double>::infinity()));
    mtlep_sel.reset(new MTlepCut(200., std::numeric_limits<double>::infinity()));
    mtlep100_sel.reset(new MTlepCut(100., std::numeric_limits<double>::infinity()));
    mtlep150_sel.reset(new MTlepCut(150., std::numeric_limits<double>::infinity()));
    jetmetdphi_sel.reset(new METJetDPhiCut(1.2, 2));
-   jetmetdphijet2_sel.reset(new METJetDPhiCut(1.2, 2));
-   metleptondphi_sel.reset(new METLeptonDPhiCut(1.1));
    thirdjet_sel.reset(new NJetSelection(3, -1, JetId(PtEtaCut( 50., 2.4))));
-   ttbarpT_sel.reset(new ttbarpTSel(ctx,350));
    jet123metdphi_sel.reset(new METJetDPhiCut(1.4,3));
-   
-   cut1_likelihood.reset(new LikelihoodSelection(ctx,22));
-   cut2_likelihood.reset(new LikelihoodSelection(ctx,14));
-    
+   jetmetdphijet2_sel.reset(new METJetDPhiCut(1.2, 2));
    DeltaPhiMetNeutrino_sel.reset(new DeltaPhiMetNeutrino(ctx,1));
-   DeltaPhiTaggedjet_Neutrino_sel.reset(new  DeltaPhiTaggedJetNeutrino(ctx,1.5));
-   neutrinopT_sel.reset(new NeutrinopTSelection(ctx, 150));
-   DeltaPhiTaggedJetTopLep_sel.reset(new DeltaPhiTaggedJetTopLep(ctx,1.5));
+   DeltaPhiMetNeutrino_sel15.reset(new DeltaPhiMetNeutrino(ctx,1.5));
+   DeltaPhiMetNeutrino_sel2.reset(new DeltaPhiMetNeutrino(ctx,2));
    //h_flag_heptoptagevent = ctx.declare_event_output<int>("flag_heptoptagevent");
    h_flag_twodcut = ctx.get_handle<bool>("flag_twodcut");
    h_likelihood = ctx.get_handle<double>("likelihood");
    h_recneutrino = ctx.get_handle<LorentzVector>("rec_neutrino");
    h_bjets = ctx.get_handle<Jet>("bjet");
-
+   MT2W_sel.reset(new MT2WCut(200.));
+   DeltaPhiTaggedJetTopLep_sel.reset(new DeltaPhiTaggedJetTopLep(ctx,1.0));
+   
    heptoptagevent_WP3_sel.reset(new HandleSelection<int>(ctx, "n_heptopjets_WP3", 1, 999));
    heptoptagevent_WP1_sel.reset(new HandleSelection<int>(ctx, "n_heptopjets_WP1", 1, 999));
    heptoptagevent_WP3_wobtag_sel.reset(new HandleSelection<int>(ctx, "n_heptopjets_WP3_wobtag", 1, 999));
@@ -442,11 +402,14 @@ ttDMSelectionModuleAfterLikelihood::ttDMSelectionModuleAfterLikelihood(Context &
       heptopjet_corrector.reset(new GenericTopJetCorrector(ctx, JERFiles::Fall15_25ns_L123_AK8PFchs_DATA,"patJetsHepTopTagCHSPacked_daughters"));
       heptopjet_correctorL2L3.reset(new GenericTopJetCorrector(ctx, JERFiles::Fall15_25ns_L23_AK8PFchs_DATA,"h_heptopjets_pteta"));
    }
+   //mit collections aufpassen!! HIER ALLE RICHTIg? WERDEN AUCH IN HISTS >> VERWENDET
+
    collectionprod_heptt_pteta.reset(new CollectionProducer<TopJet>(ctx, "patJetsHepTopTagCHSPacked_daughters", "h_heptopjets_pteta", TopJetId(HTTTopJetId_pteta))); 
    collectionsizeprod_heptt_pteta.reset(new CollectionSizeProducer<TopJet>(ctx, "patJetsHepTopTagCHSPacked_daughters", "n_heptopjets_pteta", TopJetId(HTTTopJetId_pteta)));  
 
    collectionprod_heptt_WP3_wobtag.reset(new CollectionProducer<TopJet>(ctx, "h_heptopjets_pteta", "h_heptopjets_WP3_wobtag", TopJetId(HTTTopJetId_WP3_wobtag))); 
-   collectionsizeprod_heptt_WP3_wobtag.reset(new CollectionSizeProducer<TopJet>(ctx, "h_heptopjets_pteta", "n_heptopjets_WP3_wobtag", TopJetId(HTTTopJetId_WP3_wobtag)));  
+   hepttleptoncleaner.reset(new HepTTLeptonDeltaRCleaner(ctx, 1.5));
+   collectionsizeprod_heptt_WP3_wobtag.reset(new CollectionSizeProducer<TopJet>(ctx, "h_heptopjets_WP3_wobtag", "n_heptopjets_WP3_wobtag", TopJetId(HTTTopJetId_WP3_wobtag)));  
    
    collectionprod_heptt_WP1_wobtag.reset(new CollectionProducer<TopJet>(ctx, "h_heptopjets_pteta", "h_heptopjets_WP1_wobtag", TopJetId(HTTTopJetId_WP1_wobtag))); 
    collectionsizeprod_heptt_WP1_wobtag.reset(new CollectionSizeProducer<TopJet>(ctx, "h_heptopjets_pteta", "n_heptopjets_WP1_wobtag", TopJetId(HTTTopJetId_WP1_wobtag))); 
@@ -462,21 +425,13 @@ ttDMSelectionModuleAfterLikelihood::ttDMSelectionModuleAfterLikelihood(Context &
    input_h.reset(new ttDMSelectionHists(ctx, "input"));
    filter_h.reset(new ttDMSelectionHists(ctx, "filter"));
    met_h.reset(new ttDMSelectionHists(ctx, "met"));
-   met100_h.reset(new ttDMSelectionHists(ctx, "met100"));
-
+   
    electrons_met_h.reset(new ElectronHists(ctx,"electrons_met"));
    jets_met_h.reset(new JetHists(ctx,"jets_met"));
    muons_met_h.reset(new MuonHists(ctx,"muons_met"));
    events_met_h.reset(new EventHists(ctx,"events_met"));
    topjets_met_h.reset(new TopJetHists(ctx,"topjets_met",4,"patJetsHepTopTagCHSPacked_daughters"));
    genhists_met_h.reset(new ttDMGenHists(ctx,"genhists_met"));
-
-   electrons_met100_h.reset(new ElectronHists(ctx,"electrons_met100"));
-   jets_met100_h.reset(new JetHists(ctx,"jets_met100"));
-   muons_met100_h.reset(new MuonHists(ctx,"muons_met100"));
-   events_met100_h.reset(new EventHists(ctx,"events_met100"));
-   topjets_met100_h.reset(new TopJetHists(ctx,"topjets_met100",4,"patJetsHepTopTagCHSPacked_daughters"));
-   genhists_met100_h.reset(new ttDMGenHists(ctx,"genhists_met100"));
 
    nonisolep_h.reset(new ttDMSelectionHists(ctx, "nonisolep"));
    electrons_nonisolep_h.reset(new ElectronHists(ctx,"electrons_nonisolep"));
@@ -510,17 +465,35 @@ ttDMSelectionModuleAfterLikelihood::ttDMSelectionModuleAfterLikelihood(Context &
    muons_heptoptagevent_WP3_h.reset(new MuonHists(ctx,"muons_heptoptagevent_WP3"));
    events_heptoptagevent_WP3_h.reset(new EventHists(ctx,"events_heptoptagevent_WP3"));
    topjets_heptoptagevent_WP3_h.reset(new TopJetHists(ctx,"topjets_heptoptagevent_WP3", 4,"patJetsHepTopTagCHSPacked_daughters"));
-   topjets_heptoptagevent_WP3_tagged_h.reset(new TopJetHists(ctx,"topjets_heptoptagevent_WP3_tagged", 4,"patJetsHepTopTagCHSPacked_daughters"));
-   topjets_heptoptagevent_WP3_tagged_h->set_TopJetId(HTTTopJetId_WP3);
-
+  
    heptoptagevent_WP3_wobtag_h.reset(new ttDMSelectionHists(ctx,"heptoptagevent_WP3_wobtag"));
    electrons_heptoptagevent_WP3_wobtag_h.reset(new ElectronHists(ctx,"electrons_heptoptagevent_WP3_wobtag"));
    jets_heptoptagevent_WP3_wobtag_h.reset(new JetHists(ctx,"jets_heptoptagevent_WP3_wobtag"));
    muons_heptoptagevent_WP3_wobtag_h.reset(new MuonHists(ctx,"muons_heptoptagevent_WP3_wobtag"));
    events_heptoptagevent_WP3_wobtag_h.reset(new EventHists(ctx,"events_heptoptagevent_WP3_wobtag"));
-   topjets_heptoptagevent_WP3_wobtag_h.reset(new TopJetHists(ctx,"topjets_heptoptagevent_WP3_wobtag", 4,"patJetsHepTopTagCHSPacked_daughters"));
-   topjets_heptoptagevent_WP3_wobtag_tagged_h.reset(new TopJetHists(ctx,"topjets_heptoptagevent_WP3_wobtag_tagged", 4,"patJetsHepTopTagCHSPacked_daughters"));
-   topjets_heptoptagevent_WP3_wobtag_tagged_h->set_TopJetId(HTTTopJetId_WP3_wobtag);
+   topjets_heptoptagevent_WP3_wobtag_h.reset(new TopJetHists(ctx,"topjets_heptoptagevent_WP3_wobtag", 4,"h_heptopjets_WP3_wobtag"));
+  
+   heptoptagevent_WP3_wobtag_nomtlep_h.reset(new ttDMSelectionHists(ctx,"heptoptagevent_WP3_wobtag_nomtlep"));
+   electrons_heptoptagevent_WP3_wobtag_nomtlep_h.reset(new ElectronHists(ctx,"electrons_heptoptagevent_WP3_wobtag_nomtlep"));
+   jets_heptoptagevent_WP3_wobtag_nomtlep_h.reset(new JetHists(ctx,"jets_heptoptagevent_WP3_wobtag_nomtlep"));
+   muons_heptoptagevent_WP3_wobtag_nomtlep_h.reset(new MuonHists(ctx,"muons_heptoptagevent_WP3_wobtag_nomtlep"));
+   events_heptoptagevent_WP3_wobtag_nomtlep_h.reset(new EventHists(ctx,"events_heptoptagevent_WP3_wobtag_nomtlep"));
+   topjets_heptoptagevent_WP3_wobtag_nomtlep_h.reset(new TopJetHists(ctx,"topjets_heptoptagevent_WP3_wobtag_nomtlep", 4,"patJetsHepTopTagCHSPacked_daughters"));
+   
+   heptoptagevent_WP3_wobtag_nobtag_h.reset(new ttDMSelectionHists(ctx,"heptoptagevent_WP3_wobtag_nobtag"));
+   electrons_heptoptagevent_WP3_wobtag_nobtag_h.reset(new ElectronHists(ctx,"electrons_heptoptagevent_WP3_wobtag_nobtag"));
+   jets_heptoptagevent_WP3_wobtag_nobtag_h.reset(new JetHists(ctx,"jets_heptoptagevent_WP3_wobtag_nobtag"));
+   muons_heptoptagevent_WP3_wobtag_nobtag_h.reset(new MuonHists(ctx,"muons_heptoptagevent_WP3_wobtag_nobtag"));
+   events_heptoptagevent_WP3_wobtag_nobtag_h.reset(new EventHists(ctx,"events_heptoptagevent_WP3_wobtag_nobtag"));
+   topjets_heptoptagevent_WP3_wobtag_nobtag_h.reset(new TopJetHists(ctx,"topjets_heptoptagevent_WP3_wobtag_nobtag", 4,"patJetsHepTopTagCHSPacked_daughters"));
+   
+   heptoptagevent_WP3_wobtag_noDeltaPhiMET_h.reset(new ttDMSelectionHists(ctx,"heptoptagevent_WP3_wobtag_noDeltaPhiMET"));
+   electrons_heptoptagevent_WP3_wobtag_noDeltaPhiMET_h.reset(new ElectronHists(ctx,"electrons_heptoptagevent_WP3_wobtag_noDeltaPhiMET"));
+   jets_heptoptagevent_WP3_wobtag_noDeltaPhiMET_h.reset(new JetHists(ctx,"jets_heptoptagevent_WP3_wobtag_noDeltaPhiMET"));
+   muons_heptoptagevent_WP3_wobtag_noDeltaPhiMET_h.reset(new MuonHists(ctx,"muons_heptoptagevent_WP3_wobtag_noDeltaPhiMET"));
+   events_heptoptagevent_WP3_wobtag_noDeltaPhiMET_h.reset(new EventHists(ctx,"events_heptoptagevent_WP3_wobtag_noDeltaPhiMET"));
+   topjets_heptoptagevent_WP3_wobtag_noDeltaPhiMET_h.reset(new TopJetHists(ctx,"topjets_heptoptagevent_WP3_wobtag_noDeltaPhiMET", 4,"patJetsHepTopTagCHSPacked_daughters"));
+  
    
    twodcut_h.reset(new ttDMSelectionHists(ctx,"twodcut"));
    electrons_twodcut_h.reset(new ElectronHists(ctx,"electrons_twodcut"));
@@ -528,13 +501,6 @@ ttDMSelectionModuleAfterLikelihood::ttDMSelectionModuleAfterLikelihood(Context &
    topjets_twodcut_h.reset(new TopJetHists(ctx,"topjets_twodcut", 4, "patJetsHepTopTagCHSPacked_daughters"));
    muons_twodcut_h.reset(new MuonHists(ctx,"muons_twodcut"));
    events_twodcut_h.reset(new EventHists(ctx,"events_twodcut"));
-
-   metlepdphi_noiso_h.reset(new ttDMSelectionHists(ctx,"metlepdphi_noiso"));
-   electrons_metlepdphi_noiso_h.reset(new ElectronHists(ctx,"electrons_metlepdphi_noiso"));
-   jets_metlepdphi_noiso_h.reset(new JetHists(ctx,"jets_metlepdphi_noiso"));
-   topjets_metlepdphi_noiso_h.reset(new TopJetHists(ctx,"topjets_metlepdphi_noiso", 4, "patJetsHepTopTagCHSPacked_daughters"));
-   muons_metlepdphi_noiso_h.reset(new MuonHists(ctx,"muons_metlepdphi_noiso"));
-   events_metlepdphi_noiso_h.reset(new EventHists(ctx,"events_metlepdphi_noiso"));
 
    preselection_h.reset(new ttDMSelectionHists(ctx,"preselection"));
    electrons_preselection_h.reset(new ElectronHists(ctx,"electrons_preselection"));
@@ -552,12 +518,14 @@ ttDMSelectionModuleAfterLikelihood::ttDMSelectionModuleAfterLikelihood(Context &
    events_leptonveto_h.reset(new EventHists(ctx,"events_leptonveto"));
    genhists_leptonveto_h.reset(new ttDMGenHists(ctx,"genhists_leptonveto"));
 
-   mediumMET_h.reset(new ttDMSelectionHists(ctx,"mediumMET"));
-   electrons_mediumMET_h.reset(new ElectronHists(ctx,"electrons_mediumMET"));
-   jets_mediumMET_h.reset(new JetHists(ctx,"jets_mediumMET"));
-   topjets_mediumMET_h.reset(new TopJetHists(ctx,"topjets_mediumMET", 4, "patJetsHepTopTagCHSPacked_daughters"));
-   muons_mediumMET_h.reset(new MuonHists(ctx,"muons_mediumMET"));
-   events_mediumMET_h.reset(new EventHists(ctx,"events_mediumMET"));
+   dileptcontrolregion_h.reset(new ttDMSelectionHists(ctx,"dileptcontrolregion"));
+   electrons_dileptcontrolregion_h.reset(new ElectronHists(ctx,"electrons_dileptcontrolregion"));
+   jets_dileptcontrolregion_h.reset(new JetHists(ctx,"jets_dileptcontrolregion"));
+   topjets_dileptcontrolregion_h.reset(new TopJetHists(ctx,"topjets_dileptcontrolregion", 4, "patJetsHepTopTagCHSPacked_daughters"));
+   muons_dileptcontrolregion_h.reset(new MuonHists(ctx,"muons_dileptcontrolregion"));
+   events_dileptcontrolregion_h.reset(new EventHists(ctx,"events_dileptcontrolregion"));
+   genhists_dileptcontrolregion_h.reset(new ttDMGenHists(ctx,"genhists_dileptcontrolregion"));
+
 
    thirdjet_h.reset(new ttDMSelectionHists(ctx,"thirdjet"));
    electrons_thirdjet_h.reset(new ElectronHists(ctx,"electrons_thirdjet"));
@@ -566,44 +534,11 @@ ttDMSelectionModuleAfterLikelihood::ttDMSelectionModuleAfterLikelihood(Context &
    muons_thirdjet_h.reset(new MuonHists(ctx,"muons_thirdjet"));
    events_thirdjet_h.reset(new EventHists(ctx,"events_thirdjet"));
 
-   electrons_thirdjet_jetmetdphi_h.reset(new ElectronHists(ctx,"electrons_thirdjet_jetmetdphi"));
-   jets_thirdjet_jetmetdphi_h.reset(new JetHists(ctx,"jets_thirdjet_jetmetdphi"));
-   topjets_thirdjet_jetmetdphi_h.reset(new TopJetHists(ctx,"topjets_thirdjet_jetmetdphi", 4, "patJetsHepTopTagCHSPacked_daughters"));
-   muons_thirdjet_jetmetdphi_h.reset(new MuonHists(ctx,"muons_thirdjet_jetmetdphi"));
-   events_thirdjet_jetmetdphi_h.reset(new EventHists(ctx,"events_thirdjet_jetmetdphi"));
-
    electrons_btagsel_h.reset(new ElectronHists(ctx,"electrons_btagsel"));
    jets_btagsel_h.reset(new JetHists(ctx,"jets_btagsel"));
    topjets_btagsel_h.reset(new TopJetHists(ctx,"topjets_btagsel", 4, "patJetsHepTopTagCHSPacked_daughters"));
    muons_btagsel_h.reset(new MuonHists(ctx,"muons_btagsel"));
    events_btagsel_h.reset(new EventHists(ctx,"events_btagsel"));
-
-   electrons_btagsel_MT2WCut_h.reset(new ElectronHists(ctx,"electrons_btagsel_MT2WCut"));
-   jets_btagsel_MT2WCut_h.reset(new JetHists(ctx,"jets_btagsel_MT2WCut"));
-   topjets_btagsel_MT2WCut_h.reset(new TopJetHists(ctx,"topjets_btagsel_MT2WCut", 4, "patJetsHepTopTagCHSPacked_daughters"));
-   muons_btagsel_MT2WCut_h.reset(new MuonHists(ctx,"muons_btagsel_MT2WCut"));
-   events_btagsel_MT2WCut_h.reset(new EventHists(ctx,"events_btagsel_MT2WCut"));
-   ttbargenhists_btagsel_MT2WCut_h.reset(new TTbarGenHists(ctx,"ttbargenhists_btagsel_MT2WCut"));
-   btagsel_MT2WCut_h.reset(new ttDMSelectionHists(ctx, "btagsel_MT2WCut"));
-   likelihood_btagsel_MT2WCut.reset(new ttDMReconstructionHists_Likelihood(ctx, "likelihood_btagsel_MT2WCut"));
-
-   electrons_btagsel_mtlep_h.reset(new ElectronHists(ctx,"electrons_btagsel_mtlep"));
-   jets_btagsel_mtlep_h.reset(new JetHists(ctx,"jets_btagsel_mtlep"));
-   topjets_btagsel_mtlep_h.reset(new TopJetHists(ctx,"topjets_btagsel_mtlep", 4, "patJetsHepTopTagCHSPacked_daughters"));
-   muons_btagsel_mtlep_h.reset(new MuonHists(ctx,"muons_btagsel_mtlep"));
-   events_btagsel_mtlep_h.reset(new EventHists(ctx,"events_btagsel_mtlep"));
-   ttbargenhists_btagsel_mtlep_h.reset(new TTbarGenHists(ctx,"ttbargenhists_btagsel_mtlep"));
-   btagsel_mtlep_h.reset(new ttDMSelectionHists(ctx, "btagsel_mtlep"));
-   likelihood_btagsel_mtlep.reset(new ttDMReconstructionHists_Likelihood(ctx, "likelihood_btagsel_mtlep"));
-
-   electrons_btagsel_MT2WCut_metsel_h.reset(new ElectronHists(ctx,"electrons_btagsel_MT2WCut_metsel"));
-   jets_btagsel_MT2WCut_metsel_h.reset(new JetHists(ctx,"jets_btagsel_MT2WCut_metsel"));
-   topjets_btagsel_MT2WCut_metsel_h.reset(new TopJetHists(ctx,"topjets_btagsel_MT2WCut_metsel", 4, "patJetsHepTopTagCHSPacked_daughters"));
-   muons_btagsel_MT2WCut_metsel_h.reset(new MuonHists(ctx,"muons_btagsel_MT2WCut_metsel"));
-   events_btagsel_MT2WCut_metsel_h.reset(new EventHists(ctx,"events_btagsel_MT2WCut_metsel"));
-   ttbargenhists_btagsel_MT2WCut_metsel_h.reset(new TTbarGenHists(ctx,"ttbargenhists_btagsel_MT2WCut_metsel"));
-   btagsel_MT2WCut_metsel_h.reset(new ttDMSelectionHists(ctx, "btagsel_MT2WCut_metsel"));
-   likelihood_btagsel_MT2WCut_metsel.reset(new ttDMReconstructionHists_Likelihood(ctx, "likelihood_btagsel_MT2WCut_metsel"));
 
    jets_met160_btag_h.reset(new JetHists(ctx,"jets_met160_btag"));
    topjets_met160_btag_h.reset(new TopJetHists(ctx,"topjets_met160_btag", 4, "patJetsHepTopTagCHSPacked_daughters"));
@@ -624,19 +559,11 @@ ttDMSelectionModuleAfterLikelihood::ttDMSelectionModuleAfterLikelihood(Context &
    met100_btag_h.reset(new ttDMSelectionHists(ctx, "met100_btag"));
    likelihood_met100_btag.reset(new ttDMReconstructionHists_Likelihood(ctx, "likelihood_met100_btag"));
 
-   mtlep_h.reset(new ttDMSelectionHists(ctx,"mtlep"));
    electrons_mtlep_h.reset(new ElectronHists(ctx,"electrons_mtlep"));
    jets_mtlep_h.reset(new JetHists(ctx,"jets_mtlep"));
    topjets_mtlep_h.reset(new TopJetHists(ctx,"topjets_mtlep", 4, "patJetsHepTopTagCHSPacked_daughters"));
    muons_mtlep_h.reset(new MuonHists(ctx,"muons_mtlep"));
    events_mtlep_h.reset(new EventHists(ctx,"events_mtlep"));
-
-   jetmetdphijet2_h.reset(new ttDMSelectionHists(ctx,"jetmetdphijet2"));
-   electrons_jetmetdphijet2_h.reset(new ElectronHists(ctx,"electrons_jetmetdphijet2"));
-   jets_jetmetdphijet2_h.reset(new JetHists(ctx,"jets_jetmetdphijet2"));
-   topjets_jetmetdphijet2_h.reset(new TopJetHists(ctx,"topjets_jetmetdphijet2", 4, "patJetsHepTopTagCHSPacked_daughters"));
-   muons_jetmetdphijet2_h.reset(new MuonHists(ctx,"muons_jetmetdphijet2"));
-   events_jetmetdphijet2_h.reset(new EventHists(ctx,"events_jetmetdphijet2"));
 
    btag_noniso_h.reset(new ttDMSelectionHists(ctx,"btag_noniso"));
    electrons_btag_noniso_h.reset(new ElectronHists(ctx,"electrons_btag_noniso"));
@@ -644,148 +571,135 @@ ttDMSelectionModuleAfterLikelihood::ttDMSelectionModuleAfterLikelihood(Context &
    topjets_btag_noniso_h.reset(new TopJetHists(ctx,"topjets_btag_noniso", 4, "patJetsHepTopTagCHSPacked_daughters"));
    muons_btag_noniso_h.reset(new MuonHists(ctx,"muons_btag_noniso"));
    events_btag_noniso_h.reset(new EventHists(ctx,"events_btag_noniso"));
-  
-   electrons_jet123metdphi_MT2WCut_h.reset(new ElectronHists(ctx,"electrons_jet123metdphi_MT2WCut"));
-   jets_jet123metdphi_MT2WCut_h.reset(new JetHists(ctx,"jets_jet123metdphi_MT2WCut"));
-   topjets_jet123metdphi_MT2WCut_h.reset(new TopJetHists(ctx,"topjets_jet123metdphi_MT2WCut", 4, "patJetsHepTopTagCHSPacked_daughters"));
-   muons_jet123metdphi_MT2WCut_h.reset(new MuonHists(ctx,"muons_jet123metdphi_MT2WCut"));
-   events_jet123metdphi_MT2WCut_h.reset(new EventHists(ctx,"events_jet123metdphi_MT2WCut"));
-
-   likelihood_metlepdphi_mtlep_h.reset(new ttDMReconstructionHists_Likelihood(ctx, "likelihood_metlepdphi_mtlep"));
-   likelihood_cut2_noiso_mtlep_h.reset(new ttDMReconstructionHists_Likelihood(ctx, "likelihood_cut2_noiso_mtlep"));
              
    likelihood_preselection_h.reset(new ttDMReconstructionHists_Likelihood(ctx, "likelihood_preselection"));
    likelihood_leptonveto_h.reset(new ttDMReconstructionHists_Likelihood(ctx, "likelihood_leptonveto"));
+   likelihood_dileptcontrolregion_h.reset(new ttDMReconstructionHists_Likelihood(ctx, "likelihood_dileptcontrolregion"));
    likelihood_met_h.reset(new ttDMReconstructionHists_Likelihood(ctx, "likelihood_met"));
-   likelihood_met100_h.reset(new ttDMReconstructionHists_Likelihood(ctx, "likelihood_met100"));
    likelihood_twodcut_h.reset(new ttDMReconstructionHists_Likelihood(ctx, "likelihood_twodcut"));
-   likelihood_metlepdphi_noiso_h.reset(new ttDMReconstructionHists_Likelihood(ctx, "likelihood_metlepdphi_noiso"));
-   likelihood_jetmetdphi_h.reset(new ttDMReconstructionHists_Likelihood(ctx,"likelihood_jetmetdphi"));
    likelihood_noiso_h.reset(new ttDMReconstructionHists_Likelihood(ctx, "likelihood_noiso"));
-   likelihood_cut1_noiso_h.reset(new ttDMReconstructionHists_Likelihood(ctx, "likelihood_cut1_noiso"));
-   likelihood_cut2_noiso_h.reset(new ttDMReconstructionHists_Likelihood(ctx, "likelihood_cut2_noiso"));
-   likelihood_metlepdphi_h.reset(new ttDMReconstructionHists_Likelihood(ctx, "likelihood_metlepdphi_h"));
    likelihood_heptoptagevent_WP3_h.reset(new ttDMReconstructionHists_Likelihood(ctx, "likelihood_heptoptagevent_WP3"));
    likelihood_heptoptagevent_WP1_h.reset(new ttDMReconstructionHists_Likelihood(ctx, "likelihood_heptoptagevent_WP1"));
    likelihood_heptoptagevent_WP3_wobtag_h.reset(new ttDMReconstructionHists_Likelihood(ctx, "likelihood_heptoptagevent_WP3_wobtag"));
+   likelihood_heptoptagevent_WP3_wobtag_nomtlep_h.reset(new ttDMReconstructionHists_Likelihood(ctx, "likelihood_heptoptagevent_WP3_wobtag_nomtlep"));
+   likelihood_heptoptagevent_WP3_wobtag_nobtag_h.reset(new ttDMReconstructionHists_Likelihood(ctx, "likelihood_heptoptagevent_WP3_wobtag_nobtag"));
+   likelihood_heptoptagevent_WP3_wobtag_noDeltaPhiMET_h.reset(new ttDMReconstructionHists_Likelihood(ctx, "likelihood_heptoptagevent_WP3_wobtag_noDeltaPhiMET"));
    likelihood_heptoptagevent_WP1_wobtag_h.reset(new ttDMReconstructionHists_Likelihood(ctx, "likelihood_heptoptagevent_WP1_wobtag"));
-   hists_metlepdphi_mtlep.reset(new ttDMSelectionHists(ctx, "hists_metlepdphi_mtlep"));
    heptoptagevent_WP1_wobtag_h.reset(new ttDMSelectionHists(ctx, "heptoptagevent_WP1_wobtag"));
    heptoptagevent_WP1_h.reset(new ttDMSelectionHists(ctx, "heptoptagevent_WP1"));
-    
-   likelihood_thirdjet_h.reset(new ttDMReconstructionHists_Likelihood(ctx, "likelihood_thirdjet"));
-   likelihood_mediumMET_h.reset(new ttDMReconstructionHists_Likelihood(ctx, "likelihood_mediumMET"));
-   likelihood_jetmetdphijet2_h.reset(new ttDMReconstructionHists_Likelihood(ctx, "likelihood_jetmetdphijet2"));
-   likelihood_mtlep_h.reset(new ttDMReconstructionHists_Likelihood(ctx, "likelihood_mtlep"));
 
-   highMET_h.reset(new ttDMSelectionHists(ctx, "highMET"));
-   jetmetdphi_h.reset(new ttDMSelectionHists(ctx, "jetmetdphi"));
+   likelihood_thirdjet_h.reset(new ttDMReconstructionHists_Likelihood(ctx, "likelihood_thirdjet"));
+   likelihood_mtlep_h.reset(new ttDMReconstructionHists_Likelihood(ctx, "likelihood_mtlep"));
+   likelihood_mediumMET_h.reset(new ttDMReconstructionHists_Likelihood(ctx, "likelihood_mediumMET"));
    mtlep_noniso_h.reset(new ttDMSelectionHists(ctx, "mtlep_noniso"));
-   highMET_noniso_h.reset(new ttDMSelectionHists(ctx, "highMET_noniso"));
    jetmetdphi_noniso_h.reset(new ttDMSelectionHists(ctx, "jetmetdphi_noniso"));
-   metlepdphi_h.reset(new ttDMSelectionHists(ctx, "metlepdphi_h"));
-   jetmetdphi_mediumMET_h.reset(new ttDMSelectionHists(ctx, "jetmetdphi_mediumMET_h"));
-   cut2_noiso_mtlep.reset(new ttDMSelectionHists(ctx, "cut2_noiso_mtlep"));
-   
    genhists_nonisolep_h.reset(new  ttDMGenHists(ctx, "genhists_nonisolep_h"));
- 
-   likelihood_heptoptagevent_WP3_wobtag_highMET_h.reset(new ttDMReconstructionHists_Likelihood(ctx, "likelihood_heptoptagevent_WP3_wobtag_highMET"));
-   heptoptagevent_WP3_wobtag_highMET_h.reset(new ttDMSelectionHists(ctx, "heptoptagevent_WP3_wobtag_highMET"));
-   likelihood_heptoptagevent_WP1_wobtag_highMET_h.reset(new ttDMReconstructionHists_Likelihood(ctx, "likelihood_heptoptagevent_WP1_wobtag_highMET"));
-   heptoptagevent_WP1_wobtag_highMET_h.reset(new ttDMSelectionHists(ctx, "heptoptagevent_WP1_wobtag_highMET"));
-   likelihood_heptoptagevent_WP1_highMET_h.reset(new ttDMReconstructionHists_Likelihood(ctx, "likelihood_heptoptagevent_WP1_highMET"));
-   heptoptagevent_WP1_highMET_h.reset(new ttDMSelectionHists(ctx, "heptoptagevent_WP1_highMET"));
-   likelihood_jetmetdphi_mediumMET_h.reset(new ttDMReconstructionHists_Likelihood(ctx, "likelihood_jetmetdphi_mediumMET"));
+
    likelihood_thirdjet_mtlep_h.reset(new ttDMReconstructionHists_Likelihood(ctx, "likelihood_thirdjet_mtlep"));
    thirdjet_mtlep_h.reset(new ttDMSelectionHists(ctx, "thirdjet_mtlep"));
-   likelihood_thirdjet_jetmetdphi_h.reset(new ttDMReconstructionHists_Likelihood(ctx, "likelihood_thirdjet_jetmetdphi"));
-   thirdjet_jetmetdphi_h.reset(new ttDMSelectionHists(ctx, "thirdjet_jetmetdphi"));
+
    jet123metdphi_h.reset(new ttDMSelectionHists(ctx, "jet123metdphi_h"));
    hists_likelihood_jet123metdphi_h.reset(new ttDMReconstructionHists_Likelihood(ctx, "likelihood_jet123metdphi_h"));
-   jet123metdphi_MT2WCut_h.reset(new ttDMSelectionHists(ctx, "jet123metdphi_MT2WCut"));
-   hists_likelihood_jet123metdphi_MT2WCut_h.reset(new ttDMReconstructionHists_Likelihood(ctx, "likelihood_jet123metdphi_MT2WCut"));
-   metlepdphi_MT2WCut_h.reset(new ttDMSelectionHists(ctx, "metlepdphi_MT2WCut"));
-   likelihood_metlepdphi_MT2WCut_h.reset(new ttDMReconstructionHists_Likelihood(ctx, "likelihood_metlepdphi_MT2WCut"));
-   jet123metdphi_MT2WCut_MET240_h.reset(new ttDMSelectionHists(ctx, "jet123metdphi_MT2WCut_MET240"));
-   likelihood_jet123metdphi_MT2WCut_MET240_h.reset(new ttDMReconstructionHists_Likelihood(ctx, "likelihood_jet123metdphi_MT2WCut_MET240"));
-   thirdjet_MT2WCut_MetSel_h.reset(new ttDMSelectionHists(ctx, "thirdjet_MT2WCut_MetSel"));
-   likelihood_thirdjet_MT2WCut_MetSel_h.reset(new ttDMReconstructionHists_Likelihood(ctx, "likelihood_thirdjet_MT2WCut_MetSel_h"));
-   thirdjet_MT2WCut_h.reset(new ttDMSelectionHists(ctx, "thirdjet_MT2WCut_h"));
-   likelihood_thirdjet_MT2WCut_h.reset(new ttDMReconstructionHists_Likelihood(ctx, "likelihood_thirdjet_MT2WCut_h"));
-   MT2WCut_sel.reset(new MT2WCut(200));
-
+  
    ttbargenhists_preselection_h.reset(new TTbarGenHists(ctx, "ttbargenhists_preselection"));
+   ttbargenhists_dileptcontrolregion_h.reset(new TTbarGenHists(ctx, "ttbargenhists_dileptcontrolregion"));
    ttbargenhists_leptonveto_h.reset(new TTbarGenHists(ctx, "ttbargenhists_leptonveto"));
    ttbargenhists_heptoptagevent_WP3_h.reset(new TTbarGenHists(ctx, "ttbargenhists_heptoptagevent_WP3"));
-   ttbargenhists_jetmetdphi_mediumMET_h.reset(new TTbarGenHists(ctx, "ttbargenhists_jetmetdphi_mediumMET"));
-   ttbargenhists_metlepdphi_mtlep.reset(new TTbarGenHists(ctx, "ttbargenhists_metlepdphi_mtlep"));
-   ttbargenhists_metlepdphi_MT2WCut_h.reset(new TTbarGenHists(ctx, "ttbargenhists_metlepdphi_MT2WCut"));
    ttbargenhists_met_h.reset(new TTbarGenHists(ctx,"ttbargenhists_met"));
    ttbargenhists_btagsel_h.reset(new TTbarGenHists(ctx,"ttbargenhists_btagsel"));
 
-   jetsel1208050_h.reset(new ttDMSelectionHists(ctx, "jetsel1208050"));
-   likelihood_jetsel1208050_h.reset(new ttDMReconstructionHists_Likelihood(ctx, "likelihood_jetsel1208050"));
-
-   met80_h.reset(new ttDMSelectionHists(ctx, "met80"));
-   likelihood_met80.reset(new ttDMReconstructionHists_Likelihood(ctx, "likelihood_met80"));
-
    btagsel_h.reset(new ttDMSelectionHists(ctx, "btagsel"));
    likelihood_btagsel.reset(new ttDMReconstructionHists_Likelihood(ctx, "likelihood_btagsel"));
-
-   heptoptagevent_WP3_highMET_h.reset(new ttDMSelectionHists(ctx, "heptoptagevent_WP3_highMET"));
-   likelihood_heptoptagevent_WP3_highMET_h.reset(new ttDMReconstructionHists_Likelihood(ctx, "likelihood_heptoptagevent_WP3_highMET"));
 
    met160_h.reset(new ttDMSelectionHists(ctx, "met160"));
    likelihood_met160.reset(new ttDMReconstructionHists_Likelihood(ctx, "likelihood_met160"));
    met160_btag_h.reset(new ttDMSelectionHists(ctx, "met160_btag"));
    likelihood_met160_btag.reset(new ttDMReconstructionHists_Likelihood(ctx, "likelihood_met160_btag"));
 
-   hists_likelihood_DeltaPhiMetNeutrino.reset(new ttDMReconstructionHists_Likelihood(ctx, "likelihood_DeltaPhiMetNeutrino"));
-   hists_DeltaPhiMetNeutrino.reset(new ttDMSelectionHists(ctx, "DeltaPhiMetNeutrino"));
+   met100_btag_mtlep100_h.reset(new ttDMSelectionHists(ctx, "met100_btag_mtlep100"));
+   likelihood_met100_btag_mtlep100.reset(new ttDMReconstructionHists_Likelihood(ctx, "likelihood_met100_btag_mtlep100"));
+   
+   HEPTT_WP3_noniso_h.reset(new ttDMSelectionHists(ctx, "HEPTT_WP3_noniso"));
+   likelihood_WP3_noniso_h.reset(new ttDMReconstructionHists_Likelihood(ctx, "likelihood_WP3_noniso"));
+   HEPTT_WP3_noniso_mtlep_h.reset(new ttDMSelectionHists(ctx, "HEPTT_WP3_noniso_mtlep"));
+   likelihood_WP3_noniso_mtlep_h.reset(new ttDMReconstructionHists_Likelihood(ctx, "likelihood_WP3_noniso_mtlep"));
+   likelihood_btag_noniso_h.reset(new ttDMReconstructionHists_Likelihood(ctx, "likelihood_btag_noniso"));
 
-   met160_btag_metlep100_h.reset(new ttDMSelectionHists(ctx, "met160_btag_metlep100"));
-   likelihood_met160_btag_metlep100.reset(new ttDMReconstructionHists_Likelihood(ctx, "likelihood_met160_btag_metlep100"));
-   met160_btag_metlepdphi_h.reset(new ttDMSelectionHists(ctx, "met160_btag_metlepdphi"));
-   likelihood_met160_btag_metlepdphi.reset(new ttDMReconstructionHists_Likelihood(ctx, "likelihood_met160_btag_metlepdphi"));
- 
-   DeltaPhiTaggedjet_Neutrino.reset(new ttDMSelectionHists(ctx, "DeltaPhiTaggedjet_Neutrino"));
-   likelihood_DeltaPhiTaggedjet_Neutrino.reset(new ttDMReconstructionHists_Likelihood(ctx, "likelihood_DeltaPhiTaggedjet_Neutrino"));
+    mediumMET_h.reset(new ttDMSelectionHists(ctx,"mediumMET"));
+    electrons_mediumMET_h.reset(new ElectronHists(ctx,"electrons_mediumMET"));
+    jets_mediumMET_h.reset(new JetHists(ctx,"jets_mediumMET"));
+    topjets_mediumMET_h.reset(new TopJetHists(ctx,"topjets_mediumMET", 4, "patJetsHepTopTagCHSPacked_daughters"));
+    muons_mediumMET_h.reset(new MuonHists(ctx,"muons_mediumMET"));
+    events_mediumMET_h.reset(new EventHists(ctx,"events_mediumMET"));  
 
-    met100_btag_mtlep100_h.reset(new ttDMSelectionHists(ctx, "met100_btag_mtlep100"));
-    likelihood_met100_btag_mtlep100.reset(new ttDMReconstructionHists_Likelihood(ctx, "likelihood_met100_btag_mtlep100"));
+    nobtag_h.reset(new ttDMSelectionHists(ctx,"nobtag"));
+    likelihood_nobtag_h.reset(new ttDMReconstructionHists_Likelihood(ctx, "likelihood_nobtag"));
+    nothirdjet_h.reset(new ttDMSelectionHists(ctx,"nothirdjet"));
+    likelihood_nothirdjet_h.reset(new ttDMReconstructionHists_Likelihood(ctx, "likelihood_nothirdjet"));
+    noDeltaPhiJets_h.reset(new ttDMSelectionHists(ctx,"noDeltaPhiJets"));
+    likelihood_noDeltaPhiJets_h.reset(new ttDMReconstructionHists_Likelihood(ctx, "likelihood_noDeltaPhiJets"));
+    nomet_h.reset(new ttDMSelectionHists(ctx,"nomet"));
+    likelihood_nomet_h.reset(new ttDMReconstructionHists_Likelihood(ctx, "likelihood_nomet"));
+    nomtlep.reset(new ttDMSelectionHists(ctx,"nomtlep"));
+    likelihood_nomtlep.reset(new ttDMReconstructionHists_Likelihood(ctx, "likelihood_nomtlep"));
+    noDeltaPhiMetNeutrino.reset(new ttDMSelectionHists(ctx,"noDeltaPhiMetNeutrino"));
+    likelihood_noDeltaPhiMetNeutrino.reset(new ttDMReconstructionHists_Likelihood(ctx, "likelihood_noDeltaPhiMetNeutrino"));
 
-    met100_btag_neutrinopT_h.reset(new ttDMSelectionHists(ctx, "met100_btag_neutrinopT"));
-    likelihood_met100_btag_neutrinopT.reset(new ttDMReconstructionHists_Likelihood(ctx, "likelihood_met100_btag_neutrinopT"));
-    
-    met100_btag_DeltaPhiTaggedJetTopLep_h.reset(new ttDMSelectionHists(ctx, "met100_btag_DeltaPhiTaggedJetTopLep"));
-    likelihood_met100_btag_DeltaPhiTaggedJetTopLep.reset(new ttDMReconstructionHists_Likelihood(ctx, "likelihood_met100_btag_DeltaPhiTaggedJetTopLep"));
+    noDeltaPhiMetNeutrino_met160.reset(new ttDMSelectionHists(ctx,"noDeltaPhiMetNeutrino_met160"));
+    likelihood_noDeltaPhiMetNeutrino_met160.reset(new ttDMReconstructionHists_Likelihood(ctx, "likelihood_noDeltaPhiMetNeutrino_met160"));
+    DeltaPhiMetNeutrinotight.reset(new ttDMSelectionHists(ctx,"DeltaPhiMetNeutrinotight"));
+    likelihood_DeltaPhiMetNeutrinotight.reset(new ttDMReconstructionHists_Likelihood(ctx, "likelihood_DeltaPhiMetNeutrinotight"));
+    noDeltaPhiMetNeutrino_DMMET.reset(new ttDMSelectionHists(ctx,"noDeltaPhiMetNeutrino_DMMET"));
+    likelihood_noDeltaPhiMetNeutrino_DMMET.reset(new ttDMReconstructionHists_Likelihood(ctx, "likelihood_noDeltaPhiMetNeutrino_DMMET"));
+    noDeltaPhiMetNeutrino_MT2W.reset(new ttDMSelectionHists(ctx,"noDeltaPhiMetNeutrino_MT2W"));
+    likelihood_noDeltaPhiMetNeutrino_MT2W.reset(new ttDMReconstructionHists_Likelihood(ctx, "likelihood_noDeltaPhiMetNeutrino_MT2W"));
+    noDeltaPhiMetNeutrino_DeltaPhi.reset(new ttDMSelectionHists(ctx,"noDeltaPhiMetNeutrino_DeltaPhi"));
+    likelihood_noDeltaPhiMetNeutrino_DeltaPhi.reset(new ttDMReconstructionHists_Likelihood(ctx, "likelihood_noDeltaPhiMetNeutrino_DeltaPhi"));
+    nomet_noDeltaPhi_h.reset(new ttDMSelectionHists(ctx,"nomet_noDeltaPhi"));
+    likelihood_nomet_noDeltaPhi_h.reset(new ttDMReconstructionHists_Likelihood(ctx, "likelihood_nomet_noDeltaPhi"));
+    mtlep_h.reset(new ttDMSelectionHists(ctx,"mtlep_h"));
+    mtlep200_h.reset(new ttDMSelectionHists(ctx,"mtlep200"));
+    likelihood_mtlep200.reset(new ttDMReconstructionHists_Likelihood(ctx, "likelihood_mtlep200"));
+    btagtight_h.reset(new ttDMSelectionHists(ctx,"btagtight"));
+    likelihood_btagtight_h.reset(new ttDMReconstructionHists_Likelihood(ctx, "likelihood_btagtight"));
 
-    DeltaPhiTaggedjet_Neutrino_mtlep150.reset(new ttDMSelectionHists(ctx, "DeltaPhiTaggedjet_Neutrino_mtlep150"));
-    likelihood_DeltaPhiTaggedjet_Neutrino_mtlep150.reset(new ttDMReconstructionHists_Likelihood(ctx, "likelihood_DeltaPhiTaggedjet_Neutrino_mtlep150"));
+    WJetsControlRegion_noniso_h.reset(new ttDMSelectionHists(ctx,"WJetsControlRegion_noniso"));
+    electrons_WJetsControlRegion_noniso_h.reset(new ElectronHists(ctx,"electrons_WJetsControlRegion_noniso"));
+    jets_WJetsControlRegion_noniso_h.reset(new JetHists(ctx,"jets_WJetsControlRegion_noniso"));
+    topjets_WJetsControlRegion_noniso_h.reset(new TopJetHists(ctx,"topjets_WJetsControlRegion_noniso", 4, "patJetsHepTopTagCHSPacked_daughters"));
+    muons_WJetsControlRegion_noniso_h.reset(new MuonHists(ctx,"muons_WJetsControlRegion_noniso"));
+    events_WJetsControlRegion_noniso_h.reset(new EventHists(ctx,"events_WJetsControlRegion_noniso"));
+    likelihood_WJetsControlRegion_noniso_h.reset(new ttDMReconstructionHists_Likelihood(ctx, "likelihood_WJetsControlRegion_noniso"));
 
-    HEPTT_WP3_noniso_h.reset(new ttDMSelectionHists(ctx, "HEPTT_WP3_noniso"));
-    likelihood_WP3_noniso_h.reset(new ttDMReconstructionHists_Likelihood(ctx, "likelihood_WP3_noniso"));
-    likelihood_btag_noniso_h.reset(new ttDMReconstructionHists_Likelihood(ctx, "likelihood_btag_noniso"));
+    DileptControlRegion_noniso_h.reset(new ttDMSelectionHists(ctx,"DileptControlRegion_noniso"));
+    electrons_DileptControlRegion_noniso_h.reset(new ElectronHists(ctx,"electrons_DileptControlRegion_noniso"));
+    jets_DileptControlRegion_noniso_h.reset(new JetHists(ctx,"jets_DileptControlRegion_noniso"));
+    topjets_DileptControlRegion_noniso_h.reset(new TopJetHists(ctx,"topjets_DileptControlRegion_noniso", 4, "patJetsHepTopTagCHSPacked_daughters"));
+    muons_DileptControlRegion_noniso_h.reset(new MuonHists(ctx,"muons_DileptControlRegion_noniso"));
+    events_DileptControlRegion_noniso_h.reset(new EventHists(ctx,"events_DileptControlRegion_noniso"));
+    likelihood_DileptControlRegion_noniso_h.reset(new ttDMReconstructionHists_Likelihood(ctx, "likelihood_DileptControlRegion_noniso"));
 
-    met50_btag_ttbarpTSel.reset(new ttDMSelectionHists(ctx, "met50_btag_ttbarpTSel"));
-    likelihood_met50_btag_ttbarpTSel.reset(new ttDMReconstructionHists_Likelihood(ctx, "likelihood_met50_btag_ttbarpTSel"));
-
-    met100_btag_neutrinopT_ttbarpTSel_h.reset(new ttDMSelectionHists(ctx, "met100_btag_neutrinopT_ttbarpTSel"));
-    likelihood_met100_btag_neutrinopT_ttbarpTSel.reset(new ttDMReconstructionHists_Likelihood(ctx, "likelihood_met100_btag_neutrinopT_ttbarpTSel"));
+    SemileptControlRegion_noniso_h.reset(new ttDMSelectionHists(ctx,"SemileptControlRegion_noniso"));
+    electrons_SemileptControlRegion_noniso_h.reset(new ElectronHists(ctx,"electrons_SemileptControlRegion_noniso"));
+    jets_SemileptControlRegion_noniso_h.reset(new JetHists(ctx,"jets_SemileptControlRegion_noniso"));
+    topjets_SemileptControlRegion_noniso_h.reset(new TopJetHists(ctx,"topjets_SemileptControlRegion_noniso", 4, "patJetsHepTopTagCHSPacked_daughters"));
+    muons_SemileptControlRegion_noniso_h.reset(new MuonHists(ctx,"muons_SemileptControlRegion_noniso"));
+    events_SemileptControlRegion_noniso_h.reset(new EventHists(ctx,"events_SemileptControlRegion_noniso"));
+    likelihood_SemileptControlRegion_noniso_h.reset(new ttDMReconstructionHists_Likelihood(ctx, "likelihood_SemileptControlRegion_noniso"));
 }
 
 bool ttDMSelectionModuleAfterLikelihood::process(Event & event){
-   
+ 
    input_h->fill(event);
-   
+ 
    if (is_mc) {
       ttgenprod->process(event);
       TTbarGen ttbargen = event.get(h_ttbargen);
       if (isSemiLept && !ttbargen.IsSemiLeptonicDecay()) return false;
       if (isDiLept && (ttbargen.DecayChannel() < 4 || ttbargen.DecayChannel() >9)) return false;
-      if (isOther && ttbargen.DecayChannel()!=0 && ttbargen.DecayChannel() != 10) return false;
+      if (isOther && !(ttbargen.DecayChannel()==0 || ttbargen.DecayChannel() == 10)) return false;
    }
-   
+  
    if(lumisel && !is_mc) if(!lumi_selection->passes(event)) return false;
    if(metfilters) if(!metfilters_selection->passes(event)) return false;
    if(mcpileupreweight && is_mc) pu_reweight->process(event);
@@ -796,15 +710,14 @@ bool ttDMSelectionModuleAfterLikelihood::process(Event & event){
          bool pass_goodpv = pv_sel->passes(event);
          if (!pass_goodpv) return false; 
       }
+  
    ht_calculator->process(event);
    muo_med_noniso_SF->process(event); //spaeter
    filter_h->fill(event); 
-
    bool pass_lep1 = lep1_sel->passes(event);
    if (!pass_lep1) return false;   
-
    if (event.isRealData) lumihists->fill(event);
-      
+ 
    met_h->fill(event);  //MET >50GeV
    electrons_met_h->fill(event);
    jets_met_h->fill(event);
@@ -814,23 +727,7 @@ bool ttDMSelectionModuleAfterLikelihood::process(Event & event){
    if(!event.isRealData) genhists_met_h->fill(event);
    likelihood_met_h->fill(event); 
    ttbargenhists_met_h->fill(event);
- 
-   //MET >100GeV
-   bool pass_met100 = MET100_sel->passes(event);
-   if (pass_met100){
-      met100_h->fill(event);  //MET >100GeV
-      electrons_met100_h->fill(event);
-      jets_met100_h->fill(event);
-      muons_met100_h->fill(event);
-      events_met100_h->fill(event);
-      topjets_met100_h->fill(event);
-      if(!event.isRealData) genhists_met100_h->fill(event);
-      likelihood_met100_h->fill(event);
-   }
-   
-
-   bool pass_met160 = MET160_sel->passes(event);
-   //MET >160GeV
+    bool pass_met160 = MET160_sel->passes(event);
    bool pass_twodcut = event.get(h_flag_twodcut);
    if(pass_twodcut && pass_met160)                                               //pre-selection control plots 
       {
@@ -844,11 +741,11 @@ bool ttDMSelectionModuleAfterLikelihood::process(Event & event){
          genhists_preselection_h->fill(event);
          ttbargenhists_preselection_h->fill(event);
       }
-   
+ 
    //veto additional leptons
    bool pass_lepVeto = lepVeto_sel->passes(event);
-   if (!pass_lepVeto) return false;
-   
+  
+   if (pass_lepVeto){
    likelihood_leptonveto_h->fill(event);        
    leptonveto_h->fill(event);
    electrons_leptonveto_h->fill(event);
@@ -858,7 +755,7 @@ bool ttDMSelectionModuleAfterLikelihood::process(Event & event){
    topjets_leptonveto_h->fill(event);
    genhists_leptonveto_h->fill(event);
    ttbargenhists_leptonveto_h->fill(event);
-    
+   }
    //----------------------------------------------------boosted analysis-------------------------------------- 
     //DATEN MUESSEN NOCH KORRIGIERT WERDEN!
     //correct topjets with L1L2L3
@@ -866,35 +763,35 @@ bool ttDMSelectionModuleAfterLikelihood::process(Event & event){
     //apply eta and pt requirement on topjets
     collectionprod_heptt_pteta->process(event);
     collectionsizeprod_heptt_pteta->process(event);
-   
+  
     //correct topjets with L2L3 only (HTTV2 requires cut on L2L3-corrected mass) 
     heptopjet_correctorL2L3->process(event);
-   
+  
     collectionprod_heptt_WP3->process(event); 
     collectionsizeprod_heptt_WP3->process(event);
     collectionprod_heptt_WP1->process(event); 
     collectionsizeprod_heptt_WP1->process(event);
     collectionprod_heptt_WP3_wobtag->process(event); 
+    //hepttleptoncleaner->process(event); //be careful with lepton veto
     collectionsizeprod_heptt_WP3_wobtag->process(event);
     collectionprod_heptt_WP1_wobtag->process(event); 
     collectionsizeprod_heptt_WP1_wobtag->process(event);
  
-   //event.set(h_flag_heptoptagevent, int(pass_HEPTT)); 
-   bool pass_HEPTT_WP3 = heptoptagevent_WP3_sel->passes(event);
-   bool pass_HEPTT_WP1 = heptoptagevent_WP1_sel->passes(event);
-   bool pass_HEPTT_WP3_wobtag = heptoptagevent_WP3_wobtag_sel->passes(event);
-   bool pass_HEPTT_WP1_wobtag = heptoptagevent_WP1_wobtag_sel->passes(event);
-   
+    //event.set(h_flag_heptoptagevent, int(pass_HEPTT)); 
+    bool pass_HEPTT_WP3 = heptoptagevent_WP3_sel->passes(event);
+    bool pass_HEPTT_WP1 = heptoptagevent_WP1_sel->passes(event);
+    bool pass_HEPTT_WP3_wobtag = heptoptagevent_WP3_wobtag_sel->passes(event);
+    bool pass_HEPTT_WP1_wobtag = heptoptagevent_WP1_wobtag_sel->passes(event);
+    
    //re-correct topjets with L1L2L3
-   heptopjet_corrector->process(event);
-   
-   std::unique_ptr< std::vector<Muon> > cleaned_muons_noIso(new std::vector<Muon>(*event.muons)); //only muons, to do: add electrons
-   muon_cleaner_iso->process(event);
-   sort_by_pt<Muon>(*event.muons);
-   pass_lep1 =  lep1_sel->passes(event);
-   if (pass_lep1)    
+    heptopjet_corrector->process(event);
+    std::unique_ptr< std::vector<Muon> > cleaned_muons_noIso(new std::vector<Muon>(*event.muons)); //only muons, to do: add electrons
+    muon_cleaner_iso->process(event);
+    sort_by_pt<Muon>(*event.muons);
+    pass_lep1 =  lep1_sel->passes(event);
+    if (pass_lep1)    
       {
-         isolep_h->fill(event);
+         isolep_h->fill(event);                       
          electrons_isolep_h->fill(event);
          jets_isolep_h->fill(event);
          muons_isolep_h->fill(event);
@@ -902,9 +799,30 @@ bool ttDMSelectionModuleAfterLikelihood::process(Event & event){
          topjets_isolep_h->fill(event);
          topjets_isolep_tagged_WP1_h->fill(event);  //histograms filled with uncorrected mass
          topjets_isolep_tagged_WP3_h->fill(event);
+        
+         bool pass_btagsel = btag_sel->passes(event);
+         bool pass_thirdjet_sel = thirdjet_sel->passes(event);
+         bool pass_jet123metdphi_sel=false;
+         if (pass_thirdjet_sel) pass_jet123metdphi_sel=jet123metdphi_sel->passes(event);
+         bool pass_DeltaPhiMetNeutrino_sel=DeltaPhiMetNeutrino_sel->passes(event);
+         bool pass_DeltaPhiMetNeutrino_sel2=DeltaPhiMetNeutrino_sel2->passes(event);
+        
+         bool pass_met100 = MET100_sel->passes(event);
+         bool pass_mtlep100 = mtlep100_sel->passes(event);
+         bool pass_met160= MET160_sel->passes(event);
+
+         if (pass_HEPTT_WP1_wobtag && pass_lepVeto)  {
+            heptoptagevent_WP1_wobtag_h->fill(event);
+            likelihood_heptoptagevent_WP1_wobtag_h->fill(event); 
+         }
+         if (pass_HEPTT_WP1 && pass_btagsel && pass_thirdjet_sel && pass_jet123metdphi_sel && pass_DeltaPhiMetNeutrino_sel && pass_met100 && pass_mtlep100 && pass_lepVeto)  {
+            heptoptagevent_WP1_h->fill(event);
+            likelihood_heptoptagevent_WP1_h->fill(event); 
+         }
          
-         bool pass_highMET_sel = MET_sel->passes(event);
-         if (pass_HEPTT_WP3_wobtag)
+         else topjets_isolep_notag_WP1_h->fill(event);  //histograms filled with uncorrected mass
+        
+         if (pass_HEPTT_WP3_wobtag && pass_btagsel && !pass_mtlep100 && pass_lepVeto)
             {
                heptoptagevent_WP3_wobtag_h->fill(event);
                electrons_heptoptagevent_WP3_wobtag_h->fill(event);
@@ -912,279 +830,210 @@ bool ttDMSelectionModuleAfterLikelihood::process(Event & event){
                muons_heptoptagevent_WP3_wobtag_h->fill(event);
                events_heptoptagevent_WP3_wobtag_h->fill(event);
                topjets_heptoptagevent_WP3_wobtag_h->fill(event); 
-               topjets_heptoptagevent_WP3_wobtag_tagged_h->fill(event); 
                likelihood_heptoptagevent_WP3_wobtag_h->fill(event);
-               if (pass_highMET_sel){
-                  likelihood_heptoptagevent_WP3_wobtag_highMET_h->fill(event);
-                  heptoptagevent_WP3_wobtag_highMET_h->fill(event);
-               }
             }
-         
-         if (pass_HEPTT_WP3)
+        
+          if (!pass_lepVeto && pass_HEPTT_WP3_wobtag && pass_btagsel && pass_mtlep100) {
+             likelihood_dileptcontrolregion_h->fill(event);        
+             dileptcontrolregion_h->fill(event);
+             electrons_dileptcontrolregion_h->fill(event);
+             muons_dileptcontrolregion_h->fill(event);
+             events_dileptcontrolregion_h->fill(event);
+             jets_dileptcontrolregion_h->fill(event);
+             topjets_dileptcontrolregion_h->fill(event);
+             genhists_dileptcontrolregion_h->fill(event);
+             ttbargenhists_dileptcontrolregion_h->fill(event);
+          }  
+
+         //NO DeltaPhiMetNeutrino
+         if (pass_HEPTT_WP3_wobtag && pass_btagsel && pass_mtlep100 && pass_lepVeto)
             {
-               heptoptagevent_WP3_h->fill(event);
-               electrons_heptoptagevent_WP3_h->fill(event);
-               jets_heptoptagevent_WP3_h->fill(event);
-               muons_heptoptagevent_WP3_h->fill(event);
-               events_heptoptagevent_WP3_h->fill(event);
-               topjets_heptoptagevent_WP3_h->fill(event); 
-               topjets_heptoptagevent_WP3_tagged_h->fill(event); 
-               likelihood_heptoptagevent_WP3_h->fill(event); 
-               ttbargenhists_heptoptagevent_WP3_h->fill(event);                           
+               heptoptagevent_WP3_wobtag_noDeltaPhiMET_h->fill(event);
+               electrons_heptoptagevent_WP3_wobtag_noDeltaPhiMET_h->fill(event);
+               jets_heptoptagevent_WP3_wobtag_noDeltaPhiMET_h->fill(event);
+               muons_heptoptagevent_WP3_wobtag_noDeltaPhiMET_h->fill(event);
+               events_heptoptagevent_WP3_wobtag_noDeltaPhiMET_h->fill(event);
+               topjets_heptoptagevent_WP3_wobtag_noDeltaPhiMET_h->fill(event); 
+               likelihood_heptoptagevent_WP3_wobtag_noDeltaPhiMET_h->fill(event);
                
-               if (pass_highMET_sel){
-                  heptoptagevent_WP3_highMET_h->fill(event);
-                  likelihood_heptoptagevent_WP3_highMET_h->fill(event);
+               bool pass_DMMETSelection = DMMETSel->passes(event);
+               bool pass_DeltaPhi = DeltaPhiTaggedJetTopLep_sel->passes(event);
+               bool pass_Mt2W = MT2W_sel->passes(event);
+               if (pass_DMMETSelection){
+                  noDeltaPhiMetNeutrino_DMMET->fill(event);
+                  likelihood_noDeltaPhiMetNeutrino_DMMET->fill(event);   
                }
-
-
-               bool pass_metlepdphi= metleptondphi_sel->passes(event);
-               bool pass_mtlep_sel = mtlep_sel->passes(event);
-               bool pass_jetmetdphi_sel = jetmetdphi_sel->passes(event);
-               //      bool pass_jetmetdphi_sel2 = jetmetdphijet2_sel->passes(event);
-               bool pass_thirdjet_sel = thirdjet_sel->passes(event);
-               bool pass_MT2WCut = MT2WCut_sel->passes(event);
-               bool pass_btagsel = btag_sel->passes(event);
-               if (pass_btagsel){
-                  btagsel_h->fill(event);
-                  likelihood_btagsel->fill(event);
-                  electrons_btagsel_h->fill(event);
-                  jets_btagsel_h->fill(event);
-                  muons_btagsel_h->fill(event);
-                  events_btagsel_h->fill(event);
-                  topjets_btagsel_h->fill(event); 
-                  ttbargenhists_btagsel_h->fill(event); 
-                  
-                  if (pass_MT2WCut)
-                     {
-                        btagsel_MT2WCut_h->fill(event);
-                        likelihood_btagsel_MT2WCut->fill(event);
-                        electrons_btagsel_MT2WCut_h->fill(event);
-                        jets_btagsel_MT2WCut_h->fill(event);
-                        muons_btagsel_MT2WCut_h->fill(event);
-                        events_btagsel_MT2WCut_h->fill(event);
-                        topjets_btagsel_MT2WCut_h->fill(event); 
-                        ttbargenhists_btagsel_MT2WCut_h->fill(event);  
-                        if (pass_highMET_sel){
-                           btagsel_MT2WCut_metsel_h->fill(event);
-                           likelihood_btagsel_MT2WCut_metsel->fill(event);
-                           electrons_btagsel_MT2WCut_metsel_h->fill(event);
-                           jets_btagsel_MT2WCut_metsel_h->fill(event);
-                           muons_btagsel_MT2WCut_metsel_h->fill(event);
-                           events_btagsel_MT2WCut_metsel_h->fill(event);
-                           topjets_btagsel_MT2WCut_metsel_h->fill(event); 
-                           ttbargenhists_btagsel_MT2WCut_metsel_h->fill(event); 
-                        }
-
-                     }
-                  if (pass_mtlep_sel)
-                     {
-                        btagsel_mtlep_h->fill(event);          
-                        likelihood_btagsel_mtlep->fill(event);
-                        electrons_btagsel_mtlep_h->fill(event);
-                        jets_btagsel_mtlep_h->fill(event);
-                        muons_btagsel_mtlep_h->fill(event);
-                        events_btagsel_mtlep_h->fill(event);
-                        topjets_btagsel_mtlep_h->fill(event); 
-                        ttbargenhists_btagsel_mtlep_h->fill(event);  
-                        bool pass_met100 = MET100_sel->passes(event);
-                        if (pass_met100){
-                           //jetmetdphi_mediumMET_h->fill(event);
-                           //likelihood_jetmetdphi_mediumMET_h->fill(event);
-                           if (pass_jetmetdphi_sel){
-                              jetmetdphi_mediumMET_h->fill(event);
-                              likelihood_jetmetdphi_mediumMET_h->fill(event);
-                           }
-                        }
-                        
-                     }
-
-               }               
-
-               if (pass_mtlep_sel) mtlep_h->fill(event);
-               if (pass_jetmetdphi_sel) 
-                  {
-                     // jetmetdphi_h->fill(event);
-                     // if(mediumMET_sel->passes(event)) {
-                     //    jetmetdphi_mediumMET_h->fill(event);
-                     //    likelihood_jetmetdphi_mediumMET_h->fill(event);
-                     //    ttbargenhists_jetmetdphi_mediumMET_h->fill(event);
-                     // }
-                     likelihood_jetmetdphi_h->fill(event);        
-                  }
-               if (pass_metlepdphi) 
-                  {
-                     metlepdphi_h->fill(event);
-                     likelihood_metlepdphi_h->fill(event);
-                     ttbargenhists_metlepdphi_mtlep->fill(event);
-                     // likelihood_metlepdphi_mtlep_h->fill(event);
-                     // hists_metlepdphi_mtlep->fill(event);
-                     
-                     // metlepdphi_MT2WCut_h->fill(event);
-                     // likelihood_metlepdphi_MT2WCut_h->fill(event);
-                     // ttbargenhists_metlepdphi_MT2WCut_h->fill(event);
-                     
-                  }
-               if (pass_thirdjet_sel){
-                  bool pass_jet123metdphi_sel=jet123metdphi_sel->passes(event);
-                  bool pass_DeltaPhiMetNeutrino_sel=DeltaPhiMetNeutrino_sel->passes(event);
-                  bool pass_met100 = MET100_sel->passes(event);
-                  bool pass_mtlep100 = mtlep100_sel->passes(event);
-                  if (pass_jet123metdphi_sel){
-                     jet123metdphi_h->fill(event);
-                     hists_likelihood_jet123metdphi_h->fill(event);
-                     if (pass_DeltaPhiMetNeutrino_sel && pass_btagsel){
-                        met50_btag_h->fill(event);
-                        likelihood_met50_btag->fill(event);
-                        muons_met50_btag_h->fill(event);
-                        jets_met50_btag_h->fill(event);
-                        events_met50_btag_h->fill(event);
-                        topjets_met50_btag_h->fill(event);
-                        bool pass_ttbarpTSel=ttbarpT_sel->passes(event);
-                        if (pass_ttbarpTSel){
-                           met50_btag_ttbarpTSel->fill(event);
-                           likelihood_met50_btag_ttbarpTSel->fill(event);
-                        }
-                        
-                        bool pass_DeltaPhiTaggedjet_Neutrino =DeltaPhiTaggedjet_Neutrino_sel->passes(event);
-                        if (pass_DeltaPhiTaggedjet_Neutrino && pass_mtlep100){
-                           DeltaPhiTaggedjet_Neutrino->fill(event);  
-                           likelihood_DeltaPhiTaggedjet_Neutrino->fill(event);
-                           bool pass_mtlep150 = mtlep150_sel->passes(event);
-                           if (pass_mtlep150)
-                              {
-                                 DeltaPhiTaggedjet_Neutrino_mtlep150->fill(event);  
-                                 likelihood_DeltaPhiTaggedjet_Neutrino_mtlep150->fill(event);
-                              }
-                        }
-                     }
-                     if (pass_met100 && pass_DeltaPhiMetNeutrino_sel && pass_btagsel){
-                        met100_btag_h->fill(event);
-                        likelihood_met100_btag->fill(event);
-                        muons_met100_btag_h->fill(event);
-                        jets_met100_btag_h->fill(event);
-                        events_met100_btag_h->fill(event);
-                        topjets_met100_btag_h->fill(event);
-                        if (pass_mtlep100){
-                           met100_btag_mtlep100_h->fill(event);
-                           likelihood_met100_btag_mtlep100->fill(event);
-                        }
-                        bool pass_neutrinopT_sel=neutrinopT_sel->passes(event);
-                        if (pass_neutrinopT_sel){
-                           met100_btag_neutrinopT_h->fill(event);
-                           likelihood_met100_btag_neutrinopT->fill(event);
-                           bool pass_ttbarpTSel=ttbarpT_sel->passes(event);
-                           if (pass_ttbarpTSel){
-                              met100_btag_neutrinopT_ttbarpTSel_h->fill(event);
-                              likelihood_met100_btag_neutrinopT_ttbarpTSel->fill(event);
-                           }
-                        }
-                        bool pass_DeltaPhiTaggedJetTopLep_sel=DeltaPhiTaggedJetTopLep_sel->passes(event);
-                        if (pass_DeltaPhiTaggedJetTopLep_sel){
-                           met100_btag_DeltaPhiTaggedJetTopLep_h->fill(event);
-                           likelihood_met100_btag_DeltaPhiTaggedJetTopLep->fill(event);
-                           //cut hat nicht ricgtig funktioniert
-                        }
-                     }
-                     bool pass_met160= MET160_sel->passes(event);
-                     if (pass_met160)
-                        {
-                           met160_h->fill(event);  //FSP bestes fuer DMMET
-                           likelihood_met160->fill(event);
-                            bool pass_DeltaPhiMetNeutrino_sel=DeltaPhiMetNeutrino_sel->passes(event);
-                            if (pass_DeltaPhiMetNeutrino_sel){
-                               hists_likelihood_DeltaPhiMetNeutrino->fill(event);
-                               hists_DeltaPhiMetNeutrino->fill(event);                     
-                               if (pass_btagsel)
-                                  {
-                                     met160_btag_h->fill(event);
-                                     likelihood_met160_btag->fill(event);
-                                     muons_met160_btag_h->fill(event);
-                                     jets_met160_btag_h->fill(event);
-                                     events_met160_btag_h->fill(event);
-                                     topjets_met160_btag_h->fill(event);
-                                     if (pass_metlepdphi)
-                                        {
-                                           met160_btag_metlepdphi_h->fill(event);
-                                           likelihood_met160_btag_metlepdphi->fill(event);
-                                        }
-                                     
-                                     if (pass_mtlep100){
-                                        met160_btag_metlep100_h->fill(event);
-                                        likelihood_met160_btag_metlep100->fill(event);
-                                     }
-
-                                  }
-                            }
-                            
-                           // if (pass_btagsel)
-                           //    {
-                           //       met160_btag_h->fill(event);
-                           //       likelihood_met160_btag->fill(event);
-                           //    }
-                        }
-
-                     
-                     bool pass_MetSel = MET_sel->passes(event);  
-                     if (pass_MetSel)
-                        {
-                           jet123metdphi_MT2WCut_h->fill(event);
-                           hists_likelihood_jet123metdphi_MT2WCut_h->fill(event);
-                           electrons_jet123metdphi_MT2WCut_h->fill(event);
-                           jets_jet123metdphi_MT2WCut_h->fill(event);
-                           muons_jet123metdphi_MT2WCut_h->fill(event);
-                           events_jet123metdphi_MT2WCut_h->fill(event);
-                           topjets_jet123metdphi_MT2WCut_h->fill(event);
-                          
-                           if (pass_MetSel){
-                              jet123metdphi_MT2WCut_MET240_h->fill(event);
-                              likelihood_jet123metdphi_MT2WCut_MET240_h->fill(event);
-                           }
-                        }
-                  }
+               if (pass_Mt2W){
+                  noDeltaPhiMetNeutrino_MT2W->fill(event);
+                  likelihood_noDeltaPhiMetNeutrino_MT2W->fill(event);   
                }
-               bool pass_jetsel1208050 = jetsel1208050->passes(event);
-               if (pass_jetsel1208050)
+               if (pass_DeltaPhi){
+                  noDeltaPhiMetNeutrino_DeltaPhi->fill(event);
+                  likelihood_noDeltaPhiMetNeutrino_DeltaPhi->fill(event);  
+               }
+               bool pass_met160= MET160_sel->passes(event);
+               if (pass_met160)
                   {
-                     jetsel1208050_h->fill(event);
-                     likelihood_jetsel1208050_h->fill(event);
-                     bool pass_met80= MET80_sel->passes(event);
-                     if (pass_met80)
-                        {
-                           met80_h->fill(event);
-                           likelihood_met80->fill(event);
-                        }
-                  }
+                     met160_h->fill(event);  
+                     likelihood_met160->fill(event);
+                  } 
+               bool pass_mtlep200=mtlep_sel->passes(event);
+               if(pass_mtlep200){
+                  mtlep200_h->fill(event);  
+                  likelihood_mtlep200->fill(event);
+               }
+               bool pass_btagtight= tightbtag_sel->passes(event);
+               if (pass_btagtight){
+                  btagtight_h->fill(event);  
+                  likelihood_btagtight_h->fill(event);  
+               }
 
             }
-         else topjets_isolep_notag_WP3_h->fill(event);
+         //no btag 
+         if (pass_HEPTT_WP3_wobtag &&  !pass_btagsel && pass_mtlep100 && pass_lepVeto)
+            {
+               heptoptagevent_WP3_wobtag_nobtag_h->fill(event);
+               electrons_heptoptagevent_WP3_wobtag_nobtag_h->fill(event);
+               jets_heptoptagevent_WP3_wobtag_nobtag_h->fill(event);
+               muons_heptoptagevent_WP3_wobtag_nobtag_h->fill(event);
+               events_heptoptagevent_WP3_wobtag_nobtag_h->fill(event);
+               topjets_heptoptagevent_WP3_wobtag_nobtag_h->fill(event); 
+               likelihood_heptoptagevent_WP3_wobtag_nobtag_h->fill(event);
+            }
+         //no mtlep
+         if (pass_HEPTT_WP3_wobtag && pass_btagsel && pass_DeltaPhiMetNeutrino_sel && pass_lepVeto)
+            {
+               heptoptagevent_WP3_wobtag_nomtlep_h->fill(event);
+               electrons_heptoptagevent_WP3_wobtag_nomtlep_h->fill(event);
+               jets_heptoptagevent_WP3_wobtag_nomtlep_h->fill(event);
+               muons_heptoptagevent_WP3_wobtag_nomtlep_h->fill(event);
+               events_heptoptagevent_WP3_wobtag_nomtlep_h->fill(event);
+               topjets_heptoptagevent_WP3_wobtag_nomtlep_h->fill(event); 
+               likelihood_heptoptagevent_WP3_wobtag_nomtlep_h->fill(event);
+            }
+
+
+        
+         if (!pass_HEPTT_WP3) {
+            topjets_isolep_notag_WP3_h->fill(event);
+            return false;
+         }
+         if (!pass_lepVeto) return false;
+         heptoptagevent_WP3_h->fill(event);
+         electrons_heptoptagevent_WP3_h->fill(event);
+         jets_heptoptagevent_WP3_h->fill(event);
+         muons_heptoptagevent_WP3_h->fill(event);
+         events_heptoptagevent_WP3_h->fill(event);
+         topjets_heptoptagevent_WP3_h->fill(event); 
+         // topjets_heptoptagevent_WP3_tagged_h->fill(event); 
+         likelihood_heptoptagevent_WP3_h->fill(event); 
+         ttbargenhists_heptoptagevent_WP3_h->fill(event);                  
          
-         if (pass_HEPTT_WP1_wobtag)  {
-            heptoptagevent_WP1_wobtag_h->fill(event);
-            likelihood_heptoptagevent_WP1_wobtag_h->fill(event); 
-            if (pass_highMET_sel){
-               likelihood_heptoptagevent_WP1_wobtag_highMET_h->fill(event);
-               heptoptagevent_WP1_wobtag_highMET_h->fill(event);
-            }
-         }
-         if (pass_HEPTT_WP1)  {
-            heptoptagevent_WP1_h->fill(event);
-            likelihood_heptoptagevent_WP1_h->fill(event); 
-            if (pass_highMET_sel){
-               likelihood_heptoptagevent_WP1_highMET_h->fill(event);
-               heptoptagevent_WP1_highMET_h->fill(event);
-            }
-         }
-         else topjets_isolep_notag_WP1_h->fill(event);  //histograms filled with uncorrected mass
+         //     remove cuts to check selection
+         // test with met100, otheriwse very low stat
+         //no btag
+          if (pass_thirdjet_sel && pass_jet123metdphi_sel && pass_DeltaPhiMetNeutrino_sel && pass_met100 && pass_mtlep100){
+             nobtag_h->fill(event);
+             likelihood_nobtag_h->fill(event);
+          }
+         // no third jet, no DeltaPhiJets
+          if (pass_btagsel && pass_DeltaPhiMetNeutrino_sel && pass_mtlep100){
+             nothirdjet_h->fill(event);
+             likelihood_nothirdjet_h->fill(event);
+          }
+          //no DeltaPhiJets
+          if (pass_thirdjet_sel && pass_btagsel && pass_DeltaPhiMetNeutrino_sel && pass_met100 && pass_mtlep100){
+             noDeltaPhiJets_h->fill(event);
+             likelihood_noDeltaPhiJets_h->fill(event);
+          }
+        
+          //no met cut
+          if (pass_thirdjet_sel && pass_jet123metdphi_sel && pass_DeltaPhiMetNeutrino_sel &&  pass_mtlep100 && pass_btagsel){
+             nomet_h->fill(event);
+             likelihood_nomet_h->fill(event);
+          }
+          if (pass_thirdjet_sel &&  pass_DeltaPhiMetNeutrino_sel &&  pass_mtlep100 && pass_btagsel){
+             nomet_noDeltaPhi_h->fill(event);
+             likelihood_nomet_noDeltaPhi_h->fill(event);
+          }
+          //no mtcut
+          if (pass_thirdjet_sel && pass_jet123metdphi_sel && pass_DeltaPhiMetNeutrino_sel && pass_met100 && pass_btagsel){
+             nomtlep->fill(event);
+             likelihood_nomtlep->fill(event);
+          }
+          // no DeltaPhiMetNeutrino
+          if (pass_thirdjet_sel && pass_jet123metdphi_sel && pass_btagsel && pass_met100 && pass_mtlep100){
+             noDeltaPhiMetNeutrino->fill(event);
+             likelihood_noDeltaPhiMetNeutrino->fill(event);
+             if (pass_met160){
+                noDeltaPhiMetNeutrino_met160->fill(event);
+                likelihood_noDeltaPhiMetNeutrino_met160->fill(event);
+             }
+             if (pass_DeltaPhiMetNeutrino_sel2){
+                DeltaPhiMetNeutrinotight->fill(event);
+                likelihood_DeltaPhiMetNeutrinotight->fill(event);
+             }
+            
+          }
+         
+          //bool pass_btagsel = btag_sel->passes(event);
+         if (!pass_btagsel) return false;
+         btagsel_h->fill(event);
+         likelihood_btagsel->fill(event);
+         electrons_btagsel_h->fill(event);
+         jets_btagsel_h->fill(event);
+         muons_btagsel_h->fill(event);
+         events_btagsel_h->fill(event);
+         topjets_btagsel_h->fill(event); 
+         ttbargenhists_btagsel_h->fill(event); 
+         
+         pass_thirdjet_sel = thirdjet_sel->passes(event);
+         if (!pass_thirdjet_sel)return false;
+         
+         pass_jet123metdphi_sel=jet123metdphi_sel->passes(event);
+         if (!pass_jet123metdphi_sel) return false;
+         jet123metdphi_h->fill(event);
+         hists_likelihood_jet123metdphi_h->fill(event);
+         
+         //bool pass_DeltaPhiMetNeutrino_sel=DeltaPhiMetNeutrino_sel->passes(event);
+         // if (!pass_DeltaPhiMetNeutrino_sel) return false;
+         // met50_btag_h->fill(event);
+         // likelihood_met50_btag->fill(event);
+         // muons_met50_btag_h->fill(event);
+         // jets_met50_btag_h->fill(event);
+         // events_met50_btag_h->fill(event);
+         // topjets_met50_btag_h->fill(event);
+         
+         // bool pass_met100 = MET100_sel->passes(event);
+         // if (!pass_met100) return false; 
+         // met100_btag_h->fill(event);
+         // likelihood_met100_btag->fill(event);
+         // muons_met100_btag_h->fill(event);
+         // jets_met100_btag_h->fill(event);
+         // events_met100_btag_h->fill(event);
+         // topjets_met100_btag_h->fill(event);
+        
+         //bool pass_mtlep100 = mtlep100_sel->passes(event);
+         if (!pass_mtlep100) return false;
+         met100_btag_mtlep100_h->fill(event);
+         likelihood_met100_btag_mtlep100->fill(event);
+      
+         //bool pass_met160= MET160_sel->passes(event);
+         // if (pass_met160)
+         //    {
+         //       met160_h->fill(event);  //FSP bestes fuer DMMET
+         //       likelihood_met160->fill(event);
+         //    } 
          
          return false;
       }
-   
+ 
    event.muons->clear();
    event.muons->reserve(cleaned_muons_noIso->size());
    for(auto & muon : *cleaned_muons_noIso) event.muons->push_back(muon); 
    sort_by_pt<Muon>(*event.muons);
    
+
    nonisolep_h->fill(event);
    genhists_nonisolep_h->fill(event);
    electrons_nonisolep_h->fill(event);
@@ -1192,7 +1041,7 @@ bool ttDMSelectionModuleAfterLikelihood::process(Event & event){
    muons_nonisolep_h->fill(event);
    events_nonisolep_h->fill(event);
    topjets_nonisolep_h->fill(event);
-   
+ 
    if(!pass_twodcut) return false;
    twodcut_h->fill(event);
    electrons_twodcut_h->fill(event);
@@ -1201,33 +1050,10 @@ bool ttDMSelectionModuleAfterLikelihood::process(Event & event){
    jets_twodcut_h->fill(event);
    topjets_twodcut_h->fill(event);
    likelihood_twodcut_h->fill(event);
-
-   bool pass_btag_sel = btag_sel->passes(event);
-   if (!pass_btag_sel) return false;
-   btag_noniso_h->fill(event);
-   electrons_btag_noniso_h->fill(event);
-   muons_btag_noniso_h->fill(event);
-   events_btag_noniso_h->fill(event);
-   jets_btag_noniso_h->fill(event);
-   topjets_btag_noniso_h->fill(event);
-   likelihood_btag_noniso_h->fill(event);
-
-   if (pass_HEPTT_WP3){
-      HEPTT_WP3_noniso_h->fill(event);
-      likelihood_WP3_noniso_h->fill(event);
-
-   }
-
-   //   bool pass_medMET_sel = mediumMET_sel->passes(event);
-   bool pass_thirdjet_sel = thirdjet_sel->passes(event);
-   bool pass_mtlep_sel = mtlep_sel->passes(event); 
-   bool pass_jetmetdphijet2_sel = jetmetdphijet2_sel->passes(event);
-   bool pass_jetmetdphi_sel = jetmetdphi_sel->passes(event);
-   bool pass_metlepdphi= metleptondphi_sel->passes(event);
-   bool pass_MetSel = MET_sel->passes(event);
-   bool pass_MT2WCut = MT2WCut_sel->passes(event);
  
-   if (pass_jetmetdphijet2_sel){
+   //bool pass_jetmetdphijet2_sel = jetmetdphijet2_sel->passes(event);
+  bool pass_met100 = MET100_sel->passes(event);
+   if (pass_met100){
       mediumMET_h->fill(event);
       electrons_mediumMET_h->fill(event);
       muons_mediumMET_h->fill(event);
@@ -1237,6 +1063,98 @@ bool ttDMSelectionModuleAfterLikelihood::process(Event & event){
       likelihood_mediumMET_h->fill(event);  
    }
    
+   bool pass_btag_sel = btag_sel->passes(event);
+   bool pass_thirdjet_sel = thirdjet_sel->passes(event);
+   bool pass_DeltaPhiMetNeutrino_sel=DeltaPhiMetNeutrino_sel2->passes(event);
+   bool pass_mtlep100 = mtlep100_sel->passes(event);
+   
+   //control regions
+   //btag veto
+   if (!pass_btag_sel && pass_lepVeto &&pass_mtlep100){
+      WJetsControlRegion_noniso_h->fill(event);
+      electrons_WJetsControlRegion_noniso_h->fill(event);
+      muons_WJetsControlRegion_noniso_h->fill(event);
+      events_WJetsControlRegion_noniso_h->fill(event);
+      jets_WJetsControlRegion_noniso_h->fill(event);
+      topjets_WJetsControlRegion_noniso_h->fill(event);
+      likelihood_WJetsControlRegion_noniso_h->fill(event);
+   }
+   //lepton veto 
+   if (pass_btag_sel && !pass_lepVeto && pass_mtlep100){
+      DileptControlRegion_noniso_h->fill(event);
+      electrons_DileptControlRegion_noniso_h->fill(event);
+      muons_DileptControlRegion_noniso_h->fill(event);
+      events_DileptControlRegion_noniso_h->fill(event);
+      jets_DileptControlRegion_noniso_h->fill(event);
+      topjets_DileptControlRegion_noniso_h->fill(event);
+      likelihood_DileptControlRegion_noniso_h->fill(event);
+   }
+
+   //mTsel
+   if (pass_btag_sel && pass_lepVeto && !pass_mtlep100){
+      SemileptControlRegion_noniso_h->fill(event);
+      electrons_SemileptControlRegion_noniso_h->fill(event);
+      muons_SemileptControlRegion_noniso_h->fill(event);
+      events_SemileptControlRegion_noniso_h->fill(event);
+      jets_SemileptControlRegion_noniso_h->fill(event);
+      topjets_SemileptControlRegion_noniso_h->fill(event);
+      likelihood_SemileptControlRegion_noniso_h->fill(event);
+   }
+
+   //signal selections
+   if (!pass_lepVeto) return false;
+   if (!pass_btag_sel) return false;
+   btag_noniso_h->fill(event);
+   electrons_btag_noniso_h->fill(event);
+   muons_btag_noniso_h->fill(event);
+   events_btag_noniso_h->fill(event);
+   jets_btag_noniso_h->fill(event);
+   topjets_btag_noniso_h->fill(event);
+   likelihood_btag_noniso_h->fill(event);
+ 
+ 
+   
+   if (pass_DeltaPhiMetNeutrino_sel)
+      {
+         met50_btag_h->fill(event);
+         likelihood_met50_btag->fill(event);
+         muons_met50_btag_h->fill(event);
+         jets_met50_btag_h->fill(event);
+         events_met50_btag_h->fill(event);
+         topjets_met50_btag_h->fill(event);
+      }
+   
+   if (pass_met100){
+      met100_btag_h->fill(event);
+      likelihood_met100_btag->fill(event);
+      muons_met100_btag_h->fill(event);
+      jets_met100_btag_h->fill(event);
+      events_met100_btag_h->fill(event);
+      topjets_met100_btag_h->fill(event);
+   }
+   if (pass_mtlep100){
+      mtlep_h->fill(event);
+      electrons_mtlep_h->fill(event);
+      muons_mtlep_h->fill(event);
+      events_mtlep_h->fill(event);
+      jets_mtlep_h->fill(event);
+      topjets_mtlep_h->fill(event);
+      likelihood_mtlep_h->fill(event);        
+   }
+
+   if (pass_HEPTT_WP3_wobtag){
+      HEPTT_WP3_noniso_h->fill(event);
+      likelihood_WP3_noniso_h->fill(event);
+   }
+
+   if (pass_HEPTT_WP3_wobtag &&  pass_mtlep100){
+      HEPTT_WP3_noniso_mtlep_h->fill(event);
+      likelihood_WP3_noniso_mtlep_h->fill(event);
+
+   }
+ 
+   bool pass_mtlep_sel = mtlep_sel->passes(event); 
+        
    if (pass_thirdjet_sel){
       bool pass_jet123metdphi_sel=jet123metdphi_sel->passes(event);
       if (pass_jet123metdphi_sel){
@@ -1247,72 +1165,14 @@ bool ttDMSelectionModuleAfterLikelihood::process(Event & event){
          jets_thirdjet_h->fill(event);
          topjets_thirdjet_h->fill(event);
          likelihood_thirdjet_h->fill(event);    
-         if (pass_MT2WCut){
-            thirdjet_MT2WCut_h->fill(event);
-            likelihood_thirdjet_MT2WCut_h->fill(event); 
-            if (pass_MetSel){
-               thirdjet_MT2WCut_MetSel_h->fill(event);
-               likelihood_thirdjet_MT2WCut_MetSel_h->fill(event);
-            }
-            
-         }
-
          if (pass_mtlep_sel){
             likelihood_thirdjet_mtlep_h->fill(event);
             thirdjet_mtlep_h->fill(event);
          }
-         if (pass_jetmetdphi_sel&&pass_metlepdphi){
-            likelihood_thirdjet_jetmetdphi_h->fill(event); 
-            thirdjet_jetmetdphi_h->fill(event);
-            electrons_thirdjet_jetmetdphi_h->fill(event);
-            muons_thirdjet_jetmetdphi_h->fill(event);
-            events_thirdjet_jetmetdphi_h->fill(event);
-            jets_thirdjet_jetmetdphi_h->fill(event);
-            topjets_thirdjet_jetmetdphi_h->fill(event);
-         }
       }
    }
-   if(pass_metlepdphi){
-      metlepdphi_noiso_h->fill(event);
-      electrons_metlepdphi_noiso_h->fill(event);
-      muons_metlepdphi_noiso_h->fill(event);
-      events_metlepdphi_noiso_h->fill(event);
-      jets_metlepdphi_noiso_h->fill(event);
-      topjets_metlepdphi_noiso_h->fill(event);
-      likelihood_metlepdphi_noiso_h->fill(event);
-   }
-
-  if (pass_mtlep_sel){
-      mtlep_h->fill(event);
-      electrons_mtlep_h->fill(event);
-      muons_mtlep_h->fill(event);
-      events_mtlep_h->fill(event);
-      jets_mtlep_h->fill(event);
-      topjets_mtlep_h->fill(event);
-      likelihood_mtlep_h->fill(event);        
-  }
-  
-  if (pass_jetmetdphijet2_sel){
-     jetmetdphijet2_h->fill(event);
-     electrons_jetmetdphijet2_h->fill(event);
-     muons_jetmetdphijet2_h->fill(event);
-     events_jetmetdphijet2_h->fill(event);
-     jets_jetmetdphijet2_h->fill(event);
-     topjets_jetmetdphijet2_h->fill(event);
-     likelihood_jetmetdphijet2_h->fill(event);
-         bool likelihood_cut1_nosiso = cut1_likelihood->passes(event);
-         if (likelihood_cut1_nosiso) likelihood_cut1_noiso_h->fill(event);
-         bool likelihood_cut2_nosiso = cut2_likelihood->passes(event);
-         if (likelihood_cut2_nosiso) 
-            {
-               likelihood_cut2_noiso_h->fill(event);
-               bool pass_mtlep_sel = mtlep_sel->passes(event);
-               if (pass_mtlep_sel){
-                  likelihood_cut2_noiso_mtlep_h->fill(event);
-                  cut2_noiso_mtlep->fill(event);
-               }
-            }
-      }
+ 
+   
    return true;
 }
 

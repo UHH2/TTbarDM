@@ -115,9 +115,15 @@ private:
    TH1F *hist_deltaphi_tj_neutrino;
    TH1F *hist_deltaphi_neutrino_met;
    TH1F *hist_deltaphi_thad_tlep;
+   TH1F *hist_deltaR_tj_bjet;
+   TH1F *hist_deltar_tj_lep;
+   TH1F *hist_deltar_neutrino_lep;
+   TH1F *hist_deltar_tj_neutrino;
+   TH1F *hist_deltar_neutrino_met;
+   TH1F *hist_deltar_thad_tlep;
    TH1F *hist_deltaphi_thad_MET;
-   
-   
+   TH1F* mtlep;
+   TH1F* mtlep2;
 
 };  
 

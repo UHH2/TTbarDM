@@ -303,7 +303,7 @@ bool uhh2::DeltaPhiMetNeutrino::passes(const uhh2::Event & event){
 }
 
 uhh2::DeltaPhiTaggedJetNeutrino::DeltaPhiTaggedJetNeutrino(uhh2::Context& ctx, float deltaphimax ):
-   deltaphimax_(deltaphimax), h_neutrino_(ctx.get_handle<LorentzVector>("rec_neutrino")), h_taggedjet_(ctx.get_handle<std::vector<TopJet>>("h_heptopjets_WP3")) {}
+   deltaphimax_(deltaphimax), h_neutrino_(ctx.get_handle<LorentzVector>("rec_neutrino")), h_taggedjet_(ctx.get_handle<std::vector<TopJet>>("h_heptopjets_WP3_wobtag")) {}
 
 bool uhh2::DeltaPhiTaggedJetNeutrino::passes(const uhh2::Event & event){
    LorentzVector neutrino = event.get(h_neutrino_);
@@ -314,7 +314,7 @@ bool uhh2::DeltaPhiTaggedJetNeutrino::passes(const uhh2::Event & event){
 }
 
 uhh2::DeltaPhiTaggedJetTopLep::DeltaPhiTaggedJetTopLep(uhh2::Context& ctx, float  deltaphimax):
-   deltaphimax_(deltaphimax), h_neutrino_(ctx.get_handle<LorentzVector>("rec_neutrino")), h_taggedjet_(ctx.get_handle<std::vector<TopJet>>("h_heptopjets_WP3")), h_b_jets_(ctx.get_handle<Jet>("bjet")) {}
+   deltaphimax_(deltaphimax), h_neutrino_(ctx.get_handle<LorentzVector>("rec_neutrino")), h_taggedjet_(ctx.get_handle<std::vector<TopJet>>("h_heptopjets_WP3_wobtag")), h_b_jets_(ctx.get_handle<Jet>("bjet")) {}
 
 bool uhh2::DeltaPhiTaggedJetTopLep::passes(const uhh2::Event & event){
    LorentzVector neutrino = event.get(h_neutrino_);
@@ -337,7 +337,7 @@ bool uhh2::NeutrinopTSelection::passes(const uhh2::Event & event){
 }
 
 uhh2::ttbarpTSel::ttbarpTSel(uhh2::Context& ctx, float pTmin ):
-   pTmin_(pTmin), h_neutrino_(ctx.get_handle<LorentzVector>("rec_neutrino")), h_taggedjet_(ctx.get_handle<std::vector<TopJet>>("h_heptopjets_WP3")),h_b_jets_(ctx.get_handle<Jet>("bjet"))  {}
+   pTmin_(pTmin), h_neutrino_(ctx.get_handle<LorentzVector>("rec_neutrino")), h_taggedjet_(ctx.get_handle<std::vector<TopJet>>("h_heptopjets_WP3_wobtag")),h_b_jets_(ctx.get_handle<Jet>("bjet"))  {}
 
 bool uhh2::ttbarpTSel::passes(const uhh2::Event & event){
    LorentzVector neutrino = event.get(h_neutrino_);
@@ -347,5 +347,15 @@ bool uhh2::ttbarpTSel::passes(const uhh2::Event & event){
    
    LorentzVector ttbar = tj.v4()+neutrino+lepton.v4()+b_jet.v4();
    return (ttbar.pt() >pTmin_); 
+}
+
+uhh2::DMMETSelection::DMMETSelection(uhh2::Context& ctx, float DMMETmin ):
+   DMMETmin_(DMMETmin), h_neutrino_(ctx.get_handle<LorentzVector>("rec_neutrino")){}
+
+bool uhh2::DMMETSelection::passes(const uhh2::Event & event){
+   LorentzVector neutrino = event.get(h_neutrino_);
+   double DM_MET = std::sqrt((event.met->v4().Px()-neutrino.Px())*(event.met->v4().Px()-neutrino.Px())+(event.met->v4().Py()-neutrino.Py())*(event.met->v4().Py()-neutrino.Py()));
+
+   return (DM_MET > DMMETmin_);
 }
 
