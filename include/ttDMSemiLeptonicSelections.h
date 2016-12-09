@@ -240,5 +240,17 @@ class ttbarpTSel: public Selection {
       Event::Handle<LorentzVector> h_neutrino_;
    };
 
+ class DeltaRMuonJet: public Selection {
+   public:
+      explicit DeltaRMuonJet(double deltaRmax);
+      virtual bool passes(const Event&) override;
+      
+   private:
+      double deltaRmax_;
+ };
+
+   
+   
+
    /////
 }

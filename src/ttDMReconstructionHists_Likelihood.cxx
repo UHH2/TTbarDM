@@ -29,6 +29,7 @@ ttDMReconstructionHists_Likelihood::ttDMReconstructionHists_Likelihood(Context &
    hist_pzrec_pzgen = book<TH1F>("pzrec_pzgen","p_{z}^{rec} - p_{z}^{gen}", 100, -500, 500);
    
    hist_DM_MET = book<TH1F>("DM_MET","|#vec{MET} - #vec{p_{T,#nu}^{rec}}| [GeV]", 500, 0, 5000);
+   hist_DM_MET_norm = book<TH1F>("DM_MET_norm","|#vec{MET} - #vec{p_{T,#nu}^{rec}}|/|#vec{MET}|", 50, 0, 5);
    hist_DM_MET_chi2 = book<TH1F>("DM_MET_chi2","DM_MET_chi2", 50, 0, 20000);
    
    hist_unc_px = book<TH1F>("unc_px","unc_px", 30, 0, 300);
@@ -171,7 +172,8 @@ void ttDMReconstructionHists_Likelihood::fill(const Event & event){
    
    double DM_MET = std::sqrt((event.met->v4().Px()-neutrino.Px())*(event.met->v4().Px()-neutrino.Px())+(event.met->v4().Py()-neutrino.Py())*(event.met->v4().Py()-neutrino.Py()));
    hist_DM_MET->Fill(DM_MET,event.weight);
-      
+   hist_DM_MET_norm ->Fill(DM_MET/event.met->v4().Pt(),event.weight);
+
    hist_neutrino_pT->Fill(neutrino.Pt(),event.weight);
    hist_neutrino_phi->Fill(TVector2::Phi_mpi_pi(neutrino.phi()),event.weight);
  

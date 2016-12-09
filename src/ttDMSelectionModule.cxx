@@ -113,7 +113,7 @@ private:
    std::unique_ptr<Selection> twodcut_sel;  
    
    //neutrino reconstruction
-   std::unique_ptr<AnalysisModule> ttbar_DM_reco_likelihood;
+   //std::unique_ptr<AnalysisModule> ttbar_DM_reco_likelihood;
    std::unique_ptr<Hists> likelihood_hists;
 
    // hists
@@ -169,15 +169,16 @@ ttDMSelectionModule::ttDMSelectionModule(Context & ctx){
    reco_primlep.reset(new PrimaryLepton(ctx));
    
    //neutrino reconstruction
-   ttbar_DM_reco_likelihood.reset(new ttDMReconstruction_Likelihood(ctx));
-   likelihood_hists.reset(new ttDMReconstructionHists_Likelihood(ctx, "hists_likelihood"));
+   //ttbar_DM_reco_likelihood.reset(new ttDMReconstruction_Likelihood(ctx));
+   //likelihood_hists.reset(new ttDMReconstructionHists_Likelihood(ctx, "hists_likelihood"));
 
    //// OBJ CLEANING
    //muo_cleaner.reset(new MuonCleaner(AndId<Muon>(MuonIDMedium(),PtEtaCut(47., 2.1)))); 
    //ele_cleaner.reset(new ElectronCleaner(AndId<Electron>(ElectronID_Spring15_25ns_tight_noIso, PtEtaCut(50., 2.5))));
    muo_cleaner.reset(new MuonCleaner    (AndId<Muon>    (PtEtaCut  (10., 2.1), MuonIDLoose()))); 
-   ele_cleaner.reset(new ElectronCleaner(AndId<Electron>(PtEtaSCCut(10., 2.5), ElectronID_MVAnotrig_Spring15_25ns_loose)));
-   
+   // ele_cleaner.reset(new ElectronCleaner(AndId<Electron>(PtEtaSCCut(10., 2.5), ElectronID_MVAnotrig_Spring15_25ns_loose))); ACHTUNG! FUER RESOLVED GEAENDERT!
+   ele_cleaner.reset(new ElectronCleaner(AndId<Electron>(PtEtaSCCut(10., 2.5), ElectronID_Spring15_25ns_veto_noIso)));
+
    if (is_mc) {
       jet_corrector.reset(new JetCorrector(ctx, JERFiles::Fall15_25ns_L123_AK4PFchs_MC));
       jetlepton_cleaner.reset(new JetLeptonCleaner(ctx, JERFiles::Fall15_25ns_L123_AK4PFchs_MC));
@@ -191,8 +192,8 @@ ttDMSelectionModule::ttDMSelectionModule(Context & ctx){
    jetlepton_cleaner->set_drmax(.4);
    //jet_cleaner1.reset(new JetCleaner(ctx, AndId<Jet>(JetPFID(JetPFID::WP_LOOSE),PtEtaCut(25., std::numeric_limits<double>::infinity())))); 
    //jet_cleaner2.reset(new JetCleaner(ctx,AndId<Jet>(JetPFID(JetPFID::WP_LOOSE),PtEtaCut(30., 2.4))));
-   jet_cleaner1.reset(new JetCleaner(ctx, AndId<Jet>(JetPFID(JetPFID::WP_LOOSE),PtEtaCut(15., 3.0)))); 
-   jet_cleaner2.reset(new JetCleaner(ctx,AndId<Jet>(JetPFID(JetPFID::WP_LOOSE),PtEtaCut(15., 2.4))));
+   jet_cleaner1.reset(new JetCleaner(ctx, AndId<Jet>(JetPFID(JetPFID::WP_LOOSE),PtEtaCut(15., 4.0))));   //ACHTUNG! FUER RESOLVED GEAENDERT!
+   jet_cleaner2.reset(new JetCleaner(ctx,AndId<Jet>(JetPFID(JetPFID::WP_LOOSE),PtEtaCut(15., 4.0)))); //ACHTUNG! FUER RESOLVED GEAENDERT!
 
    topjetlepton_cleaner.reset(new TopJetLeptonDeltaRCleaner(.8));
    topjet_cleaner.reset(new TopJetCleaner(ctx, TopJetId(PtEtaCut(400., 2.4))));
@@ -215,25 +216,25 @@ ttDMSelectionModule::ttDMSelectionModule(Context & ctx){
       lep1_sel->add<NMuonSelection>("muo==1", 1, 1, muonid);
       lep1_sel->add<NElectronSelection>("ele=0",0, 0, electronid);
       
-      if(triggername != "NotSet") trigger_sel.reset(new TriggerSelection(triggername));
-      else trigger_sel.reset(new TriggerSelection("HLT_Mu45_eta2p1_v*"));
-   }
+      // if(triggername != "NotSet") trigger_sel.reset(new TriggerSelection(triggername)); //ACHTUNG! FUER RESOLVED GEAENDERT!
+      // else trigger_sel.reset(new TriggerSelection("HLT_Mu45_eta2p1_v*")); //ACHTUNG! FUER RESOLVED GEAENDERT!
+   } 
    else if(elec){
       lep1_sel->add<NMuonSelection>("muo==0", 0, 0, muonid);
       lep1_sel->add<NElectronSelection>("elle==1",1, 1, electronid);
 
-      if(triggername != "NotSet") trigger_sel.reset(new TriggerSelection(triggername));
-      else {
-         if (!is_mc) trigger_sel.reset(new TriggerSelection("HLT_Ele15_IsoVVVL_PFHT350_PFMET70_v*"));
-         else trigger_sel.reset (new TriggerSelection("HLT_Ele15_IsoVVVL_PFHT400_PFMET70_v*"));
-      }
+      // if(triggername != "NotSet") trigger_sel.reset(new TriggerSelection(triggername));
+      // else {
+      //    if (!is_mc) trigger_sel.reset(new TriggerSelection("HLT_Ele15_IsoVVVL_PFHT350_PFMET70_v*"));//ACHTUNG! FUER RESOLVED GEAENDERT!
+      //    else trigger_sel.reset (new TriggerSelection("HLT_Ele15_IsoVVVL_PFHT400_PFMET70_v*"));//ACHTUNG! FUER RESOLVED GEAENDERT! 
+      // }
    }
    collectionprod_muonmed.reset(new CollectionProducer<Muon>(ctx, "muons", "h_muons_medium", muonid)); 
    collectionprod_eletight.reset(new CollectionProducer<Electron>(ctx, "electrons", "h_electrons_tight", electronid)); 
    // jet2_sel.reset(new NJetSelection(3, -1, JetId(PtEtaCut( 50., 2.4))));    
    // jet1_sel.reset(new NJetSelection(1, -1, JetId(PtEtaCut(200., 2.4))));
-   jet2_sel.reset(new NJetSelection(2, -1, JetId(PtEtaCut( 50., 2.4))));    
-   jet1_sel.reset(new NJetSelection(1, -1, JetId(PtEtaCut(50., 2.4))));
+   jet2_sel.reset(new NJetSelection(2, -1, JetId(PtEtaCut( 30., 4.0))));    //ACHTUNG! FUER RESOLVED GEAENDERT!
+   jet1_sel.reset(new NJetSelection(1, -1, JetId(PtEtaCut(30., 4.0))));//ACHTUNG! FUER RESOLVED GEAENDERT!
    
    met_sel.reset(new METCut(50., std::numeric_limits<double>::infinity()));  
    twodcut_sel.reset(new TwoDCut(ctx,.4, 20.));
@@ -303,8 +304,8 @@ bool ttDMSelectionModule::process(Event & event){
    ht_calculator->process(event);
    filter_h->fill(event); 
    //// HLT selection
-   bool pass_trigger = trigger_sel->passes(event);
-   if(!pass_trigger) return false;
+   //bool pass_trigger = trigger_sel->passes(event); //ACHTUNG! FUER RESOLVED GEAENDERT!
+   //if(!pass_trigger) return false;                 //ACHTUNG! FUER RESOLVED GEAENDERT!
    
    trigger_h->fill(event);
    electrons_trigger_h->fill(event);
@@ -389,8 +390,8 @@ bool ttDMSelectionModule::process(Event & event){
    topjets_met_h->fill(event);
    if(!event.isRealData) genhists_met_h->fill(event);
    // neutrino reconstruction
-   ttbar_DM_reco_likelihood->process(event);
-   likelihood_hists->fill(event);
+   //   ttbar_DM_reco_likelihood->process(event); //ACHTUNG! FUER RESOLVED GEAENDERT!
+   //likelihood_hists->fill(event);              //ACHTUNG! FUER RESOLVED GEAENDERT!
    //if(!event.isRealData) scans_h->fill(event);
    return true;
 }

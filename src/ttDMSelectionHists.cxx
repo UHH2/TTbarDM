@@ -68,8 +68,9 @@ ttDMSelectionHists::ttDMSelectionHists(uhh2::Context & ctx, const std::string & 
 
   // TTDM
   mtlep = book<TH1F>("mtlep", ";M_{T}", 10, 0, 500);
-  mtlep2 = book<TH1F>("mtlep2", ";M_{T}", 50, 0, 500);
-  mt2w = book<TH1F>("mt2w", ";M^{W}_{T2}", 7, 95, 410);
+  mtlep2 = book<TH1F>("mtlep2", ";M_{T}", 15, 0, 300);
+  //mt2w = book<TH1F>("mt2w", ";M^{W}_{T2}", 7, 95, 410);
+  mt2w = book<TH1F>("mt2w", ";M^{W}_{T2}", 23, 50, 464);
   jetmetdphi = book<TH1F>("jetmetdphi", ";#Delta#phi(j_{1,2},E_{T}^{miss})", 8, 0, 3.2);
 }
 

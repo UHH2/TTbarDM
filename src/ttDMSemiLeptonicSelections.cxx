@@ -1,3 +1,4 @@
+
 #include "UHH2/TTbarDM/include/ttDMSemiLeptonicSelections.h"
 #include "UHH2/TTbarDM/include/ttDMSemiLeptonicUtils.h"
 
@@ -359,3 +360,14 @@ bool uhh2::DMMETSelection::passes(const uhh2::Event & event){
    return (DM_MET > DMMETmin_);
 }
 
+uhh2::DeltaRMuonJet::DeltaRMuonJet(double deltaRmax):
+   deltaRmax_(deltaRmax){}
+
+bool uhh2::DeltaRMuonJet::passes(const uhh2::Event & event){
+   
+   Muon lepton =event.muons->at(0);
+   
+   float minDR_jet(-1.), pTrel_jet(-1.);
+   std::tie(minDR_jet, pTrel_jet) = drmin_pTrel(lepton, *event.jets);
+   return (minDR_jet< deltaRmax_);
+}

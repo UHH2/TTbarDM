@@ -77,11 +77,11 @@ double CalculateMT2W(const uhh2::Event & event){
   TVector2 met;
 
   for(const auto & jet : *event.jets){
-    if (jet.pt()<50) continue;
+     if (jet.pt()<30) continue; //changed from 50 to 30
     TLorentzVector tjet;
     tjet.SetPtEtaPhiE(jet.pt(), jet.eta(), jet.phi(), jet.energy());
     jets.push_back(tjet);
-    if (CSVBTag(CSVBTag::WP_MEDIUM)(jet, event)) bjets.push_back(tjet);
+    if (CSVBTag(0.8)(jet, event)) bjets.push_back(tjet); //changed
   }
 
   if(event.electrons){

@@ -15,7 +15,7 @@ private:
    TH1F *hist_pxrec_pxgen;
    TH1F *hist_pyrec_pygen;
    TH1F *hist_pzrec_pzgen;
-   TH1F *hist_DM_MET,  *hist_DM_MET_chi2, *hist_DM_MET_semilept, *hist_DM_MET_chi2_semilept;
+   TH1F *hist_DM_MET, *hist_DM_MET_norm, *hist_DM_MET_chi2, *hist_DM_MET_semilept, *hist_DM_MET_chi2_semilept;
    TH1F *hist_MET_Neutrino_px; 
    TH1F *hist_MET_Neutrino_py; 
    TH1F *hist_MET_Neutrino_DM_px;
