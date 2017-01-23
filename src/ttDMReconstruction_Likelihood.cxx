@@ -252,7 +252,7 @@ bool ttDMReconstruction_Likelihood::process(uhh2::Event & e)
     }
     }
 
-    std::cout<<"Event done"<<std::endl;
+    //    std::cout<<"Event done"<<std::endl;
 
     e.set(h_likelihood, likelihood);
     e.set(h_recneutrino, nu_scan);

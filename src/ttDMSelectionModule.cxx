@@ -72,13 +72,13 @@ private:
    Event::Handle<bool> h_flag_twodcut;
 
    bool is_mc;
-   bool lumisel;
+   //bool lumisel;
    bool mcpileupreweight;
    bool metfilters;
    bool pvfilter;
    
    std::unique_ptr<AnalysisModule> ht_calculator;
-   std::unique_ptr<Selection> lumi_selection;
+   //std::unique_ptr<Selection> lumi_selection;
    std::unique_ptr<AndSelection> metfilters_selection;
    std::unique_ptr<AnalysisModule> primaryvertex_filter;
    std::unique_ptr<AnalysisModule> pu_reweight;
@@ -113,11 +113,11 @@ private:
    std::unique_ptr<Selection> twodcut_sel;  
    
    //neutrino reconstruction
-   //std::unique_ptr<AnalysisModule> ttbar_DM_reco_likelihood;
+   std::unique_ptr<AnalysisModule> ttbar_DM_reco_likelihood;
    std::unique_ptr<Hists> likelihood_hists;
 
    // hists
-   std::unique_ptr<Hists> lumihists;
+   //std::unique_ptr<Hists> lumihists;
    std::unique_ptr<Hists> filter_h;
    std::unique_ptr<Hists> input_h,electrons_input_h,jets_input_h,muons_input_h,events_input_h,topjets_input_h;
    std::unique_ptr<Hists> trigger_h, electrons_trigger_h,jets_trigger_h,muons_trigger_h,events_trigger_h,topjets_trigger_h;
@@ -132,8 +132,8 @@ ttDMSelectionModule::ttDMSelectionModule(Context & ctx){
    h_flag_twodcut = ctx.declare_event_output<bool>("flag_twodcut");
    
    is_mc = ctx.get("dataset_type") == "MC";
-   lumisel = ctx.get("lumi_file") != ""; 
-   mcpileupreweight = ctx.get("pileup_directory") != "";
+   //  lumisel = ctx.get("lumi_file") != ""; 
+   //mcpileupreweight = ctx.get("pileup_directory") != "";
    metfilters = string2bool(ctx.get("dometfilters","true")); 
    pvfilter = string2bool(ctx.get("dopvfilter","true"));
    
@@ -144,24 +144,24 @@ ttDMSelectionModule::ttDMSelectionModule(Context & ctx){
          pv_sel.reset(new NPVSelection(1,-1,pvid));
       }
    if(is_mc){
-      if(mcpileupreweight) pu_reweight.reset(new MCPileupReweight(ctx));
+      //if(mcpileupreweight) pu_reweight.reset(new MCPileupReweight(ctx));
       lumi_weight.reset(new MCLumiWeight(ctx));
    } else{
-      if(lumisel) lumi_selection.reset(new LumiSelection(ctx));
+      //if(lumisel) lumi_selection.reset(new LumiSelection(ctx));
    }
    if(metfilters){
       metfilters_selection.reset(new AndSelection(ctx, "metfilters"));
       metfilters_selection->add<TriggerSelection>("HBHENoiseFilter", "Flag_HBHENoiseFilter");
       metfilters_selection->add<TriggerSelection>("HBHENoiseIsoFilter", "Flag_HBHENoiseIsoFilter");
-      metfilters_selection->add<TriggerSelection>("CSCTightHalo2015Filter", "Flag_CSCTightHalo2015Filter");
+      metfilters_selection->add<TriggerSelection>("globalTightHalo2016Filter", "Flag_globalTightHalo2016Filter");
       metfilters_selection->add<TriggerSelection>("EcalDeadCellTriggerPrimitiveFilter", "Flag_EcalDeadCellTriggerPrimitiveFilter");
-      metfilters_selection->add<TriggerSelection>("eeBadScFilter", "Flag_eeBadScFilter");
+      if (!is_mc) metfilters_selection->add<TriggerSelection>("eeBadScFilter", "Flag_eeBadScFilter");
       metfilters_selection->add<TriggerSelection>("chargedHadronTrackResolutionFilter", "Flag_chargedHadronTrackResolutionFilter"); 
       metfilters_selection->add<TriggerSelection>("muonBadTrackFilter", "Flag_muonBadTrackFilter");
    }
    
    ht_calculator.reset(new HTCalculator(ctx));
-   muo_med_noniso_SF.reset(new MCMuonScaleFactor(ctx, "/afs/desy.de/user/m/mameyer/xxl-af-cms/CMSSW_7_6_3/src/UHH2/common/data/MuonID_Z_RunCD_Reco76X_Feb15.root","MC_NUM_MediumID_DEN_genTracks_PAR_pt_spliteta_bin1", 1., "id"));
+   //muo_med_noniso_SF.reset(new MCMuonScaleFactor(ctx, "/afs/desy.de/user/m/mameyer/xxl-af-cms/CMSSW_7_6_3/src/UHH2/common/data/MuonID_Z_RunCD_Reco76X_Feb15.root","MC_NUM_MediumID_DEN_genTracks_PAR_pt_spliteta_bin1", 1., "id"));
    //muo_triggerSF.reset(new MCMuonScaleFactor(ctx, "/afs/desy.de/user/m/mameyer/xxl-af-cms/CMSSW_7_4_15_patch1/src/UHH2/common/data/SingleMuonTrigger_Z_RunD_Reco74X_Nov20.root", "Mu45_eta2p1_PtEtaBins", 1., "trg")); 
    //do we have to veto tight or medium muons? NO SF for Iso applied is approx. 1
 
@@ -169,31 +169,31 @@ ttDMSelectionModule::ttDMSelectionModule(Context & ctx){
    reco_primlep.reset(new PrimaryLepton(ctx));
    
    //neutrino reconstruction
-   //ttbar_DM_reco_likelihood.reset(new ttDMReconstruction_Likelihood(ctx));
-   //likelihood_hists.reset(new ttDMReconstructionHists_Likelihood(ctx, "hists_likelihood"));
+   ttbar_DM_reco_likelihood.reset(new ttDMReconstruction_Likelihood(ctx));
+   likelihood_hists.reset(new ttDMReconstructionHists_Likelihood(ctx, "hists_likelihood"));
 
    //// OBJ CLEANING
    //muo_cleaner.reset(new MuonCleaner(AndId<Muon>(MuonIDMedium(),PtEtaCut(47., 2.1)))); 
    //ele_cleaner.reset(new ElectronCleaner(AndId<Electron>(ElectronID_Spring15_25ns_tight_noIso, PtEtaCut(50., 2.5))));
-   muo_cleaner.reset(new MuonCleaner    (AndId<Muon>    (PtEtaCut  (10., 2.1), MuonIDLoose()))); 
+   muo_cleaner.reset(new MuonCleaner    (AndId<Muon>    (PtEtaCut  (10., 2.4), MuonIDLoose()))); 
    // ele_cleaner.reset(new ElectronCleaner(AndId<Electron>(PtEtaSCCut(10., 2.5), ElectronID_MVAnotrig_Spring15_25ns_loose))); ACHTUNG! FUER RESOLVED GEAENDERT!
-   ele_cleaner.reset(new ElectronCleaner(AndId<Electron>(PtEtaSCCut(10., 2.5), ElectronID_Spring15_25ns_veto_noIso)));
+   ele_cleaner.reset(new ElectronCleaner(AndId<Electron>(PtEtaSCCut(10., 2.5), ElectronID_Spring16_loose_noIso)));
 
    if (is_mc) {
-      jet_corrector.reset(new JetCorrector(ctx, JERFiles::Fall15_25ns_L123_AK4PFchs_MC));
-      jetlepton_cleaner.reset(new JetLeptonCleaner(ctx, JERFiles::Fall15_25ns_L123_AK4PFchs_MC));
-      topjet_corrector.reset(new TopJetCorrector(ctx, JERFiles::Fall15_25ns_L123_AK8PFchs_MC));
+      jet_corrector.reset(new JetCorrector(ctx, JERFiles::Spring16_25ns_L123_AK4PFchs_MC));
+      jetlepton_cleaner.reset(new JetLeptonCleaner(ctx, JERFiles::Spring16_25ns_L123_AK4PFchs_MC));
+      topjet_corrector.reset(new TopJetCorrector(ctx, JERFiles::Spring16_25ns_L123_AK8PFchs_MC));
       jetER_smearer.reset(new JetResolutionSmearer(ctx));
    } else {
-      jet_corrector.reset(new JetCorrector(ctx, JERFiles::Fall15_25ns_L123_AK4PFchs_DATA));
-      jetlepton_cleaner.reset(new JetLeptonCleaner(ctx, JERFiles::Fall15_25ns_L123_AK4PFchs_DATA));
-      topjet_corrector.reset(new TopJetCorrector(ctx, JERFiles::Fall15_25ns_L123_AK8PFchs_DATA));
+      jet_corrector.reset(new JetCorrector(ctx, JERFiles::Spring16_25ns_L123_AK4PFchs_DATA));
+      jetlepton_cleaner.reset(new JetLeptonCleaner(ctx, JERFiles::Spring16_25ns_L123_AK4PFchs_DATA));
+      topjet_corrector.reset(new TopJetCorrector(ctx, JERFiles::Spring16_25ns_L123_AK8PFchs_DATA));
    }
    jetlepton_cleaner->set_drmax(.4);
    //jet_cleaner1.reset(new JetCleaner(ctx, AndId<Jet>(JetPFID(JetPFID::WP_LOOSE),PtEtaCut(25., std::numeric_limits<double>::infinity())))); 
    //jet_cleaner2.reset(new JetCleaner(ctx,AndId<Jet>(JetPFID(JetPFID::WP_LOOSE),PtEtaCut(30., 2.4))));
-   jet_cleaner1.reset(new JetCleaner(ctx, AndId<Jet>(JetPFID(JetPFID::WP_LOOSE),PtEtaCut(15., 4.0))));   //ACHTUNG! FUER RESOLVED GEAENDERT!
-   jet_cleaner2.reset(new JetCleaner(ctx,AndId<Jet>(JetPFID(JetPFID::WP_LOOSE),PtEtaCut(15., 4.0)))); //ACHTUNG! FUER RESOLVED GEAENDERT!
+   jet_cleaner1.reset(new JetCleaner(ctx, AndId<Jet>(JetPFID(JetPFID::WP_LOOSE),PtEtaCut(15., 3.0))));  
+   jet_cleaner2.reset(new JetCleaner(ctx,AndId<Jet>(JetPFID(JetPFID::WP_LOOSE),PtEtaCut(15., 2.5))));
 
    topjetlepton_cleaner.reset(new TopJetLeptonDeltaRCleaner(.8));
    topjet_cleaner.reset(new TopJetCleaner(ctx, TopJetId(PtEtaCut(400., 2.4))));
@@ -208,16 +208,16 @@ ttDMSelectionModule::ttDMSelectionModule(Context & ctx){
    else if(channel == "electron") elec = true;
    else throw std::runtime_error("undefined argument for 'channel' key in xml file (must be 'muon' or 'electron'): "+channel);
    
-   const MuonId muonid = AndId<Muon>(PtEtaCut  (47., 2.1), MuonIDMedium());
-   const ElectronId electronid = AndId<Electron>(ElectronID_Spring15_25ns_tight_noIso,PtEtaSCCut(50., 2.5));
+   const MuonId muonid = AndId<Muon>(PtEtaCut  (53., 2.4), MuonIDMedium_ICHEP());
+   const ElectronId electronid = AndId<Electron>(ElectronID_Spring16_tight_noIso,PtEtaSCCut(50., 2.5));
    
    lep1_sel.reset(new AndSelection(ctx));
    if(muon){
       lep1_sel->add<NMuonSelection>("muo==1", 1, 1, muonid);
       lep1_sel->add<NElectronSelection>("ele=0",0, 0, electronid);
       
-      // if(triggername != "NotSet") trigger_sel.reset(new TriggerSelection(triggername)); //ACHTUNG! FUER RESOLVED GEAENDERT!
-      // else trigger_sel.reset(new TriggerSelection("HLT_Mu45_eta2p1_v*")); //ACHTUNG! FUER RESOLVED GEAENDERT!
+      // if(triggername != "NotSet") trigger_sel.reset(new TriggerSelection(triggername)); 
+      // else trigger_sel.reset(new TriggerSelection("HLT_Mu45_eta2p1_v*")); 
    } 
    else if(elec){
       lep1_sel->add<NMuonSelection>("muo==0", 0, 0, muonid);
@@ -225,22 +225,22 @@ ttDMSelectionModule::ttDMSelectionModule(Context & ctx){
 
       // if(triggername != "NotSet") trigger_sel.reset(new TriggerSelection(triggername));
       // else {
-      //    if (!is_mc) trigger_sel.reset(new TriggerSelection("HLT_Ele15_IsoVVVL_PFHT350_PFMET70_v*"));//ACHTUNG! FUER RESOLVED GEAENDERT!
-      //    else trigger_sel.reset (new TriggerSelection("HLT_Ele15_IsoVVVL_PFHT400_PFMET70_v*"));//ACHTUNG! FUER RESOLVED GEAENDERT! 
+      //    if (!is_mc) trigger_sel.reset(new TriggerSelection("HLT_Ele15_IsoVVVL_PFHT350_PFMET70_v*"));
+      //    else trigger_sel.reset (new TriggerSelection("HLT_Ele15_IsoVVVL_PFHT400_PFMET70_v*"));
       // }
    }
    collectionprod_muonmed.reset(new CollectionProducer<Muon>(ctx, "muons", "h_muons_medium", muonid)); 
    collectionprod_eletight.reset(new CollectionProducer<Electron>(ctx, "electrons", "h_electrons_tight", electronid)); 
    // jet2_sel.reset(new NJetSelection(3, -1, JetId(PtEtaCut( 50., 2.4))));    
    // jet1_sel.reset(new NJetSelection(1, -1, JetId(PtEtaCut(200., 2.4))));
-   jet2_sel.reset(new NJetSelection(2, -1, JetId(PtEtaCut( 30., 4.0))));    //ACHTUNG! FUER RESOLVED GEAENDERT!
-   jet1_sel.reset(new NJetSelection(1, -1, JetId(PtEtaCut(30., 4.0))));//ACHTUNG! FUER RESOLVED GEAENDERT!
+   jet2_sel.reset(new NJetSelection(2, -1, JetId(PtEtaCut( 30., 2.4)))); 
+   jet1_sel.reset(new NJetSelection(1, -1, JetId(PtEtaCut(30., 2.4))));
    
    met_sel.reset(new METCut(50., std::numeric_limits<double>::infinity()));  
-   twodcut_sel.reset(new TwoDCut(ctx,.4, 20.));
+   twodcut_sel.reset(new TwoDCut(ctx,.4, 40.));
       
    //// HISTS
-   lumihists.reset(new LuminosityHists(ctx, "lumi"));
+   //lumihists.reset(new LuminosityHists(ctx, "lumi"));
    input_h.reset(new ttDMSelectionHists(ctx, "input"));
    filter_h.reset(new ttDMSelectionHists(ctx, "filter"));
    trigger_h.reset(new ttDMSelectionHists(ctx, "trigger"));
@@ -291,9 +291,9 @@ ttDMSelectionModule::ttDMSelectionModule(Context & ctx){
 bool ttDMSelectionModule::process(Event & event){
    if (is_mc) ttgenprod->process(event);
    input_h->fill(event);
-   if(lumisel && !is_mc) if(!lumi_selection->passes(event)) return false;
+   //if(lumisel && !is_mc) if(!lumi_selection->passes(event)) return false;
    if(metfilters) if(!metfilters_selection->passes(event)) return false;
-   if(mcpileupreweight && is_mc) pu_reweight->process(event);
+   //if(mcpileupreweight && is_mc) pu_reweight->process(event);
    if(is_mc) lumi_weight->process(event); 
    if(pvfilter) 
       {
@@ -304,8 +304,8 @@ bool ttDMSelectionModule::process(Event & event){
    ht_calculator->process(event);
    filter_h->fill(event); 
    //// HLT selection
-   //bool pass_trigger = trigger_sel->passes(event); //ACHTUNG! FUER RESOLVED GEAENDERT!
-   //if(!pass_trigger) return false;                 //ACHTUNG! FUER RESOLVED GEAENDERT!
+   //bool pass_trigger = trigger_sel->passes(event); 
+   //if(!pass_trigger) return false;                 
    
    trigger_h->fill(event);
    electrons_trigger_h->fill(event);
@@ -343,7 +343,7 @@ bool ttDMSelectionModule::process(Event & event){
    topjet_cleaner->process(event);
    sort_by_pt<TopJet>(*event.topjets);
    
-   muo_med_noniso_SF->process(event);
+   //muo_med_noniso_SF->process(event);
    //muo_triggerSF->process(event);
    
    lep1_h->fill(event);
@@ -353,7 +353,7 @@ bool ttDMSelectionModule::process(Event & event){
    events_lep1_h->fill(event);
    topjets_lep1_h->fill(event);
    
-   if (event.isRealData) lumihists->fill(event);
+   //if (event.isRealData) lumihists->fill(event);
    
    //// JET selection
    /* 2nd AK4 jet selection */
@@ -390,8 +390,8 @@ bool ttDMSelectionModule::process(Event & event){
    topjets_met_h->fill(event);
    if(!event.isRealData) genhists_met_h->fill(event);
    // neutrino reconstruction
-   //   ttbar_DM_reco_likelihood->process(event); //ACHTUNG! FUER RESOLVED GEAENDERT!
-   //likelihood_hists->fill(event);              //ACHTUNG! FUER RESOLVED GEAENDERT!
+   ttbar_DM_reco_likelihood->process(event);
+   likelihood_hists->fill(event);             
    //if(!event.isRealData) scans_h->fill(event);
    return true;
 }
