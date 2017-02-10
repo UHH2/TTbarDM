@@ -18,39 +18,247 @@
   <Library Name="libSUHH2ttDMSemiLeptonic"/>
   <Package Name="SUHH2ttDMSemiLeptonic.par" />
  
-<Cycle Name="uhh2::AnalysisModuleRunner" OutputDirectory="&SELdir;/" PostFix="" TargetLumi="12891.097839213" > 
+<Cycle Name="uhh2::AnalysisModuleRunner" OutputDirectory="&SELdir;/" PostFix="" TargetLumi="12891.097839213" >  
 <!--<Cycle Name="uhh2::AnalysisModuleRunner" OutputDirectory="&SELdir;/" PostFix="" TargetLumi="12891.097839213" RunMode="PROOF" ProofServer="lite://" ProofWorkDir="&PROOFdir;/" ProofNodes="10" > -->
 
 
-<!-- ========================================================= signals: scalar ===================================================================== -->
+<!-- ================================================================= signals: scalar ====================================================================================-->
+
+<InputData Lumi="11253.70" NEventsMax="&NEVT;" Type="MC" Version="TTbarDMJets_scalar_Mchi-1_Mphi-10" Cacheable="False">
+<In FileName="&PRESELdir;/uhh2.AnalysisModuleRunner.MC.TTbarDMJets_scalar_Mchi-1_Mphi-10_*.root" Lumi="0.0"/>  
+  <InputTree Name="AnalysisTree" />
+  <OutputTree Name="AnalysisTree" />
+</InputData> 
+
+<InputData Lumi="22020.55" NEventsMax="&NEVT;" Type="MC" Version="TTbarDMJets_scalar_Mchi-1_Mphi-20" Cacheable="False">
+<In FileName="&PRESELdir;/uhh2.AnalysisModuleRunner.MC.TTbarDMJets_scalar_Mchi-1_Mphi-20_*.root" Lumi="0.0"/>  
+  <InputTree Name="AnalysisTree" />
+  <OutputTree Name="AnalysisTree" />
+</InputData> 
+
+<InputData Lumi="80176.81" NEventsMax="&NEVT;" Type="MC" Version="TTbarDMJets_scalar_Mchi-1_Mphi-50" Cacheable="False">
+<In FileName="&PRESELdir;/uhh2.AnalysisModuleRunner.MC.TTbarDMJets_scalar_Mchi-1_Mphi-50_*.root" Lumi="0.0"/>  
+  <InputTree Name="AnalysisTree" />
+  <OutputTree Name="AnalysisTree" />
+</InputData> 
+
+<InputData Lumi="357752.95" NEventsMax="&NEVT;" Type="MC" Version="TTbarDMJets_scalar_Mchi-1_Mphi-100" Cacheable="False">
+<In FileName="&PRESELdir;/uhh2.AnalysisModuleRunner.MC.TTbarDMJets_scalar_Mchi-1_Mphi-100_*.root" Lumi="0.0"/>  
+  <InputTree Name="AnalysisTree" />
+  <OutputTree Name="AnalysisTree" />
+</InputData> 
+
+<InputData Lumi="2502903.54" NEventsMax="&NEVT;" Type="MC" Version="TTbarDMJets_scalar_Mchi-1_Mphi-200" Cacheable="False">
+<In FileName="&PRESELdir;/uhh2.AnalysisModuleRunner.MC.TTbarDMJets_scalar_Mchi-1_Mphi-200_*.root" Lumi="0.0"/>  
+  <InputTree Name="AnalysisTree" />
+  <OutputTree Name="AnalysisTree" />
+</InputData> 
+
+<InputData Lumi="8342528.74" NEventsMax="&NEVT;" Type="MC" Version="TTbarDMJets_scalar_Mchi-1_Mphi-300" Cacheable="False">
+<In FileName="&PRESELdir;/uhh2.AnalysisModuleRunner.MC.TTbarDMJets_scalar_Mchi-1_Mphi-300_*.root" Lumi="0.0"/>  
+  <InputTree Name="AnalysisTree" />
+  <OutputTree Name="AnalysisTree" />
+</InputData> 
+
+<InputData Lumi="50641600.97" NEventsMax="&NEVT;" Type="MC" Version="TTbarDMJets_scalar_Mchi-1_Mphi-500" Cacheable="False">
+<In FileName="&PRESELdir;/uhh2.AnalysisModuleRunner.MC.TTbarDMJets_scalar_Mchi-1_Mphi-500_*.root" Lumi="0.0"/>  
+  <InputTree Name="AnalysisTree" />
+  <OutputTree Name="AnalysisTree" />
+</InputData> 
+<!--
+<InputData Lumi="1" NEventsMax="&NEVT;" Type="MC" Version="TTbarDMJets_scalar_Mchi-1_Mphi-10000" Cacheable="False">
+<In FileName="&PRESELdir;/uhh2.AnalysisModuleRunner.MC.TTbarDMJets_scalar_Mchi-1_Mphi-10000_*.root" Lumi="0.0"/>  
+  <InputTree Name="AnalysisTree" />
+  <OutputTree Name="AnalysisTree" />
+</InputData>--> 
+
+<InputData Lumi="2453471.81" NEventsMax="&NEVT;" Type="MC" Version="TTbarDMJets_scalar_Mchi-10_Mphi-10" Cacheable="False">
+<In FileName="&PRESELdir;/uhh2.AnalysisModuleRunner.MC.TTbarDMJets_scalar_Mchi-10_Mphi-10_*.root" Lumi="0.0"/>  
+  <InputTree Name="AnalysisTree" />
+  <OutputTree Name="AnalysisTree" />
+</InputData> 
+
+<InputData Lumi="1673213.45" NEventsMax="&NEVT;" Type="MC" Version="TTbarDMJets_scalar_Mchi-10_Mphi-15" Cacheable="False">
+<In FileName="&PRESELdir;/uhh2.AnalysisModuleRunner.MC.TTbarDMJets_scalar_Mchi-10_Mphi-15_*.root" Lumi="0.0"/>  
+  <InputTree Name="AnalysisTree" />
+  <OutputTree Name="AnalysisTree" />
+</InputData> 
+
+<InputData Lumi="82283.82" NEventsMax="&NEVT;" Type="MC" Version="TTbarDMJets_scalar_Mchi-10_Mphi-50" Cacheable="False">
+<In FileName="&PRESELdir;/uhh2.AnalysisModuleRunner.MC.TTbarDMJets_scalar_Mchi-10_Mphi-50_*.root" Lumi="0.0"/>  
+  <InputTree Name="AnalysisTree" />
+  <OutputTree Name="AnalysisTree" />
+</InputData> 
+
+<InputData Lumi="315229.88" NEventsMax="&NEVT;" Type="MC" Version="TTbarDMJets_scalar_Mchi-10_Mphi-100" Cacheable="False">
+<In FileName="&PRESELdir;/uhh2.AnalysisModuleRunner.MC.TTbarDMJets_scalar_Mchi-10_Mphi-100_*.root" Lumi="0.0"/>  
+  <InputTree Name="AnalysisTree" />
+  <OutputTree Name="AnalysisTree" />
+</InputData> 
+
+<InputData Lumi="157669393.65" NEventsMax="&NEVT;" Type="MC" Version="TTbarDMJets_scalar_Mchi-50_Mphi-10" Cacheable="False">
+<In FileName="&PRESELdir;/uhh2.AnalysisModuleRunner.MC.TTbarDMJets_scalar_Mchi-50_Mphi-10_*.root" Lumi="0.0"/>  
+  <InputTree Name="AnalysisTree" />
+  <OutputTree Name="AnalysisTree" />
+</InputData> 
+
+<InputData Lumi="95900662.25" NEventsMax="&NEVT;" Type="MC" Version="TTbarDMJets_scalar_Mchi-50_Mphi-50" Cacheable="False">
+<In FileName="&PRESELdir;/uhh2.AnalysisModuleRunner.MC.TTbarDMJets_scalar_Mchi-50_Mphi-50_*.root" Lumi="0.0"/>  
+  <InputTree Name="AnalysisTree" />
+  <OutputTree Name="AnalysisTree" />
+</InputData> 
+
+<InputData Lumi="32555678.98" NEventsMax="&NEVT;" Type="MC" Version="TTbarDMJets_scalar_Mchi-50_Mphi-95" Cacheable="False">
+<In FileName="&PRESELdir;/uhh2.AnalysisModuleRunner.MC.TTbarDMJets_scalar_Mchi-50_Mphi-95_*.root" Lumi="0.0"/>  
+  <InputTree Name="AnalysisTree" />
+  <OutputTree Name="AnalysisTree" />
+</InputData> 
+
+<InputData Lumi="2525204.39" NEventsMax="&NEVT;" Type="MC" Version="TTbarDMJets_scalar_Mchi-50_Mphi-200" Cacheable="False">
+<In FileName="&PRESELdir;/uhh2.AnalysisModuleRunner.MC.TTbarDMJets_scalar_Mchi-50_Mphi-200_*.root" Lumi="0.0"/>  
+  <InputTree Name="AnalysisTree" />
+  <OutputTree Name="AnalysisTree" />
+</InputData>
+
+<InputData Lumi="8106204.86" NEventsMax="&NEVT;" Type="MC" Version="TTbarDMJets_scalar_Mchi-50_Mphi-300" Cacheable="False">
+<In FileName="&PRESELdir;/uhh2.AnalysisModuleRunner.MC.TTbarDMJets_scalar_Mchi-50_Mphi-300_*.root" Lumi="0.0"/>  
+  <InputTree Name="AnalysisTree" />
+  <OutputTree Name="AnalysisTree" />
+</InputData>
+
+<!-- ================================================================= signals: pseudoscalar ====================================================================================-->
+
+<InputData Lumi="558011.95" NEventsMax="&NEVT;" Type="MC" Version="TTbarDMJets_pseudoscalar_Mchi-1_Mphi-10" Cacheable="False">
+<In FileName="&PRESELdir;/uhh2.AnalysisModuleRunner.MC.TTbarDMJets_pseudoscalar_Mchi-1_Mphi-10_*.root" Lumi="0.0"/>  
+  <InputTree Name="AnalysisTree" />
+  <OutputTree Name="AnalysisTree" />
+</InputData>
+
+<InputData Lumi="605423.85" NEventsMax="&NEVT;" Type="MC" Version="TTbarDMJets_pseudoscalar_Mchi-1_Mphi-20" Cacheable="False">
+<In FileName="&PRESELdir;/uhh2.AnalysisModuleRunner.MC.TTbarDMJets_pseudoscalar_Mchi-1_Mphi-20_*.root" Lumi="0.0"/>  
+  <InputTree Name="AnalysisTree" />
+  <OutputTree Name="AnalysisTree" />
+</InputData>
+
+<InputData Lumi="829597.40" NEventsMax="&NEVT;" Type="MC" Version="TTbarDMJets_pseudoscalar_Mchi-1_Mphi-50" Cacheable="False">
+<In FileName="&PRESELdir;/uhh2.AnalysisModuleRunner.MC.TTbarDMJets_pseudoscalar_Mchi-1_Mphi-50_*.root" Lumi="0.0"/>  
+  <InputTree Name="AnalysisTree" />
+  <OutputTree Name="AnalysisTree" />
+</InputData>
+
+<InputData Lumi="1293845.76" NEventsMax="&NEVT;" Type="MC" Version="TTbarDMJets_pseudoscalar_Mchi-1_Mphi-100" Cacheable="False">
+<In FileName="&PRESELdir;/uhh2.AnalysisModuleRunner.MC.TTbarDMJets_pseudoscalar_Mchi-1_Mphi-100_*.root" Lumi="0.0"/>  
+  <InputTree Name="AnalysisTree" />
+  <OutputTree Name="AnalysisTree" />
+</InputData>
+
+<InputData Lumi="2753539.72" NEventsMax="&NEVT;" Type="MC" Version="TTbarDMJets_pseudoscalar_Mchi-1_Mphi-200" Cacheable="False">
+<In FileName="&PRESELdir;/uhh2.AnalysisModuleRunner.MC.TTbarDMJets_pseudoscalar_Mchi-1_Mphi-200_*.root" Lumi="0.0"/>  
+  <InputTree Name="AnalysisTree" />
+  <OutputTree Name="AnalysisTree" />
+</InputData>
+
+<InputData Lumi="6356430.38" NEventsMax="&NEVT;" Type="MC" Version="TTbarDMJets_pseudoscalar_Mchi-1_Mphi-300" Cacheable="False">
+<In FileName="&PRESELdir;/uhh2.AnalysisModuleRunner.MC.TTbarDMJets_pseudoscalar_Mchi-1_Mphi-300_*.root" Lumi="0.0"/>  
+  <InputTree Name="AnalysisTree" />
+  <OutputTree Name="AnalysisTree" />
+</InputData>
+
+<InputData Lumi="46862676.74" NEventsMax="&NEVT;" Type="MC" Version="TTbarDMJets_pseudoscalar_Mchi-1_Mphi-500" Cacheable="False">
+<In FileName="&PRESELdir;/uhh2.AnalysisModuleRunner.MC.TTbarDMJets_pseudoscalar_Mchi-1_Mphi-500_*.root" Lumi="0.0"/>  
+  <InputTree Name="AnalysisTree" />
+  <OutputTree Name="AnalysisTree" />
+</InputData>
+
+<InputData Lumi="54289197692711.10" NEventsMax="&NEVT;" Type="MC" Version="TTbarDMJets_pseudoscalar_Mchi-1_Mphi-10000" Cacheable="False">
+<In FileName="&PRESELdir;/uhh2.AnalysisModuleRunner.MC.TTbarDMJets_pseudoscalar_Mchi-1_Mphi-10000_*.root" Lumi="0.0"/>  
+  <InputTree Name="AnalysisTree" />
+  <OutputTree Name="AnalysisTree" />
+</InputData>
+
+<InputData Lumi="16469513.80" NEventsMax="&NEVT;" Type="MC" Version="TTbarDMJets_pseudoscalar_Mchi-10_Mphi-10" Cacheable="False">
+<In FileName="&PRESELdir;/uhh2.AnalysisModuleRunner.MC.TTbarDMJets_pseudoscalar_Mchi-10_Mphi-10_*.root" Lumi="0.0"/>  
+  <InputTree Name="AnalysisTree" />
+  <OutputTree Name="AnalysisTree" />
+</InputData>
+
+<InputData Lumi="12979435.90" NEventsMax="&NEVT;" Type="MC" Version="TTbarDMJets_pseudoscalar_Mchi-10_Mphi-15" Cacheable="False">
+<In FileName="&PRESELdir;/uhh2.AnalysisModuleRunner.MC.TTbarDMJets_pseudoscalar_Mchi-10_Mphi-15_*.root" Lumi="0.0"/>  
+  <InputTree Name="AnalysisTree" />
+  <OutputTree Name="AnalysisTree" />
+</InputData>
+
+<InputData Lumi="799624.72" NEventsMax="&NEVT;" Type="MC" Version="TTbarDMJets_pseudoscalar_Mchi-10_Mphi-50" Cacheable="False">
+<In FileName="&PRESELdir;/uhh2.AnalysisModuleRunner.MC.TTbarDMJets_pseudoscalar_Mchi-10_Mphi-50_*.root" Lumi="0.0"/>  
+  <InputTree Name="AnalysisTree" />
+  <OutputTree Name="AnalysisTree" />
+</InputData>
+
+<InputData Lumi="1222530.36" NEventsMax="&NEVT;" Type="MC" Version="TTbarDMJets_pseudoscalar_Mchi-10_Mphi-100" Cacheable="False">
+<In FileName="&PRESELdir;/uhh2.AnalysisModuleRunner.MC.TTbarDMJets_pseudoscalar_Mchi-10_Mphi-100_*.root" Lumi="0.0"/>  
+  <InputTree Name="AnalysisTree" />
+  <OutputTree Name="AnalysisTree" />
+</InputData>
+
+<InputData Lumi="114292723.49" NEventsMax="&NEVT;" Type="MC" Version="TTbarDMJets_pseudoscalar_Mchi-50_Mphi-10" Cacheable="False">
+<In FileName="&PRESELdir;/uhh2.AnalysisModuleRunner.MC.TTbarDMJets_pseudoscalar_Mchi-50_Mphi-10_*.root" Lumi="0.0"/>  
+  <InputTree Name="AnalysisTree" />
+  <OutputTree Name="AnalysisTree" />
+</InputData>
+
+<InputData Lumi="80918715.85" NEventsMax="&NEVT;" Type="MC" Version="TTbarDMJets_pseudoscalar_Mchi-50_Mphi-50" Cacheable="False">
+<In FileName="&PRESELdir;/uhh2.AnalysisModuleRunner.MC.TTbarDMJets_pseudoscalar_Mchi-50_Mphi-50_*.root" Lumi="0.0"/>  
+  <InputTree Name="AnalysisTree" />
+  <OutputTree Name="AnalysisTree" />
+</InputData>
+
+<InputData Lumi="34516604.48" NEventsMax="&NEVT;" Type="MC" Version="TTbarDMJets_pseudoscalar_Mchi-50_Mphi-95" Cacheable="False">
+<In FileName="&PRESELdir;/uhh2.AnalysisModuleRunner.MC.TTbarDMJets_pseudoscalar_Mchi-50_Mphi-95_*.root" Lumi="0.0"/>  
+  <InputTree Name="AnalysisTree" />
+  <OutputTree Name="AnalysisTree" />
+</InputData>
+
+<InputData Lumi="34516604.48" NEventsMax="&NEVT;" Type="MC" Version="TTbarDMJets_pseudoscalar_Mchi-50_Mphi-200" Cacheable="False">
+<In FileName="&PRESELdir;/uhh2.AnalysisModuleRunner.MC.TTbarDMJets_pseudoscalar_Mchi-50_Mphi-200_*.root" Lumi="0.0"/>  
+  <InputTree Name="AnalysisTree" />
+  <OutputTree Name="AnalysisTree" />
+</InputData>
+
+<InputData Lumi="6677893.37" NEventsMax="&NEVT;" Type="MC" Version="TTbarDMJets_pseudoscalar_Mchi-50_Mphi-300" Cacheable="False">
+<In FileName="&PRESELdir;/uhh2.AnalysisModuleRunner.MC.TTbarDMJets_pseudoscalar_Mchi-50_Mphi-300_*.root" Lumi="0.0"/>   
+  <InputTree Name="AnalysisTree" />
+  <OutputTree Name="AnalysisTree" />
+</InputData> 
+
+<!-- ================================================================= background  ====================================================================================-->
 
 <!-- DY + jets -->
 <InputData Lumi="50095351.78" NEventsMax="&NEVT;" Type="MC" Version="DYJetsToLL_NLO_M10to50" Cacheable="False">
-<In FileName="&PRESELdir;/uhh2.AnalysisModuleRunner.MC.DYJetsToLL_NLO_M10to50.root" Lumi="0.0"/>  
+<In FileName="&PRESELdir;/uhh2.AnalysisModuleRunner.MC.DYJetsToLL_NLO_M10to50_*.root" Lumi="0.0"/>  
   <InputTree Name="AnalysisTree" />
   <OutputTree Name="AnalysisTree" />
 </InputData> 
 
 <InputData Lumi="61621.74714" NEventsMax="&NEVT;" Type="MC" Version="DYJetsToLL_M-50_HT-100to200" Cacheable="False">
- <In FileName="&PRESELdir;/uhh2.AnalysisModuleRunner.MC.DYJetsToLL_M-50_HT-100to200.root" Lumi="0.0"/>  
+ <In FileName="&PRESELdir;/uhh2.AnalysisModuleRunner.MC.DYJetsToLL_M-50_HT-100to200_*.root" Lumi="0.0"/>  
   <InputTree Name="AnalysisTree" />
   <OutputTree Name="AnalysisTree" />
 </InputData> 
 
 <InputData Lumi="190968.1917" NEventsMax="&NEVT;" Type="MC" Version="DYJetsToLL_M-50_HT-200to400" Cacheable="False">
- <In FileName="&PRESELdir;/uhh2.AnalysisModuleRunner.MC.DYJetsToLL_M-50_HT-200to400.root" Lumi="0.0"/>  
+ <In FileName="&PRESELdir;/uhh2.AnalysisModuleRunner.MC.DYJetsToLL_M-50_HT-200to400_*.root" Lumi="0.0"/>  
   <InputTree Name="AnalysisTree" />
   <OutputTree Name="AnalysisTree" />
 </InputData> 
 
 <InputData Lumi="1344187.522" NEventsMax="&NEVT;" Type="MC" Version="DYJetsToLL_M-50_HT-400to600" Cacheable="False">
- <In FileName="&PRESELdir;/uhh2.AnalysisModuleRunner.MC.DYJetsToLL_M-50_HT-400to600.root" Lumi="0.0"/>  
+ <In FileName="&PRESELdir;/uhh2.AnalysisModuleRunner.MC.DYJetsToLL_M-50_HT-400to600_*.root" Lumi="0.0"/>  
   <InputTree Name="AnalysisTree" />
   <OutputTree Name="AnalysisTree" />
 </InputData> 
 
 <InputData Lumi="1905062.991" NEventsMax="&NEVT;" Type="MC" Version="DYJetsToLL_M-50_HT-600toInf" Cacheable="False">
- <In FileName="&PRESELdir;/uhh2.AnalysisModuleRunner.MC.DYJetsToLL_M-50_HT-600toInf.root" Lumi="0.0"/>  
+ <In FileName="&PRESELdir;/uhh2.AnalysisModuleRunner.MC.DYJetsToLL_M-50_HT-600toInf_*.root" Lumi="0.0"/>  
   <InputTree Name="AnalysisTree" />
   <OutputTree Name="AnalysisTree" />
 </InputData> 
@@ -58,182 +266,211 @@
 
 <!-- Single Top -->
 <InputData Lumi="63775.58757" NEventsMax="&NEVT;" Type="MC" Version="ST_t-channel" Cacheable="False">
- <In FileName="&PRESELdir;/uhh2.AnalysisModuleRunner.MC.ST_t-channel.root" Lumi="0.0"/>  
+ <In FileName="&PRESELdir;/uhh2.AnalysisModuleRunner.MC.ST_t-channel_*.root" Lumi="0.0"/>  
   <InputTree Name="AnalysisTree" />
   <OutputTree Name="AnalysisTree" />
 </InputData> 
 
 <InputData Lumi="73972.47913" NEventsMax="&NEVT;" Type="MC" Version="ST_t-channel_top" Cacheable="False">
- <In FileName="&PRESELdir;/uhh2.AnalysisModuleRunner.MC.ST_t-channel_top.root" Lumi="0.0"/>  
+ <In FileName="&PRESELdir;/uhh2.AnalysisModuleRunner.MC.ST_t-channel_top_*.root" Lumi="0.0"/>  
   <InputTree Name="AnalysisTree" />
   <OutputTree Name="AnalysisTree" />
 </InputData> 
 
 <InputData Lumi="1003175.123" NEventsMax="&NEVT;" Type="MC" Version="ST_s-channel" Cacheable="False">
- <In FileName="&PRESELdir;/uhh2.AnalysisModuleRunner.MC.ST_s-channel.root" Lumi="0.0"/>  
+ <In FileName="&PRESELdir;/uhh2.AnalysisModuleRunner.MC.ST_s-channel_*.root" Lumi="0.0"/>  
   <InputTree Name="AnalysisTree" />
   <OutputTree Name="AnalysisTree" />
 </InputData> 
 
 <InputData Lumi="28044.94382" NEventsMax="&NEVT;" Type="MC" Version="STpos_tW" Cacheable="False">
- <In FileName="&PRESELdir;/uhh2.AnalysisModuleRunner.MC.STpos_tW.root" Lumi="0.0"/>  
+ <In FileName="&PRESELdir;/uhh2.AnalysisModuleRunner.MC.STpos_tW_*.root" Lumi="0.0"/>  
   <InputTree Name="AnalysisTree" />
   <OutputTree Name="AnalysisTree" />
 </InputData>     
                           
 <InputData Lumi="27668.53933" NEventsMax="&NEVT;" Type="MC" Version="STneg_tW" Cacheable="False">
- <In FileName="&PRESELdir;/uhh2.AnalysisModuleRunner.MC.STneg_tW.root" Lumi="0.0"/>  
+ <In FileName="&PRESELdir;/uhh2.AnalysisModuleRunner.MC.STneg_tW_*.root" Lumi="0.0"/>  
   <InputTree Name="AnalysisTree" />
   <OutputTree Name="AnalysisTree" />
 </InputData>  
 
 <!-- TTbar -->
 <InputData Lumi="84623.92878" NEventsMax="&NEVT;" Type="MC" Version="TTbar" Cacheable="False">
-<In FileName="&PRESELdir;/uhh2.AnalysisModuleRunner.MC.TTbar.root" Lumi="0.0"/>  
+<In FileName="&PRESELdir;/uhh2.AnalysisModuleRunner.MC.TTbar_*.root" Lumi="0.0"/>  
   <InputTree Name="AnalysisTree" />
   <OutputTree Name="AnalysisTree" />
 </InputData> 
 
 <!-- QCD -->
 <InputData Lumi="1.20893975" NEventsMax="&NEVT;" Type="MC" Version="QCD15to20" Cacheable="False">
-<In FileName="&PRESELdir;/uhh2.AnalysisModuleRunner.MC.QCD15to20.root" Lumi="0.0"/>  
+<In FileName="&PRESELdir;/uhh2.AnalysisModuleRunner.MC.QCD15to20_*.root" Lumi="0.0"/>  
   <InputTree Name="AnalysisTree" />
   <OutputTree Name="AnalysisTree" />
 </InputData>  
 
 <InputData Lumi="10.64696711" NEventsMax="&NEVT;" Type="MC" Version="QCD20to30" Cacheable="False">
-<In FileName="&PRESELdir;/uhh2.AnalysisModuleRunner.MC.QCD20to30.root" Lumi="0.0"/>  
+<In FileName="&PRESELdir;/uhh2.AnalysisModuleRunner.MC.QCD20to30_*.root" Lumi="0.0"/>  
   <InputTree Name="AnalysisTree" />
   <OutputTree Name="AnalysisTree" />
 </InputData>
 
 <InputData Lumi="17.13716801" NEventsMax="&NEVT;" Type="MC" Version="QCD30to50" Cacheable="False">
-<In FileName="&PRESELdir;/uhh2.AnalysisModuleRunner.MC.QCD30to50.root" Lumi="0.0"/>  
+<In FileName="&PRESELdir;/uhh2.AnalysisModuleRunner.MC.QCD30to50_*.root" Lumi="0.0"/>  
   <InputTree Name="AnalysisTree" />
   <OutputTree Name="AnalysisTree" />
 </InputData> 
 
 <InputData Lumi="46.59146509" NEventsMax="&NEVT;" Type="MC" Version="QCD50to80" Cacheable="False">
-<In FileName="&PRESELdir;/uhh2.AnalysisModuleRunner.MC.QCD50to80.root" Lumi="0.0"/>  
+<In FileName="&PRESELdir;/uhh2.AnalysisModuleRunner.MC.QCD50to80_*.root" Lumi="0.0"/>  
   <InputTree Name="AnalysisTree" />
   <OutputTree Name="AnalysisTree" />
 </InputData>
 
 <InputData Lumi="130.6954484" NEventsMax="&NEVT;" Type="MC" Version="QCD80to120" Cacheable="False">
-<In FileName="&PRESELdir;/uhh2.AnalysisModuleRunner.MC.QCD80to120.root" Lumi="0.0"/>  
+<In FileName="&PRESELdir;/uhh2.AnalysisModuleRunner.MC.QCD80to120_*.root" Lumi="0.0"/>  
   <InputTree Name="AnalysisTree" />
   <OutputTree Name="AnalysisTree" />
 </InputData>  
 
 <InputData Lumi="314.6475801" NEventsMax="&NEVT;" Type="MC" Version="QCD120to170" Cacheable="False">
-<In FileName="&PRESELdir;/uhh2.AnalysisModuleRunner.MC.QCD120to170.root" Lumi="0.0"/>  
+<In FileName="&PRESELdir;/uhh2.AnalysisModuleRunner.MC.QCD120to170_*.root" Lumi="0.0"/>  
   <InputTree Name="AnalysisTree" />
   <OutputTree Name="AnalysisTree" />
 </InputData>    
 
 <InputData Lumi="902.013193" NEventsMax="&NEVT;" Type="MC" Version="QCD170to300" Cacheable="False">
-<In FileName="&PRESELdir;/uhh2.AnalysisModuleRunner.MC.QCD170to300.root" Lumi="0.0"/>  
+<In FileName="&PRESELdir;/uhh2.AnalysisModuleRunner.MC.QCD170to300_*.root" Lumi="0.0"/>  
   <InputTree Name="AnalysisTree" />
   <OutputTree Name="AnalysisTree" />
 </InputData>     
 
 <InputData Lumi="9790.4818" NEventsMax="&NEVT;" Type="MC" Version="QCD300to470" Cacheable="False">
-<In FileName="&PRESELdir;/uhh2.AnalysisModuleRunner.MC.QCD300to470.root" Lumi="0.0"/>  
+<In FileName="&PRESELdir;/uhh2.AnalysisModuleRunner.MC.QCD300to470_*.root" Lumi="0.0"/>  
   <InputTree Name="AnalysisTree" />
   <OutputTree Name="AnalysisTree" />
 </InputData>     
 
 <InputData Lumi="48899.40543" NEventsMax="&NEVT;" Type="MC" Version="QCD470to600" Cacheable="False">
-<In FileName="&PRESELdir;/uhh2.AnalysisModuleRunner.MC.QCD470to600.root" Lumi="0.0"/>  
+<In FileName="&PRESELdir;/uhh2.AnalysisModuleRunner.MC.QCD470to600_*.root" Lumi="0.0"/>  
   <InputTree Name="AnalysisTree" />
   <OutputTree Name="AnalysisTree" />
 </InputData>    
 
 <InputData Lumi="157888.8891" NEventsMax="&NEVT;" Type="MC" Version="QCD600to800" Cacheable="False">
-<In FileName="&PRESELdir;/uhh2.AnalysisModuleRunner.MC.QCD600to800.root" Lumi="0.0"/>  
+<In FileName="&PRESELdir;/uhh2.AnalysisModuleRunner.MC.QCD600to800_*.root" Lumi="0.0"/>  
   <InputTree Name="AnalysisTree" />
   <OutputTree Name="AnalysisTree" />
 </InputData>   
 
 <InputData Lumi="839904.5967" NEventsMax="&NEVT;" Type="MC" Version="QCD800to1000" Cacheable="False">
-<In FileName="&PRESELdir;/uhh2.AnalysisModuleRunner.MC.QCD800to1000.root" Lumi="0.0"/>  
+<In FileName="&PRESELdir;/uhh2.AnalysisModuleRunner.MC.QCD800to1000_*.root" Lumi="0.0"/>  
   <InputTree Name="AnalysisTree" />
   <OutputTree Name="AnalysisTree" />
 </InputData>   
 
 <InputData Lumi="2393100.912" NEventsMax="&NEVT;" Type="MC" Version="QCD1000toInf" Cacheable="False">
-<In FileName="&PRESELdir;/uhh2.AnalysisModuleRunner.MC.QCD1000toInf.root" Lumi="0.0"/>  
+<In FileName="&PRESELdir;/uhh2.AnalysisModuleRunner.MC.QCD1000toInf_*.root" Lumi="0.0"/>  
   <InputTree Name="AnalysisTree" />
   <OutputTree Name="AnalysisTree" />
-</InputData>     
-
+</InputData>   
 
 <!-- W + jets -->
+<InputData Lumi="24881077.087" NEventsMax="&NEVT;" Type="MC" Version="WJetsToLNu" Cacheable="False">
+<In FileName="&PRESELdir;/uhh2.AnalysisModuleRunner.MC.WJetsToLNu.root" Lumi="0.0"/>  
+  <InputTree Name="AnalysisTree" />
+  <OutputTree Name="AnalysisTree" />
+</InputData>  
+
 <InputData Lumi="23213.55863" NEventsMax="&NEVT;" Type="MC" Version="WJets_LNu_HT-100To200" Cacheable="False">
-<In FileName="&PRESELdir;/uhh2.AnalysisModuleRunner.MC.WJets_LNu_HT-100To200.root" Lumi="0.0"/>  
+<In FileName="&PRESELdir;/uhh2.AnalysisModuleRunner.MC.WJets_LNu_HT-100To200_*.root" Lumi="0.0"/>  
   <InputTree Name="AnalysisTree" />
   <OutputTree Name="AnalysisTree" />
 </InputData>  
 
 <InputData Lumi="45611.06707" NEventsMax="&NEVT;" Type="MC" Version="WJets_LNu_HT-200To400" Cacheable="False">
-<In FileName="&PRESELdir;/uhh2.AnalysisModuleRunner.MC.WJets_LNu_HT-200To400.root" Lumi="0.0"/>  
+<In FileName="&PRESELdir;/uhh2.AnalysisModuleRunner.MC.WJets_LNu_HT-200To400_*.root" Lumi="0.0"/>  
   <InputTree Name="AnalysisTree" />
   <OutputTree Name="AnalysisTree" />
 </InputData>  
 
 <InputData Lumi="125593.2384" NEventsMax="&NEVT;" Type="MC" Version="WJets_LNu_HT-400To600" Cacheable="False">
-<In FileName="&PRESELdir;/uhh2.AnalysisModuleRunner.MC.WJets_LNu_HT-400To600.root" Lumi="0.0"/>  
+<In FileName="&PRESELdir;/uhh2.AnalysisModuleRunner.MC.WJets_LNu_HT-400To600_*.root" Lumi="0.0"/>  
   <InputTree Name="AnalysisTree" />
   <OutputTree Name="AnalysisTree" />
 </InputData>  
 
 <InputData Lumi="988365.4196" NEventsMax="&NEVT;" Type="MC" Version="WJets_LNu_HT-600To800" Cacheable="False">
-<In FileName="&PRESELdir;/uhh2.AnalysisModuleRunner.MC.WJets_LNu_HT-600To800.root" Lumi="0.0"/>  
+<In FileName="&PRESELdir;/uhh2.AnalysisModuleRunner.MC.WJets_LNu_HT-600To800_*.root" Lumi="0.0"/>  
   <InputTree Name="AnalysisTree" />
   <OutputTree Name="AnalysisTree" />
 </InputData>  
 
 <InputData Lumi="2121285.987" NEventsMax="&NEVT;" Type="MC" Version="WJets_LNu_HT-800To1200" Cacheable="False">
-<In FileName="&PRESELdir;/uhh2.AnalysisModuleRunner.MC.WJets_LNu_HT-800To1200.root" Lumi="0.0"/>  
+<In FileName="&PRESELdir;/uhh2.AnalysisModuleRunner.MC.WJets_LNu_HT-800To1200_*.root" Lumi="0.0"/>  
   <InputTree Name="AnalysisTree" />
   <OutputTree Name="AnalysisTree" />
 </InputData>  
              
 <InputData Lumi="4320587.156" NEventsMax="&NEVT;" Type="MC" Version="WJets_LNu_HT-1200To2500" Cacheable="False">
-<In FileName="&PRESELdir;/uhh2.AnalysisModuleRunner.MC.WJets_LNu_HT-1200To2500.root" Lumi="0.0"/>  
+<In FileName="&PRESELdir;/uhh2.AnalysisModuleRunner.MC.WJets_LNu_HT-1200To2500_*.root" Lumi="0.0"/>  
   <InputTree Name="AnalysisTree" />
   <OutputTree Name="AnalysisTree" />
 </InputData>  
             
 <InputData Lumi="64445566.59" NEventsMax="&NEVT;" Type="MC" Version="WJets_LNu_HT-2500ToInf" Cacheable="False">
-<In FileName="&PRESELdir;/uhh2.AnalysisModuleRunner.MC.WJets_LNu_HT-2500ToInf.root" Lumi="0.0"/>  
+<In FileName="&PRESELdir;/uhh2.AnalysisModuleRunner.MC.WJets_LNu_HT-2500ToInf_*.root" Lumi="0.0"/>  
   <InputTree Name="AnalysisTree" />
   <OutputTree Name="AnalysisTree" />
 </InputData>  
 
 <!-- Diboson -->
 <InputData Lumi="8367.430497" NEventsMax="&NEVT;" Type="MC" Version="WW" Cacheable="False">
-<In FileName="&PRESELdir;/uhh2.AnalysisModuleRunner.MC.WW.root" Lumi="0.0"/>  
+<In FileName="&PRESELdir;/uhh2.AnalysisModuleRunner.MC.WW_*.root" Lumi="0.0"/>  
   <InputTree Name="AnalysisTree" />
   <OutputTree Name="AnalysisTree" />
 </InputData>
 
 <InputData Lumi="21217.90791" NEventsMax="&NEVT;" Type="MC" Version="WZ" Cacheable="False">
-<In FileName="&PRESELdir;/uhh2.AnalysisModuleRunner.MC.WZ.root" Lumi="0.0"/>  
+<In FileName="&PRESELdir;/uhh2.AnalysisModuleRunner.MC.WZ_*.root" Lumi="0.0"/>  
   <InputTree Name="AnalysisTree" />
   <OutputTree Name="AnalysisTree" />
 </InputData>
 
 <InputData Lumi="59874.84113" NEventsMax="&NEVT;" Type="MC" Version="ZZ" Cacheable="False">
-<In FileName="&PRESELdir;/uhh2.AnalysisModuleRunner.MC.ZZ.root" Lumi="0.0"/>  
+<In FileName="&PRESELdir;/uhh2.AnalysisModuleRunner.MC.ZZ_*.root" Lumi="0.0"/>  
   <InputTree Name="AnalysisTree" />
   <OutputTree Name="AnalysisTree" />
 </InputData> 
-   
+
+ <InputData Lumi="419415.549" NEventsMax="&NEVT;" Type="MC" Version="TTWJetsToLNu" Cacheable="False">
+ <In FileName="&PRESELdir;/uhh2.AnalysisModuleRunner.MC.TTWJetsToLNu_*.root" Lumi="0.0"/>  
+  <InputTree Name="AnalysisTree" />
+  <OutputTree Name="AnalysisTree" />
+</InputData>
+
+<InputData Lumi="396374.8913" NEventsMax="&NEVT;" Type="MC" Version="TTZToLLNuNu" Cacheable="False">
+  <In FileName="&PRESELdir;/uhh2.AnalysisModuleRunner.MC.TTZToLLNuNu_*.root" Lumi="0.0"/>  
+  <InputTree Name="AnalysisTree" />
+  <OutputTree Name="AnalysisTree" />
+</InputData>
+
+<InputData Lumi="1401831.97" NEventsMax="&NEVT;" Type="MC" Version="TTWJetsToQQ" Cacheable="False">
+  <In FileName="&PRESELdir;/uhh2.AnalysisModuleRunner.MC.TTWJetsToQQ_*.root" Lumi="0.0"/>  
+  <InputTree Name="AnalysisTree" />
+  <OutputTree Name="AnalysisTree" />
+</InputData>
+
+<InputData Lumi="748236.6208" NEventsMax="&NEVT;" Type="MC" Version="TTZToQQ" Cacheable="False">
+  <In FileName="&PRESELdir;/uhh2.AnalysisModuleRunner.MC.TTZToQQ_*.root" Lumi="0.0"/>  
+  <InputTree Name="AnalysisTree" />
+  <OutputTree Name="AnalysisTree" />
+</InputData> 
+  
 <!-- ================================================================= DATA  ====================================================================================-->
 
 <InputData Lumi="1" NEventsMax="&NEVT;" Type="Data" Version="Data" Cacheable="False">
-<In FileName="&PRESELdir;/uhh2.AnalysisModuleRunner.Data.Data.root" Lumi="0.0"/>  
+<In FileName="&PRESELdir;/uhh2.AnalysisModuleRunner.Data.Data_*.root" Lumi="0.0"/>  
   <InputTree Name="AnalysisTree" />
   <OutputTree Name="AnalysisTree" />
 </InputData> 
@@ -270,9 +507,10 @@
            
            <Item Name="lumi_file"                  Value="/afs/desy.de/user/m/mameyer/xxl-af-cms/CMSSW_8_0_20/src/UHH2/common/data/Cert_271036-276811_13TeV_PromptReco_Collisions16_JSON_ICHEP.root" /> 
            <Item Name="lumihists_lumi_per_bin"     Value="200.0"/>
-
+           <Item Name="MCBtagEfficiencies" Value="/afs/desy.de/user/m/mameyer/xxl-af-cms/CMSSW_8_0_20/src/UHH2/scripts/BTagMCEfficiencyHists.root" />
+           <Item Name="BTagCalibration" Value="/afs/desy.de/user/m/mameyer/xxl-af-cms/CMSSW_8_0_20/src/UHH2/common/data/CSVv2_ichep.csv" />
            <Item Name="AnalysisModule"            Value="ttDMSelectionModuleAfterLikelihood" />
-  
+          
   </UserConfig>
 
   </Cycle>

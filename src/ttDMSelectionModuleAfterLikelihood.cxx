@@ -30,7 +30,7 @@
 #include "UHH2/common/include/EventHists.h"
 #include "UHH2/common/include/JetHists.h"
 #include "UHH2/common/include/ElectronHists.h"
-
+#include "UHH2/common/include/PartonHT.h"
 #include "UHH2/TTbarDM/include/ttDMSemiLeptonicSelections.h"
 #include "UHH2/TTbarDM/include/ttDMSemiLeptonicUtils.h"
 #include "UHH2/TTbarDM/include/ttDMSelectionHists.h"
@@ -78,6 +78,10 @@ class ttDMSelectionModuleAfterLikelihood: public AnalysisModule {
    Event::Handle<float> h_isoweight;
    Event::Handle<float> h_isoweight_down;
    Event::Handle<float> h_isoweight_up;
+
+   Event::Handle<float> h_tagweight;
+   Event::Handle<float> h_tagweight_down;
+   Event::Handle<float> h_tagweight_up;
    
    bool is_mc;
    bool lumisel;
@@ -91,9 +95,12 @@ class ttDMSelectionModuleAfterLikelihood: public AnalysisModule {
    
    bool isResolved=false;
    bool isBoosted=false;
+   bool IsWJetsInclusive=false;
+   bool IsWJetsHT =false;
 
    //analysis modules
-   std::unique_ptr<AnalysisModule> ht_calculator;
+   std::unique_ptr<AnalysisModule> ht_calculator, partonht_calculator;
+   
    std::unique_ptr<AnalysisModule> primaryvertex_filter;
    std::unique_ptr<AnalysisModule> pu_reweight;
    std::unique_ptr<AnalysisModule> lumi_weight; 
@@ -124,48 +131,37 @@ class ttDMSelectionModuleAfterLikelihood: public AnalysisModule {
    std::unique_ptr<Selection> lumi_selection;
    std::unique_ptr<Selection> selection_Met160;
    std::unique_ptr<Selection> selection_Met250;
-   std::unique_ptr<Selection> selection_Met320;
    std::unique_ptr<AndSelection> lep1_resolved_sel;
    std::unique_ptr<AndSelection> metfilters_selection;
    std::unique_ptr<Selection> btagtight_sel;
    std::unique_ptr<Selection> jet_resolved_sel;
    std::unique_ptr<Selection> jetmetdphijet2_sel;
    std::unique_ptr<Selection> MT2W_sel;
-   std::unique_ptr<Selection> triggerMu50_sel, triggerTrkMu50_sel;
+   std::unique_ptr<Selection> triggerMu50_sel, triggerTrkMu50_sel, partonht_sel;
    // hists
    std::unique_ptr<Hists> lumihists;
    std::unique_ptr<Hists> filter_h;
    std::unique_ptr<Hists> input_h;
    std::unique_ptr<Hists> met_h, electrons_met_h,jets_met_h,muons_met_h,events_met_h,topjets_met_h, genhists_met_h,likelihood_met_h,ttbargenhists_met_h;
-   std::unique_ptr<Hists> lowmet_h, electrons_lowmet_h,jets_lowmet_h,muons_lowmet_h,events_lowmet_h,topjets_lowmet_h,likelihood_lowmet_h;
-   std::unique_ptr<Hists> lowmet_noniso_h, electrons_lowmet_noniso_h,jets_lowmet_noniso_h,muons_lowmet_noniso_h,events_lowmet_noniso_h,topjets_lowmet_noniso_h,likelihood_lowmet_noniso_h;
    std::unique_ptr<Hists> nonisolep_h, electrons_nonisolep_h,jets_nonisolep_h,muons_nonisolep_h,events_nonisolep_h,topjets_nonisolep_h,genhists_nonisolep_h;
    std::unique_ptr<Hists> isolep_h, electrons_isolep_h,jets_isolep_h,muons_isolep_h,events_isolep_h,topjets_isolep_h;
    std::unique_ptr<Hists> semileptcontrolregion_h,electrons_semileptcontrolregion_h,jets_semileptcontrolregion_h,muons_semileptcontrolregion_h,events_semileptcontrolregion_h,topjets_semileptcontrolregion_h, likelihood_semileptcontrolregion_h;
    std::unique_ptr<TopJetHists> topjets_isolep_tagged_WP3_wobtag_h,topjets_semileptcontrolregion_tagged_h;
-   std::unique_ptr<Hists> twodcut_h,electrons_twodcut_h, jets_twodcut_h,topjets_twodcut_h,events_twodcut_h,muons_twodcut_h,likelihood_twodcut_h;
    std::unique_ptr<Hists> preselection_h,electrons_preselection_h, jets_preselection_h,topjets_preselection_h,events_preselection_h,muons_preselection_h, genhists_preselection_h,likelihood_preselection_h,ttbargenhists_preselection_h;
    std::unique_ptr<Hists> preselection_Met160_h,electrons_preselection_Met160_h, jets_preselection_Met160_h,topjets_preselection_Met160_h,events_preselection_Met160_h,muons_preselection_Met160_h, genhists_preselection_Met160_h,likelihood_preselection_Met160_h,ttbargenhists_preselection_Met160_h;
    std::unique_ptr<Hists> leptonveto_h,electrons_leptonveto_h, jets_leptonveto_h,topjets_leptonveto_h,events_leptonveto_h,muons_leptonveto_h, genhists_leptonveto_h,likelihood_leptonveto_h,ttbargenhists_leptonveto_h;
    std::unique_ptr<Hists> dileptcontrolregion_h,electrons_dileptcontrolregion_h, jets_dileptcontrolregion_h,topjets_dileptcontrolregion_h,events_dileptcontrolregion_h,muons_dileptcontrolregion_h, genhists_dileptcontrolregion_h,ttbargenhists_dileptcontrolregion_h,likelihood_dileptcontrolregion_h;
    std::unique_ptr<Hists> electrons_signalregion_noniso_h,jets_signalregion_noniso_h,topjets_signalregion_noniso_h,muons_signalregion_noniso_h,events_signalregion_noniso_h,likelihood_signalregion_noniso_h, signalregion_noniso_h;
-   std::unique_ptr<Hists> btag_noniso_h,electrons_btag_noniso_h,jets_btag_noniso_h,topjets_btag_noniso_h,muons_btag_noniso_h,events_btag_noniso_h,likelihood_btag_noniso_h;
    std::unique_ptr<Hists> signalregion_iso_h,electrons_signalregion_iso_h,jets_signalregion_iso_h,muons_signalregion_iso_h,events_signalregion_iso_h,topjets_signalregion_iso_h,likelihood_signalregion_iso_h;
    std::unique_ptr<Hists> signalregion_iso_Met160_h,electrons_signalregion_iso_Met160_h,jets_signalregion_iso_Met160_h,muons_signalregion_iso_Met160_h,events_signalregion_iso_Met160_h,topjets_signalregion_iso_Met160_h,likelihood_signalregion_iso_Met160_h;
    std::unique_ptr<Hists> btag_h,electrons_btag_h,jets_btag_h,muons_btag_h,events_btag_h,topjets_btag_h,likelihood_btag_h;
-   std::unique_ptr<Hists> Met160_h,electrons_Met160_h,jets_Met160_h,muons_Met160_h,events_Met160_h,topjets_Met160_h,likelihood_Met160_h; 
-   std::unique_ptr<Hists> Met250_h,electrons_Met250_h,jets_Met250_h,muons_Met250_h,events_Met250_h,topjets_Met250_h,likelihood_Met250_h; 
-   std::unique_ptr<Hists> Met320_h,electrons_Met320_h,jets_Met320_h,muons_Met320_h,events_Met320_h,topjets_Met320_h,likelihood_Met320_h; 
-   std::unique_ptr<Hists> Met160_noniso_h,electrons_Met160_noniso_h,jets_Met160_noniso_h,muons_Met160_noniso_h,events_Met160_noniso_h,topjets_Met160_noniso_h,likelihood_Met160_noniso_h; 
-   std::unique_ptr<Hists> HEPTT_WP3_wobtag_h,electrons_HEPTT_WP3_wobtag_h,jets_HEPTT_WP3_wobtag_h,muons_HEPTT_WP3_wobtag_h,events_HEPTT_WP3_wobtag_h,topjets_HEPTT_WP3_wobtag_h,likelihood_HEPTT_WP3_wobtag_h;
+   std::unique_ptr<Hists> mtlepsel_h,electrons_mtlepsel_h,jets_mtlepsel_h,muons_mtlepsel_h,events_mtlepsel_h,topjets_mtlepsel_h,likelihood_mtlepsel_h;
    std::unique_ptr<Hists> Wjetscontrolregion_h,electrons_Wjetscontrolregion_h,jets_Wjetscontrolregion_h,muons_Wjetscontrolregion_h,events_Wjetscontrolregion_h,topjets_Wjetscontrolregion_h,likelihood_Wjetscontrolregion_h;
-   std::unique_ptr<Hists> Wjetscontrolregion_noniso_h,electrons_Wjetscontrolregion_noniso_h,jets_Wjetscontrolregion_noniso_h, topjets_Wjetscontrolregion_noniso_h, muons_Wjetscontrolregion_noniso_h, events_Wjetscontrolregion_noniso_h, likelihood_Wjetscontrolregion_noniso_h;
-   std::unique_ptr<Hists> dileptcontrolregion_noniso_h, electrons_dileptcontrolregion_noniso_h, jets_dileptcontrolregion_noniso_h,topjets_dileptcontrolregion_noniso_h, muons_dileptcontrolregion_noniso_h, events_dileptcontrolregion_noniso_h, likelihood_dileptcontrolregion_noniso_h;
-   std::unique_ptr<Hists>  semileptcontrolregion_noniso_h,electrons_semileptcontrolregion_noniso_h,jets_semileptcontrolregion_noniso_h,topjets_semileptcontrolregion_noniso_h,muons_semileptcontrolregion_noniso_h,events_semileptcontrolregion_noniso_h,likelihood_semileptcontrolregion_noniso_h;
    std::unique_ptr<Hists> resolved_h, combination_h,resolved_preselection_h;
+   std::unique_ptr<BTagMCEfficiencyHists> h_btag_SF;
    std::unique_ptr<Selection> DeltaRMuonJet_sel, jet2_sel;
    std::unique_ptr<AndSelection> lepVeto_resolved_sel;
-   std::unique_ptr<AnalysisModule> muonTRK_SF, muonID_SF, muonHLT_SF, muonHLT2_SF, muonIso_SF ;
+   std::unique_ptr<AnalysisModule> muonTRK_SF, muonID_SF, muonHLT_SF, muonHLT2_SF, muonIso_SF, toptag_SF, apply_btag_SF, elecGsf_SF, elecID_SF;
 
    //For usage of run dependent muonHLT Effs
    double lumi_tot;
@@ -205,6 +201,7 @@ ttDMSelectionModuleAfterLikelihood::ttDMSelectionModuleAfterLikelihood(Context &
    }
    
    ht_calculator.reset(new HTCalculator(ctx));
+   partonht_calculator.reset(new PartonHT(ctx.get_handle<double>("parton_ht")));
       
    if (!is_mc){
    triggerMu50_sel.reset(new TriggerSelection("HLT_Mu50_v*")); 
@@ -220,6 +217,9 @@ ttDMSelectionModuleAfterLikelihood::ttDMSelectionModuleAfterLikelihood(Context &
    lumi_tot = string2double(ctx.get("target_lumi"));
    lumi1 = 622.;//0.622/fb in 2016 data
    lumi2 = lumi_tot - lumi1;
+   toptag_SF.reset(new MCTopTagScaleFactor(ctx, "nominal", "h_heptopjets_WP3_wobtag", 1.5));
+   elecID_SF.reset(new MCElecScaleFactor(ctx, "/afs/desy.de/user/m/mameyer/xxl-af-cms/CMSSW_8_0_20/src/UHH2/common/data/egammaEffi.txt_SF2D_looseId.root", 0.0, "ID"));
+   elecGsf_SF.reset(new MCElecScaleFactor(ctx, "/afs/desy.de/user/m/mameyer/xxl-af-cms/CMSSW_8_0_20/src/UHH2/common/data/egammaEffi.txt_SF2D_GSFtrack.root", 0.0, "Gsf"));
 
    //// OBJ CLEANING
    muon_cleaner_iso.reset(new MuonCleaner(AndId<Muon>(MuonIDMedium_ICHEP(), PtEtaCut(53., 2.4),MuonIso(0.15))));
@@ -233,10 +233,16 @@ ttDMSelectionModuleAfterLikelihood::ttDMSelectionModuleAfterLikelihood(Context &
    h_isoweight_down=ctx.get_handle<float>("weight_sfmu_ISO_down");
    h_isoweight_up=ctx.get_handle<float>("weight_sfmu_ISO_up");
                                       
+   h_tagweight=ctx.get_handle<float>("weight_toptag");
+   h_tagweight_down=ctx.get_handle<float>("weight_toptag_down");
+   h_tagweight_up=ctx.get_handle<float>("weight_toptag_up");
+   
    isSemiLept = ctx.get("dataset_version") == "TTbar_SemiLept";
    isDiLept = ctx.get("dataset_version") == "TTbar_Dilept";
    isOther = ctx.get("dataset_version") == "TTbar_other";
-   
+
+   IsWJetsInclusive = ctx.get("dataset_version") =="WJetsToLNu";
+   IsWJetsHT = ctx.get("dataset_version") =="WJets_LNu_HT-100To200" || ctx.get("dataset_version") =="WJets_LNu_HT-200To400" || ctx.get("dataset_version") =="WJets_LNu_HT-400To600" || ctx.get("dataset_version") =="WJets_LNu_HT-600To800" || ctx.get("dataset_version") =="WJets_LNu_HT-800To1200";
    //// EVENT SELECTION
    bool muon(false), elec(false);
    const std::string channel(ctx.get("channel", ""));
@@ -249,7 +255,7 @@ ttDMSelectionModuleAfterLikelihood::ttDMSelectionModuleAfterLikelihood(Context &
    lep1_sel.reset(new AndSelection(ctx));
    if(muon){
       lep1_sel->add<NMuonSelection>("muoN == 1", 1, 1, muonid);
-      lep1_sel->add<NElectronSelection>("eleN == 0", 0, 0);
+      //lep1_sel->add<NElectronSelection>("eleN == 0", 0, 0);
    }
    else if(elec){
       lep1_sel->add<NMuonSelection>("muoN == 0", 0, 0);
@@ -271,16 +277,15 @@ ttDMSelectionModuleAfterLikelihood::ttDMSelectionModuleAfterLikelihood(Context &
    
    mtlep100_sel.reset(new MTlepCut(100., std::numeric_limits<double>::infinity()));
    selection_Met160.reset(new METCut(160., std::numeric_limits<double>::infinity()));
-   selection_Met250.reset(new METCut(250., std::numeric_limits<double>::infinity()));
-   selection_Met320.reset(new METCut(320., std::numeric_limits<double>::infinity()));
-      
+   partonht_sel.reset(new PartonHTCut(ctx,100.));
+
    h_flag_twodcut = ctx.get_handle<bool>("flag_twodcut");
    h_likelihood = ctx.get_handle<double>("likelihood");
    h_recneutrino = ctx.get_handle<LorentzVector>("rec_neutrino");
    h_bjets = ctx.get_handle<Jet>("bjet");
    
    const TopJetId HTTTopJetId_pteta = PtEtaCut(150., 2.4); 
-   const TopJetId HTTTopJetId_WP3_wobtag = AndId<TopJet>(HEPTopTagV2(85,280,0.47), Tau32(0.97));
+   const TopJetId HTTTopJetId_WP3_wobtag = AndId<TopJet>(HEPTopTagV2(85,280,0.47), Tau32groomed(0.97));
    heptoptagevent_WP3_wobtag_sel.reset(new HandleSelection<int>(ctx, "n_heptopjets_WP3_wobtag", 1, 999));
    //heptt collection korrigieren
    if (is_mc){
@@ -333,22 +338,6 @@ ttDMSelectionModuleAfterLikelihood::ttDMSelectionModuleAfterLikelihood(Context &
    topjets_met_h.reset(new TopJetHists(ctx,"topjets_met",4,"patJetsHepTopTagCHSPacked_daughters"));
    genhists_met_h.reset(new ttDMGenHists(ctx,"genhists_met"));
    ttbargenhists_met_h.reset(new TTbarGenHists(ctx,"ttbargenhists_met"));
-
-   likelihood_lowmet_h.reset(new ttDMReconstructionHists_Likelihood(ctx, "likelihood_lowmet"));
-   lowmet_h.reset(new ttDMSelectionHists(ctx, "lowmet"));
-   electrons_lowmet_h.reset(new ElectronHists(ctx,"electrons_lowmet"));
-   jets_lowmet_h.reset(new JetHists(ctx,"jets_lowmet"));
-   muons_lowmet_h.reset(new MuonHists(ctx,"muons_lowmet"));
-   events_lowmet_h.reset(new EventHists(ctx,"events_lowmet"));
-   topjets_lowmet_h.reset(new TopJetHists(ctx,"topjets_lowmet",4,"patJetsHepTopTagCHSPacked_daughters"));
-
-   lowmet_noniso_h.reset(new ttDMSelectionHists(ctx, "lowmet_noniso"));
-   electrons_lowmet_noniso_h.reset(new ElectronHists(ctx,"electrons_lowmet_noniso"));
-   jets_lowmet_noniso_h.reset(new JetHists(ctx,"jets_lowmet_noniso"));
-   muons_lowmet_noniso_h.reset(new MuonHists(ctx,"muons_lowmet_noniso"));
-   events_lowmet_noniso_h.reset(new EventHists(ctx,"events_lowmet_noniso"));
-   topjets_lowmet_noniso_h.reset(new TopJetHists(ctx,"topjets_lowmet_noniso",4,"patJetsHepTopTagCHSPacked_daughters"));
-   likelihood_lowmet_noniso_h.reset(new ttDMReconstructionHists_Likelihood(ctx, "likelihood_lowmet_noniso"));
 
    nonisolep_h.reset(new ttDMSelectionHists(ctx, "nonisolep"));
    electrons_nonisolep_h.reset(new ElectronHists(ctx,"electrons_nonisolep"));
@@ -407,55 +396,13 @@ ttDMSelectionModuleAfterLikelihood::ttDMSelectionModuleAfterLikelihood(Context &
    topjets_btag_h.reset(new TopJetHists(ctx,"topjets_btag", 4,"patJetsHepTopTagCHSPacked_daughters"));
    likelihood_btag_h.reset(new ttDMReconstructionHists_Likelihood(ctx, "likelihood_btag"));
 
-   Met160_h.reset(new ttDMSelectionHists(ctx,"Met160"));
-   electrons_Met160_h.reset(new ElectronHists(ctx,"electrons_Met160"));
-   jets_Met160_h.reset(new JetHists(ctx,"jets_Met160"));
-   muons_Met160_h.reset(new MuonHists(ctx,"muons_Met160"));
-   events_Met160_h.reset(new EventHists(ctx,"events_Met160"));
-   topjets_Met160_h.reset(new TopJetHists(ctx,"topjets_Met160", 4,"patJetsHepTopTagCHSPacked_daughters"));
-   likelihood_Met160_h.reset(new ttDMReconstructionHists_Likelihood(ctx, "likelihood_Met160"));
-
-   Met250_h.reset(new ttDMSelectionHists(ctx,"Met250"));
-   electrons_Met250_h.reset(new ElectronHists(ctx,"electrons_Met250"));
-   jets_Met250_h.reset(new JetHists(ctx,"jets_Met250"));
-   muons_Met250_h.reset(new MuonHists(ctx,"muons_Met250"));
-   events_Met250_h.reset(new EventHists(ctx,"events_Met250"));
-   topjets_Met250_h.reset(new TopJetHists(ctx,"topjets_Met250", 4,"patJetsHepTopTagCHSPacked_daughters"));
-   likelihood_Met250_h.reset(new ttDMReconstructionHists_Likelihood(ctx, "likelihood_Met250"));
-   
-   Met320_h.reset(new ttDMSelectionHists(ctx,"Met320"));
-   electrons_Met320_h.reset(new ElectronHists(ctx,"electrons_Met320"));
-   jets_Met320_h.reset(new JetHists(ctx,"jets_Met320"));
-   muons_Met320_h.reset(new MuonHists(ctx,"muons_Met320"));
-   events_Met320_h.reset(new EventHists(ctx,"events_Met320"));
-   topjets_Met320_h.reset(new TopJetHists(ctx,"topjets_Met320", 4,"patJetsHepTopTagCHSPacked_daughters"));
-   likelihood_Met320_h.reset(new ttDMReconstructionHists_Likelihood(ctx, "likelihood_Met320"));
-   
-
-   Met160_noniso_h.reset(new ttDMSelectionHists(ctx,"Met160_noniso"));
-   electrons_Met160_noniso_h.reset(new ElectronHists(ctx,"electrons_Met160_noniso"));
-   jets_Met160_noniso_h.reset(new JetHists(ctx,"jets_Met160_noniso"));
-   muons_Met160_noniso_h.reset(new MuonHists(ctx,"muons_Met160_noniso"));
-   events_Met160_noniso_h.reset(new EventHists(ctx,"events_Met160_noniso"));
-   topjets_Met160_noniso_h.reset(new TopJetHists(ctx,"topjets_Met160_noniso", 4,"patJetsHepTopTagCHSPacked_daughters"));
-   likelihood_Met160_noniso_h.reset(new ttDMReconstructionHists_Likelihood(ctx, "likelihood_Met160_noniso"));
-
-
-   HEPTT_WP3_wobtag_h.reset(new ttDMSelectionHists(ctx,"HEPTT_WP3_wobtag"));
-   electrons_HEPTT_WP3_wobtag_h.reset(new ElectronHists(ctx,"electrons_HEPTT_WP3_wobtag"));
-   jets_HEPTT_WP3_wobtag_h.reset(new JetHists(ctx,"jets_HEPTT_WP3_wobtag"));
-   muons_HEPTT_WP3_wobtag_h.reset(new MuonHists(ctx,"muons_HEPTT_WP3_wobtag"));
-   events_HEPTT_WP3_wobtag_h.reset(new EventHists(ctx,"events_HEPTT_WP3_wobtag"));
-   topjets_HEPTT_WP3_wobtag_h.reset(new TopJetHists(ctx,"topjets_HEPTT_WP3_wobtag", 4,"patJetsHepTopTagCHSPacked_daughters"));
-   likelihood_HEPTT_WP3_wobtag_h.reset(new ttDMReconstructionHists_Likelihood(ctx, "likelihood_HEPTT_WP3_wobtag"));
-
-   likelihood_twodcut_h.reset(new ttDMReconstructionHists_Likelihood(ctx, "likelihood_twodcut"));
-   twodcut_h.reset(new ttDMSelectionHists(ctx,"twodcut"));
-   electrons_twodcut_h.reset(new ElectronHists(ctx,"electrons_twodcut"));
-   jets_twodcut_h.reset(new JetHists(ctx,"jets_twodcut"));
-   topjets_twodcut_h.reset(new TopJetHists(ctx,"topjets_twodcut", 4, "patJetsHepTopTagCHSPacked_daughters"));
-   muons_twodcut_h.reset(new MuonHists(ctx,"muons_twodcut"));
-   events_twodcut_h.reset(new EventHists(ctx,"events_twodcut"));
+   mtlepsel_h.reset(new ttDMSelectionHists(ctx,"mtlepsel"));
+   electrons_mtlepsel_h.reset(new ElectronHists(ctx,"electrons_mtlepsel"));
+   jets_mtlepsel_h.reset(new JetHists(ctx,"jets_mtlepsel"));
+   muons_mtlepsel_h.reset(new MuonHists(ctx,"muons_mtlepsel"));
+   events_mtlepsel_h.reset(new EventHists(ctx,"events_mtlepsel"));
+   topjets_mtlepsel_h.reset(new TopJetHists(ctx,"topjets_mtlepsel", 4,"patJetsHepTopTagCHSPacked_daughters"));
+   likelihood_mtlepsel_h.reset(new ttDMReconstructionHists_Likelihood(ctx, "likelihood_mtlepsel"));
 
    likelihood_preselection_h.reset(new ttDMReconstructionHists_Likelihood(ctx, "likelihood_preselection"));
    preselection_h.reset(new ttDMSelectionHists(ctx,"preselection"));
@@ -505,42 +452,13 @@ ttDMSelectionModuleAfterLikelihood::ttDMSelectionModuleAfterLikelihood(Context &
    likelihood_signalregion_noniso_h.reset(new ttDMReconstructionHists_Likelihood(ctx, "likelihood_signalregion_noniso"));
    signalregion_noniso_h.reset(new ttDMSelectionHists(ctx,"signalregion_noniso_h"));
   
-   btag_noniso_h.reset(new ttDMSelectionHists(ctx,"btag_noniso"));
-   electrons_btag_noniso_h.reset(new ElectronHists(ctx,"electrons_btag_noniso"));
-   jets_btag_noniso_h.reset(new JetHists(ctx,"jets_btag_noniso"));
-   topjets_btag_noniso_h.reset(new TopJetHists(ctx,"topjets_btag_noniso", 4, "patJetsHepTopTagCHSPacked_daughters"));
-   muons_btag_noniso_h.reset(new MuonHists(ctx,"muons_btag_noniso"));
-   events_btag_noniso_h.reset(new EventHists(ctx,"events_btag_noniso"));
-   likelihood_btag_noniso_h.reset(new ttDMReconstructionHists_Likelihood(ctx, "likelihood_btag_noniso"));
-   
-   Wjetscontrolregion_noniso_h.reset(new ttDMSelectionHists(ctx,"Wjetscontrolregion_noniso"));
-   electrons_Wjetscontrolregion_noniso_h.reset(new ElectronHists(ctx,"electrons_Wjetscontrolregion_noniso"));
-   jets_Wjetscontrolregion_noniso_h.reset(new JetHists(ctx,"jets_Wjetscontrolregion_noniso"));
-   topjets_Wjetscontrolregion_noniso_h.reset(new TopJetHists(ctx,"topjets_Wjetscontrolregion_noniso", 4, "patJetsHepTopTagCHSPacked_daughters"));
-   muons_Wjetscontrolregion_noniso_h.reset(new MuonHists(ctx,"muons_Wjetscontrolregion_noniso"));
-   events_Wjetscontrolregion_noniso_h.reset(new EventHists(ctx,"events_Wjetscontrolregion_noniso"));
-   likelihood_Wjetscontrolregion_noniso_h.reset(new ttDMReconstructionHists_Likelihood(ctx, "likelihood_Wjetscontrolregion_noniso"));
-   
-   dileptcontrolregion_noniso_h.reset(new ttDMSelectionHists(ctx,"dileptcontrolregion_noniso"));
-   electrons_dileptcontrolregion_noniso_h.reset(new ElectronHists(ctx,"electrons_dileptcontrolregion_noniso"));
-   jets_dileptcontrolregion_noniso_h.reset(new JetHists(ctx,"jets_dileptcontrolregion_noniso"));
-   topjets_dileptcontrolregion_noniso_h.reset(new TopJetHists(ctx,"topjets_dileptcontrolregion_noniso", 4, "patJetsHepTopTagCHSPacked_daughters"));
-   muons_dileptcontrolregion_noniso_h.reset(new MuonHists(ctx,"muons_dileptcontrolregion_noniso"));
-   events_dileptcontrolregion_noniso_h.reset(new EventHists(ctx,"events_dileptcontrolregion_noniso"));
-   likelihood_dileptcontrolregion_noniso_h.reset(new ttDMReconstructionHists_Likelihood(ctx, "likelihood_dileptcontrolregion_noniso"));
-   
-   semileptcontrolregion_noniso_h.reset(new ttDMSelectionHists(ctx,"semileptcontrolregion_noniso"));
-   electrons_semileptcontrolregion_noniso_h.reset(new ElectronHists(ctx,"electrons_semileptcontrolregion_noniso"));
-   jets_semileptcontrolregion_noniso_h.reset(new JetHists(ctx,"jets_semileptcontrolregion_noniso"));
-   topjets_semileptcontrolregion_noniso_h.reset(new TopJetHists(ctx,"topjets_semileptcontrolregion_noniso", 4, "patJetsHepTopTagCHSPacked_daughters"));
-   muons_semileptcontrolregion_noniso_h.reset(new MuonHists(ctx,"muons_semileptcontrolregion_noniso"));
-   events_semileptcontrolregion_noniso_h.reset(new EventHists(ctx,"events_semileptcontrolregion_noniso"));
-   likelihood_semileptcontrolregion_noniso_h.reset(new ttDMReconstructionHists_Likelihood(ctx, "likelihood_semileptcontrolregion_noniso"));
-   
    combination_h.reset(new ttDMSelectionHists(ctx,"combination"));
    resolved_h.reset(new ttDMSelectionHists(ctx,"resolved"));
    resolved_preselection_h.reset(new ttDMSelectionHists(ctx,"resolved_preselection"));
    DeltaRMuonJet_sel.reset(new DeltaRMuonJet(0.2));
+
+   h_btag_SF.reset(new BTagMCEfficiencyHists(ctx,"btag_SF",CSVBTag::WP_MEDIUM));
+   apply_btag_SF.reset(new MCBTagScaleFactor(ctx,CSVBTag::WP_MEDIUM,"jets","central","mujets","incl","MCBtagEfficiencies"));
 }
 
 bool ttDMSelectionModuleAfterLikelihood::process(Event & event){
@@ -548,10 +466,28 @@ bool ttDMSelectionModuleAfterLikelihood::process(Event & event){
    event.set(h_isoweight_down, 1.0);
    event.set(h_isoweight_up, 1.0);
 
+   event.set(h_tagweight, 1.0);
+   event.set(h_tagweight_down, 1.0);
+   event.set(h_tagweight_up, 1.0);
+
+   if (is_mc) {
+      double w = event.weight;
+      double phi_rew = (1.01+0.28*TMath::Cos(1.06*event.met->phi()-0.28));
+      event.weight=w*phi_rew;
+   }
    isResolved=false;
    isBoosted=false;
-   
+   if (is_mc) partonht_calculator->process(event);
+   if (IsWJetsInclusive) {
+      bool pass_partonht= partonht_sel->passes(event);
+      if (!pass_partonht) return false;
+   }      
+   if (IsWJetsHT) {
+      bool pass_partonht= partonht_sel->passes(event);
+      if (pass_partonht) return false;
+   }
    input_h->fill(event);
+   
  
    if (is_mc) {
       ttgenprod->process(event);
@@ -662,11 +598,14 @@ bool ttDMSelectionModuleAfterLikelihood::process(Event & event){
     good_muon = (!(lep1.pt()> 500 && fabs(lep1.eta())> 1.2));
     if(!good_muon) return false;
     if (event.isRealData) lumihists->fill(event);
- 
+    
+    elecGsf_SF->process(event);
+    elecID_SF->process(event);
+
     muonID_SF->process(event);
+    muonIso_SF->process(event);
     muonTRK_SF->process(event);
     double w_wo_HLT = event.weight;
-    //std::cout<<"HLT, w_wo_HLT = "<<w_wo_HLT<<std::endl;
     // muon-HLT eff
     muonHLT2_SF->process(event);
     double w1 = event.weight;
@@ -674,11 +613,7 @@ bool ttDMSelectionModuleAfterLikelihood::process(Event & event){
     muonHLT_SF->process(event);
     double w2 = event.weight;
     double w = (lumi1*w1+lumi2*w2)/(lumi_tot);
-    //std::cout<<"w1 = "<<w1<<" w2 = "<<w2<<" w = "<<w<<std::endl;
-    //std::cout<<"w = "<<w<<std::endl;
     event.weight = w;
-    
-    
     
     met_h->fill(event);  //MET >50GeV
     electrons_met_h->fill(event);
@@ -703,36 +638,97 @@ bool ttDMSelectionModuleAfterLikelihood::process(Event & event){
           genhists_preselection_h->fill(event);
           ttbargenhists_preselection_h->fill(event);
       }
-    bool pass_Met250 = selection_Met250->passes(event);
-   bool pass_Met320 = selection_Met320->passes(event);
-   if(pass_twodcut &&  pass_Met160)                                               //pre-selection control plots 
-      {
-         likelihood_preselection_Met160_h->fill(event);        
-         preselection_Met160_h->fill(event);
-         electrons_preselection_Met160_h->fill(event);
-         muons_preselection_Met160_h->fill(event);
-         events_preselection_Met160_h->fill(event);
-         jets_preselection_Met160_h->fill(event);
-         topjets_preselection_Met160_h->fill(event);
-         genhists_preselection_Met160_h->fill(event);
-         ttbargenhists_preselection_Met160_h->fill(event);
-      }
- 
-   //veto additional leptons
-   bool pass_lepVeto = lepVeto_sel->passes(event);
-   if (pass_lepVeto){
-      likelihood_leptonveto_h->fill(event);        
-      leptonveto_h->fill(event);
-      electrons_leptonveto_h->fill(event);
-      muons_leptonveto_h->fill(event);
-      events_leptonveto_h->fill(event);
-      jets_leptonveto_h->fill(event);
-      topjets_leptonveto_h->fill(event);
-      genhists_leptonveto_h->fill(event);
-      ttbargenhists_leptonveto_h->fill(event);
-   }
-   
-   //----------------------------------------------------boosted analysis-------------------------------------- 
+    if(pass_twodcut &&  pass_Met160)                                               //pre-selection control plots 
+       {
+          likelihood_preselection_Met160_h->fill(event);        
+          preselection_Met160_h->fill(event);
+          electrons_preselection_Met160_h->fill(event);
+          muons_preselection_Met160_h->fill(event);
+          events_preselection_Met160_h->fill(event);
+          jets_preselection_Met160_h->fill(event);
+          topjets_preselection_Met160_h->fill(event);
+          genhists_preselection_Met160_h->fill(event);
+          ttbargenhists_preselection_Met160_h->fill(event);
+       }
+    
+    //veto additional leptons
+    bool pass_lepVeto = lepVeto_sel->passes(event);
+    if (pass_lepVeto){
+       likelihood_leptonveto_h->fill(event);        
+       leptonveto_h->fill(event);
+       electrons_leptonveto_h->fill(event);
+       muons_leptonveto_h->fill(event);
+       events_leptonveto_h->fill(event);
+       jets_leptonveto_h->fill(event);
+       topjets_leptonveto_h->fill(event);
+       genhists_leptonveto_h->fill(event);
+       ttbargenhists_leptonveto_h->fill(event);
+    }
+    
+    //---------------------------------------------------- control regions --------------------------------------  
+
+    bool pass_btagsel = btag_sel->passes(event);
+    bool pass_mtlep100 = mtlep100_sel->passes(event);
+    
+    // lepton + jets control region
+    if (pass_twodcut && pass_btagsel && !pass_mtlep100 && pass_lepVeto){              //muon Iso fehlt
+       apply_btag_SF->process(event); 
+       semileptcontrolregion_h->fill(event);
+       electrons_semileptcontrolregion_h->fill(event);
+       jets_semileptcontrolregion_h->fill(event);
+       muons_semileptcontrolregion_h->fill(event);
+       events_semileptcontrolregion_h->fill(event);
+       topjets_semileptcontrolregion_h->fill(event); 
+       likelihood_semileptcontrolregion_h->fill(event);
+    }
+    //dilepton control region
+    if (pass_twodcut && !pass_lepVeto && pass_btagsel && pass_mtlep100) {           //muon Iso fehlt, ele SF
+       apply_btag_SF->process(event);
+       likelihood_dileptcontrolregion_h->fill(event);        
+       dileptcontrolregion_h->fill(event);
+       electrons_dileptcontrolregion_h->fill(event);
+       muons_dileptcontrolregion_h->fill(event);
+       events_dileptcontrolregion_h->fill(event);
+       jets_dileptcontrolregion_h->fill(event);
+       topjets_dileptcontrolregion_h->fill(event);
+       genhists_dileptcontrolregion_h->fill(event);
+       ttbargenhists_dileptcontrolregion_h->fill(event);
+    }  
+    //W+jets control region
+    if (pass_twodcut && !pass_btagsel && pass_mtlep100 && pass_lepVeto){             //muon Iso fehlt
+       apply_btag_SF->process(event);
+       Wjetscontrolregion_h->fill(event);
+       electrons_Wjetscontrolregion_h->fill(event);
+       jets_Wjetscontrolregion_h->fill(event);
+       muons_Wjetscontrolregion_h->fill(event);
+       events_Wjetscontrolregion_h->fill(event);
+       topjets_Wjetscontrolregion_h->fill(event); 
+       likelihood_Wjetscontrolregion_h->fill(event);
+    }
+    
+    //---------------------------------------------------- signal selections --------------------------------------  
+
+     if (!pass_lepVeto) return false;
+     if(!pass_btagsel) return false;
+     apply_btag_SF->process(event);
+     btag_h->fill(event);
+     electrons_btag_h->fill(event);
+     jets_btag_h->fill(event);
+     muons_btag_h->fill(event);
+     events_btag_h->fill(event);
+     topjets_btag_h->fill(event); 
+     likelihood_btag_h->fill(event);
+     
+     if (!pass_mtlep100) return false;
+     mtlepsel_h->fill(event);
+     electrons_mtlepsel_h->fill(event);
+     jets_mtlepsel_h->fill(event);
+     muons_mtlepsel_h->fill(event);
+     events_mtlepsel_h->fill(event);
+     topjets_mtlepsel_h->fill(event); 
+     likelihood_mtlepsel_h->fill(event);
+     
+   //---------------------------------------------------- boosted analysis -------------------------------------- 
 
     std::unique_ptr< std::vector<Muon> > cleaned_muons_noIso(new std::vector<Muon>(*event.muons)); //only muons, to do: add electrons
     muon_cleaner_iso->process(event);
@@ -741,7 +737,6 @@ bool ttDMSelectionModuleAfterLikelihood::process(Event & event){
     pass_lep1 =  lep1_sel->passes(event);
     if (pass_lep1)    
       {
-         muonIso_SF->process(event);
          bool pass_DeltaRMuonJet_sel = DeltaRMuonJet_sel-> passes(event);
          if (!pass_DeltaRMuonJet_sel) 
             {
@@ -756,131 +751,35 @@ bool ttDMSelectionModuleAfterLikelihood::process(Event & event){
          jetmuon_cleaner->process(event);
          bool jet2 = jet2_sel->passes(event);
          if (!jet2) return false;
-
-         bool pass_btagsel = btag_sel->passes(event);
-         bool pass_mtlep100 = mtlep100_sel->passes(event);
          
-         // lepton + jets control region
-         if (pass_HEPTT_WP3_wobtag && pass_btagsel && !pass_mtlep100 && pass_lepVeto)
-            {
-               semileptcontrolregion_h->fill(event);
-               electrons_semileptcontrolregion_h->fill(event);
-               jets_semileptcontrolregion_h->fill(event);
-               muons_semileptcontrolregion_h->fill(event);
-               events_semileptcontrolregion_h->fill(event);
-               topjets_semileptcontrolregion_h->fill(event); 
-               likelihood_semileptcontrolregion_h->fill(event);
-            }
-         //dilepton control region
-         if (!pass_lepVeto && pass_HEPTT_WP3_wobtag && pass_btagsel && pass_mtlep100) {
-            likelihood_dileptcontrolregion_h->fill(event);        
-            dileptcontrolregion_h->fill(event);
-            electrons_dileptcontrolregion_h->fill(event);
-            muons_dileptcontrolregion_h->fill(event);
-            events_dileptcontrolregion_h->fill(event);
-            jets_dileptcontrolregion_h->fill(event);
-            topjets_dileptcontrolregion_h->fill(event);
-            genhists_dileptcontrolregion_h->fill(event);
-            ttbargenhists_dileptcontrolregion_h->fill(event);
-         }  
-         //W+jets control region
-         if (pass_HEPTT_WP3_wobtag &&  !pass_btagsel && pass_mtlep100 && pass_lepVeto)
-            {
-               Wjetscontrolregion_h->fill(event);
-               electrons_Wjetscontrolregion_h->fill(event);
-               jets_Wjetscontrolregion_h->fill(event);
-               muons_Wjetscontrolregion_h->fill(event);
-               events_Wjetscontrolregion_h->fill(event);
-               topjets_Wjetscontrolregion_h->fill(event); 
-               likelihood_Wjetscontrolregion_h->fill(event);
-            }
-
-         //signal
-          if (!pass_lepVeto) return false;
-          if (!pass_HEPTT_WP3_wobtag) return false;
-          
-          HEPTT_WP3_wobtag_h->fill(event);
-          electrons_HEPTT_WP3_wobtag_h->fill(event);
-          jets_HEPTT_WP3_wobtag_h->fill(event);
-          muons_HEPTT_WP3_wobtag_h->fill(event);
-          events_HEPTT_WP3_wobtag_h->fill(event);
-          topjets_HEPTT_WP3_wobtag_h->fill(event); 
-          likelihood_HEPTT_WP3_wobtag_h->fill(event);
-          
-          if(!pass_btagsel) return false;
-          btag_h->fill(event);
-          electrons_btag_h->fill(event);
-          jets_btag_h->fill(event);
-          muons_btag_h->fill(event);
-          events_btag_h->fill(event);
-          topjets_btag_h->fill(event); 
-          likelihood_btag_h->fill(event);
-
-          if (pass_Met160){
-             Met160_h->fill(event);
-             electrons_Met160_h->fill(event);
-             jets_Met160_h->fill(event);
-             muons_Met160_h->fill(event);
-             events_Met160_h->fill(event);
-             topjets_Met160_h->fill(event); 
-             likelihood_Met160_h->fill(event); 
-          }
-          else{
-             if (pass_mtlep100){
-                lowmet_h->fill(event);  //MET >50GeV
-                electrons_lowmet_h->fill(event);
-                jets_lowmet_h->fill(event);
-                muons_lowmet_h->fill(event);
-                events_lowmet_h->fill(event);
-                topjets_lowmet_h->fill(event);
-                likelihood_lowmet_h->fill(event); 
-             }
-          }
-          
-          
-          if (pass_Met250){
-             Met250_h->fill(event);
-             electrons_Met250_h->fill(event);
-             jets_Met250_h->fill(event);
-             muons_Met250_h->fill(event);
-             events_Met250_h->fill(event);
-             topjets_Met250_h->fill(event); 
-             likelihood_Met250_h->fill(event); 
-          }
-
-          if (pass_Met320){
-             Met320_h->fill(event);
-             electrons_Met320_h->fill(event);
-             jets_Met320_h->fill(event);
-             muons_Met320_h->fill(event);
-             events_Met320_h->fill(event);
-             topjets_Met320_h->fill(event); 
-             likelihood_Met320_h->fill(event); 
-          }
-
-
-          if (!pass_mtlep100) return false;
-          signalregion_iso_h->fill(event);
-          electrons_signalregion_iso_h->fill(event);
-          jets_signalregion_iso_h->fill(event);
-          muons_signalregion_iso_h->fill(event);
-          events_signalregion_iso_h->fill(event);
-          topjets_signalregion_iso_h->fill(event); 
-          likelihood_signalregion_iso_h->fill(event);
-          isBoosted =true;
-
-
-          if (pass_Met160){
-             signalregion_iso_Met160_h->fill(event);
-             electrons_signalregion_iso_Met160_h->fill(event);
-             jets_signalregion_iso_Met160_h->fill(event);
-             muons_signalregion_iso_Met160_h->fill(event);
-             events_signalregion_iso_Met160_h->fill(event);
-             topjets_signalregion_iso_Met160_h->fill(event); 
-             likelihood_signalregion_iso_Met160_h->fill(event);
-          }
-          
-          return true;
+         pass_btagsel = btag_sel->passes(event);
+         if(!pass_btagsel) return false;
+         if (!pass_HEPTT_WP3_wobtag) return false;
+         //std::cout<<"found a top tag"<<std::endl;
+         toptag_SF->process(event);
+         
+         //h_btag_SF->fill(event);
+         
+         signalregion_iso_h->fill(event);
+         electrons_signalregion_iso_h->fill(event);
+         jets_signalregion_iso_h->fill(event);
+         muons_signalregion_iso_h->fill(event);
+         events_signalregion_iso_h->fill(event);
+         topjets_signalregion_iso_h->fill(event); 
+         likelihood_signalregion_iso_h->fill(event);
+         isBoosted =true;
+                  
+         if (pass_Met160){
+            signalregion_iso_Met160_h->fill(event);
+            electrons_signalregion_iso_Met160_h->fill(event);
+            jets_signalregion_iso_Met160_h->fill(event);
+            muons_signalregion_iso_Met160_h->fill(event);
+            events_signalregion_iso_Met160_h->fill(event);
+            topjets_signalregion_iso_Met160_h->fill(event); 
+            likelihood_signalregion_iso_Met160_h->fill(event);
+         }
+         
+         return true;
       }
   
     event.muons->clear();
@@ -888,100 +787,24 @@ bool ttDMSelectionModuleAfterLikelihood::process(Event & event){
     for(auto & muon : *cleaned_muons_noIso) event.muons->push_back(muon); 
     sort_by_pt<Muon>(*event.muons);
    
-   nonisolep_h->fill(event);
-   genhists_nonisolep_h->fill(event);
-   electrons_nonisolep_h->fill(event);
-   jets_nonisolep_h->fill(event);
-   muons_nonisolep_h->fill(event);
-   events_nonisolep_h->fill(event);
-   topjets_nonisolep_h->fill(event);
- 
-   if(!pass_twodcut) return false;
-   twodcut_h->fill(event);
-   electrons_twodcut_h->fill(event);
-   muons_twodcut_h->fill(event);
-   events_twodcut_h->fill(event);
-   jets_twodcut_h->fill(event);
-   topjets_twodcut_h->fill(event);
-   likelihood_twodcut_h->fill(event);
-
-   bool pass_btag_sel = btag_sel->passes(event);
-   bool pass_mtlep100 = mtlep100_sel->passes(event);
-   
-   //control regions
-   //W+jets control region
-   if (!pass_btag_sel && pass_lepVeto && pass_mtlep100){
-      Wjetscontrolregion_noniso_h->fill(event);
-      electrons_Wjetscontrolregion_noniso_h->fill(event);
-      muons_Wjetscontrolregion_noniso_h->fill(event);
-      events_Wjetscontrolregion_noniso_h->fill(event);
-      jets_Wjetscontrolregion_noniso_h->fill(event);
-      topjets_Wjetscontrolregion_noniso_h->fill(event);
-      likelihood_Wjetscontrolregion_noniso_h->fill(event);
-   }
-   //dilepton control region 
-   if (pass_btag_sel && !pass_lepVeto && pass_mtlep100){
-      dileptcontrolregion_noniso_h->fill(event);
-      electrons_dileptcontrolregion_noniso_h->fill(event);
-      muons_dileptcontrolregion_noniso_h->fill(event);
-      events_dileptcontrolregion_noniso_h->fill(event);
-      jets_dileptcontrolregion_noniso_h->fill(event);
-      topjets_dileptcontrolregion_noniso_h->fill(event);
-      likelihood_dileptcontrolregion_noniso_h->fill(event);
-   }
-   //lepton+jets control region
-   if (pass_btag_sel && pass_lepVeto && !pass_mtlep100){
-      semileptcontrolregion_noniso_h->fill(event);
-      electrons_semileptcontrolregion_noniso_h->fill(event);
-      muons_semileptcontrolregion_noniso_h->fill(event);
-      events_semileptcontrolregion_noniso_h->fill(event);
-      jets_semileptcontrolregion_noniso_h->fill(event);
-      topjets_semileptcontrolregion_noniso_h->fill(event);
-      likelihood_semileptcontrolregion_noniso_h->fill(event);
-   }
-   
-   //signal selection
-   if (!pass_lepVeto) return false;
-
-   if (!pass_btag_sel) return false;
-   
-   btag_noniso_h->fill(event);
-   electrons_btag_noniso_h->fill(event);
-   muons_btag_noniso_h->fill(event);
-   events_btag_noniso_h->fill(event);
-   jets_btag_noniso_h->fill(event);
-   topjets_btag_noniso_h->fill(event);
-   likelihood_btag_noniso_h->fill(event);
-  
-   if (pass_Met160){
-      Met160_noniso_h->fill(event);
-      electrons_Met160_noniso_h->fill(event);
-      jets_Met160_noniso_h->fill(event);
-      muons_Met160_noniso_h->fill(event);
-      events_Met160_noniso_h->fill(event);
-      topjets_Met160_noniso_h->fill(event); 
-      likelihood_Met160_noniso_h->fill(event);
-   }
-   else{
-      if (pass_mtlep100){
-         lowmet_noniso_h->fill(event);  //MET >50GeV
-         electrons_lowmet_noniso_h->fill(event);
-         jets_lowmet_noniso_h->fill(event);
-         muons_lowmet_noniso_h->fill(event);
-         events_lowmet_noniso_h->fill(event);
-         topjets_lowmet_noniso_h->fill(event);
-         likelihood_lowmet_noniso_h->fill(event); 
-      }
-   }
-   if (!pass_mtlep100)return false;
-   signalregion_noniso_h->fill(event);
-   electrons_signalregion_noniso_h->fill(event);
-   muons_signalregion_noniso_h->fill(event);
-   events_signalregion_noniso_h->fill(event);
-   jets_signalregion_noniso_h->fill(event);
-   topjets_signalregion_noniso_h->fill(event);
-   likelihood_signalregion_noniso_h->fill(event);        
- 
+    nonisolep_h->fill(event);
+    genhists_nonisolep_h->fill(event);
+    electrons_nonisolep_h->fill(event);
+    jets_nonisolep_h->fill(event);
+    muons_nonisolep_h->fill(event);
+    events_nonisolep_h->fill(event);
+    topjets_nonisolep_h->fill(event);
+    
+    if(!pass_twodcut) return false;
+    //h_btag_SF->fill(event);
+    signalregion_noniso_h->fill(event);
+    electrons_signalregion_noniso_h->fill(event);
+    muons_signalregion_noniso_h->fill(event);
+    events_signalregion_noniso_h->fill(event);
+    jets_signalregion_noniso_h->fill(event);
+    topjets_signalregion_noniso_h->fill(event);
+    likelihood_signalregion_noniso_h->fill(event);        
+    
    return true;
 }
 

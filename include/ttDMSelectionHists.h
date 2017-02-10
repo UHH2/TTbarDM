@@ -1,6 +1,6 @@
 #pragma once
 #include "UHH2/core/include/Hists.h"
-
+#include "UHH2/core/include/Event.h"
 #include <string>
 #include <TH1F.h>
 #include <TH2F.h>
@@ -78,4 +78,6 @@ class ttDMSelectionHists: public uhh2::Hists {
   TH1F* mt2w;
   TH1F* jetmetdphi;
    
+   TH1F* hist_parton_ht;
+   uhh2::Event::Handle<double> h_parton_ht;
 };

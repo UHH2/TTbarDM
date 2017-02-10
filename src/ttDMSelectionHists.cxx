@@ -72,6 +72,13 @@ ttDMSelectionHists::ttDMSelectionHists(uhh2::Context & ctx, const std::string & 
   //mt2w = book<TH1F>("mt2w", ";M^{W}_{T2}", 7, 95, 410);
   mt2w = book<TH1F>("mt2w", ";M^{W}_{T2}", 23, 50, 464);
   jetmetdphi = book<TH1F>("jetmetdphi", ";#Delta#phi(j_{1,2},E_{T}^{miss})", 8, 0, 3.2);
+
+  hist_parton_ht = book<TH1F>("hist_parton_ht", "hist_parton_ht", 100, 0, 2500);
+  h_parton_ht = ctx.get_handle<double>("parton_ht");
+
+  book<TH1D>("number_btag_medium","Number of btagged Jets",7,0,7);
+  book<TH1D>("number_btag_loose","Number of btagged Jets",7,0,7);
+  book<TH1D>("number_btag_tight","Number of btagged Jets",7,0,7);
 }
 
 void ttDMSelectionHists::fill(const uhh2::Event & event){
@@ -224,5 +231,21 @@ void ttDMSelectionHists::fill(const uhh2::Event & event){
   if (lep1) mtlep->Fill(sqrt(2*event.met->pt()*lep1->pt()*(1-cos(uhh2::deltaPhi(*event.met, *lep1)))),weight);
   if (lep1) mtlep2->Fill(sqrt(2*event.met->pt()*lep1->pt()*(1-cos(uhh2::deltaPhi(*event.met, *lep1)))),weight);
 
+  int number_of_btag_medium=0;
+  int number_of_btag_loose=0;
+  int number_of_btag_tight=0;
+  for(auto const & jet: *event.jets){
+     if( jet.btag_combinedSecondaryVertex()>0.800f) number_of_btag_medium++;
+     if( jet.btag_combinedSecondaryVertex()>0.460f) number_of_btag_loose++;
+     if( jet.btag_combinedSecondaryVertex()>0.935f) number_of_btag_tight++;
+  }
+  
+  hist("number_btag_medium")->Fill(number_of_btag_medium, weight);
+  hist("number_btag_loose")->Fill(number_of_btag_loose, weight);
+  hist("number_btag_tight")->Fill(number_of_btag_tight, weight);
+
+  if(event.isRealData) return;
+  double ht = event.get(h_parton_ht);
+  hist_parton_ht ->Fill(ht, weight);
   return;
 }

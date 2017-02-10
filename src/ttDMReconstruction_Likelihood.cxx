@@ -34,7 +34,7 @@ bool ttDMReconstruction_Likelihood::process(uhh2::Event & e)
    std::vector<Muon> muons=e.get(h_muons);
 
    if (muons.size()>0) lepton = muons.at(0);
-   else lepton = e.electrons->at(0);
+   ///else lepton = e.electrons->at(0);
    indata_likelihood.lep = lepton.v4(); 
    indata_likelihood.met = e.met->v4();
     

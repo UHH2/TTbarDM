@@ -214,7 +214,7 @@ ttDMSelectionModule::ttDMSelectionModule(Context & ctx){
    lep1_sel.reset(new AndSelection(ctx));
    if(muon){
       lep1_sel->add<NMuonSelection>("muo==1", 1, 1, muonid);
-      lep1_sel->add<NElectronSelection>("ele=0",0, 0, electronid);
+      //lep1_sel->add<NElectronSelection>("ele=0",0, 0, electronid);
       
       // if(triggername != "NotSet") trigger_sel.reset(new TriggerSelection(triggername)); 
       // else trigger_sel.reset(new TriggerSelection("HLT_Mu45_eta2p1_v*")); 

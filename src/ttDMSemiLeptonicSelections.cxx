@@ -146,7 +146,7 @@ bool uhh2::TwoDCut::passes(const uhh2::Event & event){
    //assert(event.muons && event.electrons && event.jets);
   assert(event.jets);
   std::vector<Muon> muons_med=event.get(h_muons);
-  std::vector<Electron> electrons=event.get(h_electrons);
+  //std::vector<Electron> electrons=event.get(h_electrons);
   // std::cout<<"electron size: "<<electrons.size()<<std::endl;
   // if (electrons.size()>0) std::cout<<"pt: "<<electrons.at(0).pt()<<std::endl;
   // if (electrons.size()>0)std::cout<<"eta: "<<electrons.at(0).eta()<<std::endl;
@@ -159,16 +159,16 @@ bool uhh2::TwoDCut::passes(const uhh2::Event & event){
   //       std::cout<<"medium? "<< MuonIDMedium()(muons_med.at(i),event)<<std::endl;
   //       if (!MuonIDMedium()(muons_med.at(i),event)) std::cout<<"NOT MEDIUM MUON!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"<<std::endl;
   //    }
-  if((muons_med.size()+electrons.size()) != 1){
-     std::cout << "\n @@@ WARNING -- TwoDCut::passes -- unexpected number of muons+electrons in the event (!=1). returning 'false'\n";
+  // if((muons_med.size()+electrons.size()) != 1){
+  //    std::cout << "\n @@@ WARNING -- TwoDCut::passes -- unexpected number of muons+electrons in the event (!=1). returning 'false'\n";
      
-     return false;
-  }
+  //    return false;
+  // }
 
   float drmin=0;
   float ptrel=0;
   if(muons_med.size()) std::tie(drmin, ptrel) = drmin_pTrel(muons_med.at(0), *event.jets);
-  else std::tie(drmin, ptrel) = drmin_pTrel(electrons.at(0), *event.jets);
+  //else std::tie(drmin, ptrel) = drmin_pTrel(electrons.at(0), *event.jets);
 
   return (drmin > min_deltaR_) || (ptrel > min_pTrel_);
 }
@@ -370,4 +370,13 @@ bool uhh2::DeltaRMuonJet::passes(const uhh2::Event & event){
    float minDR_jet(-1.), pTrel_jet(-1.);
    std::tie(minDR_jet, pTrel_jet) = drmin_pTrel(lepton, *event.jets);
    return (minDR_jet< deltaRmax_);
+}
+uhh2::PartonHTCut::PartonHTCut(uhh2::Context& ctx, double HTmax):
+   HTmax_(HTmax), h_parton_ht_(ctx.get_handle<double>("parton_ht")){}
+
+bool uhh2::PartonHTCut::passes(const uhh2::Event & event){
+   double ht = event.get(h_parton_ht_);
+   std::cout<<"ht: "<<ht<<std::endl;
+   std::cout<<"HTmax: "<<HTmax_<<std::endl;
+   return (ht<HTmax_);
 }

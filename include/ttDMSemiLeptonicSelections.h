@@ -249,7 +249,15 @@ class ttbarpTSel: public Selection {
       double deltaRmax_;
  };
 
-   
+   class PartonHTCut: public Selection {
+   public:
+      explicit PartonHTCut(uhh2::Context& ctx, double HTmax);
+      virtual bool passes(const Event&) override;
+      
+   private:
+      double HTmax_;
+      Event::Handle<double> h_parton_ht_;
+ };
    
 
    /////
